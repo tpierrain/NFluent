@@ -38,8 +38,8 @@ namespace NFluent.Helpers
         ///     The auto property mask.
         /// </summary>
         private static readonly Regex AutoPropertyMask;
-        private readonly string labelPattern;
-        private readonly string prefix;
+        private readonly string labelPattern = string.Empty;
+        private readonly string prefix = string.Empty;
 
         /// <summary>
         ///     Initializes static members of the <see cref="ObjectFieldsCheckExtensions" /> class.
@@ -50,15 +50,20 @@ namespace NFluent.Helpers
             AnonymousTypeFieldMask = new Regex("^<(.*)>(i_|\\z)", RegexOptions.Compiled);
         }
 
-        private ReflectionWrapper(string nameInSource, string prefix, string labelPattern, Type type, object value,
+        private ReflectionWrapper(Type type, object value,
             ClassMemberCriteria criteria)
+        {
+            this.Criteria = criteria;
+            this.ValueType = type;
+            this.Value = value;
+        }
+
+        private ReflectionWrapper(string nameInSource, string prefix, string labelPattern, Type type, object value,
+            ClassMemberCriteria criteria) : this(type, value, criteria)
         {
             this.NameInSource = nameInSource;
             this.prefix = prefix;
             this.labelPattern = labelPattern;
-            this.Criteria = criteria;
-            this.ValueType = type;
-            this.Value = value;
         }
 
         internal string NameInSource { get; }
@@ -84,19 +89,20 @@ namespace NFluent.Helpers
                 return value as ReflectionWrapper;
             }
 
-            return new ReflectionWrapper(string.Empty, string.Empty, string.Empty, type, value, criteria);
+            return new ReflectionWrapper(type, value, criteria);
         }
 
         internal static ReflectionWrapper BuildFromType(Type type, ClassMemberCriteria criteria)
         {
-            return new ReflectionWrapper(string.Empty, string.Empty, string.Empty, type, null, criteria);
+            return new(type, null, criteria);
         }
 
         internal static ReflectionWrapper BuildFromField(string prefix, string name, Type type, object value,
             ClassMemberCriteria criteria)
         {
-            string labelPattern;
-            if (EvaluateCriteria(AutoPropertyMask, name, out var nameInSource))
+            var labelPattern = "field '{0}'";
+            var nameInSource = name;
+            if (EvaluateCriteria(AutoPropertyMask, name, ref nameInSource))
             {
                 if (criteria.WithProperties)
                 {
@@ -104,14 +110,9 @@ namespace NFluent.Helpers
                 }
                 labelPattern = $"autoproperty '{{0}}' (field '{name}')";
             }
-            else if (EvaluateCriteria(AnonymousTypeFieldMask, name, out nameInSource))
-            {
-                labelPattern = "field '{0}'";
-            }
             else
             {
-                nameInSource = name;
-                labelPattern = "field '{0}'";
+                EvaluateCriteria(AnonymousTypeFieldMask, name, ref nameInSource);
             }
 
             return new ReflectionWrapper(nameInSource, prefix, labelPattern, value?.GetType() ?? type, value,
@@ -121,7 +122,7 @@ namespace NFluent.Helpers
         internal static ReflectionWrapper BuildFromProperty(string prefix, string name, Type type, object value,
             ClassMemberCriteria criteria)
         {
-            return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria);
+            return new(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria);
         }
 
         internal void MapFields(ReflectionWrapper other,
@@ -243,12 +244,12 @@ namespace NFluent.Helpers
             return finalResult;
         }
 
-        private IEnumerable<ReflectionWrapper> ExtractProperties(IEnumerable<PropertyInfo> propertyInfos, IDictionary<string, ReflectionWrapper> memberDico)
+        private IEnumerable<ReflectionWrapper> ExtractProperties(IEnumerable<PropertyInfo> propertyInfos, IDictionary<string, ReflectionWrapper> memberDictionary)
         {
             var result = new List<ReflectionWrapper>();
             foreach (var info in propertyInfos)
             {
-                if (memberDico.ContainsKey(info.Name) || info.GetIndexParameters().Length > 0)
+                if (memberDictionary.ContainsKey(info.Name) || info.GetIndexParameters().Length > 0)
                 {
                     continue;
                 }
@@ -256,19 +257,19 @@ namespace NFluent.Helpers
                 var expectedValue = this.Value == null ? null : info.GetValue(this.Value, null);
                 var extended = BuildFromProperty(this.MemberLongName,
                     info.Name, info.PropertyType, expectedValue, this.Criteria);
-                memberDico[info.Name] = extended;
+                memberDictionary[info.Name] = extended;
                 result.Add(extended);
             }
             
             return result;
-        }
+        } 
 
-        private IEnumerable<ReflectionWrapper> ExtractFields(IEnumerable<FieldInfo> fieldsInfo, IDictionary<string, ReflectionWrapper> memberDico)
+        private IEnumerable<ReflectionWrapper> ExtractFields(IEnumerable<FieldInfo> fieldsInfo, IDictionary<string, ReflectionWrapper> memberDictionary)
         {
             var result = new List<ReflectionWrapper>();
             foreach (var info in fieldsInfo)
             {
-                if (memberDico.ContainsKey(info.Name))
+                if (memberDictionary.ContainsKey(info.Name))
                 {
                     continue;
                 }
@@ -281,7 +282,7 @@ namespace NFluent.Helpers
                     continue;
                 }
 
-                memberDico[info.Name] = extended;
+                memberDictionary[info.Name] = extended;
                 result.Add(extended);
             }
 
@@ -335,28 +336,20 @@ namespace NFluent.Helpers
         private ReflectionWrapper FindMember(ReflectionWrapper other)
         {
             var fields = this.GetSubExtendedMemberInfosFields();
-            foreach (var info in fields)
-            {
-                if (other.NameInSource == info.NameInSource)
-                {
-                    return info;
-                }
-            }
-
-            return null;
+            return fields.FirstOrDefault(info => other.NameInSource == info.NameInSource);
         }
 
-        private static bool EvaluateCriteria(Regex expression, string name, out string actualFieldName)
+        private static bool EvaluateCriteria(Regex expression, string name, ref string actualFieldName)
         {
             var regTest = expression.Match(name);
-            if (regTest.Groups.Count >= 2)
+            if (!regTest.Success)
             {
-                actualFieldName = name.Substring(regTest.Groups[1].Index, regTest.Groups[1].Length);
-                return true;
+                return false;
             }
 
-            actualFieldName = string.Empty;
-            return false;
+            actualFieldName = name.Substring(regTest.Groups[1].Index, regTest.Groups[1].Length);
+            return true;
+
         }
 
         /// <inheritdoc />

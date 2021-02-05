@@ -58,10 +58,38 @@ namespace NFluent
         {
             ExtensibilityHelper.BeginCheck(check)
                 .ComparingTo(givenValue, "after", "before")
-                .FailWhen(sut => sut.CompareTo(givenValue) <= 0, "The {0} is not after the reference value.")
+                .FailWhen(sut => sut <= givenValue, "The {0} is not after the reference value.")
                 .OnNegate("The {0} is after the reference value whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
+        }
+
+        /// <summary>
+        /// Determines whether the specified value is greater or equal than the other one.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="givenValue">The other value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The current value is not after the other one.</exception>
+        public static ICheckLink<ICheck<double>> IsGreaterOrEqualThan(this ICheck<double> check, double givenValue)
+        {
+            return new NumberCheck<double>(check).IsGreaterOrEqualThan(givenValue);
+        }
+
+        /// <summary>
+        /// Determines whether the specified value is less or equal than the other one.
+        /// </summary>
+        /// <param name="check">The fluent check to be extended.</param>
+        /// <param name="givenValue">The other value.</param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">The current value is not after the other one.</exception>
+        public static ICheckLink<ICheck<double>> IsLessOrEqualThan(this ICheck<double> check, double givenValue)
+        {
+            return new NumberCheck<double>(check).IsLessOrEqualThan(givenValue);
         }
 
         /// <summary>

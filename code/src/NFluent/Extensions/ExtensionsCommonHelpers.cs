@@ -268,20 +268,5 @@ namespace NFluent.Extensions
             return type.IsPrimitive;
 #endif
         }
-
-        /// <summary>
-        /// Checks if a type is class
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static bool IsClass(this Type type)
-        {
-#if NETSTANDARD1_3
-           return type.GetTypeInfo().IsClass;
-#else
-            return type.IsClass;
-#endif
-        }
-
     }
 }

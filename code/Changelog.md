@@ -1,3 +1,13 @@
+# V 2.7.1
+# Fixes
+* HasFieldsWithSameValues failed to properly compare when the expected value contained duplicate string. 
+More generally, instances where only checked once for equality; any subsequent check was assumed to be succesful. 
+This could lead to false positive (i.e. checks succeeded when it should have failed). 
+This regression was introduced by V 2.2.0 in 02/2018. Sorry about that.
+
+# GitHub Issues
+* #331
+
 ## V 2.7.0
 ### New checks
 * You can use *IsCloseTo* on **DateTime** and **DateTimeOffset** to check if a given date is close to a reference one.
@@ -52,7 +62,7 @@ has been removed.
 * equality, but we also provide an implementation of Equals as a failsafe.
 
 ### Fixes
-* Fix issue with IEnumerable<object> and Contains(Exactly), IsEqualTo, IsEquivalentTo.
+* Fix issue with `IEnumerable<object>` and Contains(Exactly), IsEqualTo, IsEquivalentTo.
 * Several error messages have been improved due to fix on check helpers.
 * NotSupportedException when using ContainsExactly on strings.
 * Fix issue with single dimension arrays and field based checks where the LAST item of the array

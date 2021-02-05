@@ -116,6 +116,14 @@ namespace NFluent.Helpers
         }
 
         /// <summary>
+        /// Reset assembly cache
+        /// </summary>
+        public static void ResetCache()
+        {
+            constructors = null;
+        }
+
+        /// <summary>
         /// Builds an exception with the given message. Automatically detect the exception type to use depending on the used check framework.
         /// </summary>
         /// <param name="theMessage">The message to build the exception with.</param>
@@ -147,7 +155,7 @@ namespace NFluent.Helpers
         /// <summary>
         /// Checks if the failed assumption exception type
         /// </summary>
-        /// <returns>the failed asumption exception type</returns>
+        /// <returns>the failed assumption exception type</returns>
         public static Type InconclusiveExceptionType()
         {
             return Constructors.InconclusiveExceptionType();

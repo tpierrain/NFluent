@@ -187,7 +187,7 @@ namespace NFluent.Helpers
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
                     var ratio = expected == 0.0 ? 1.0 : Math.Abs(diff / expected);
                     var mainLine = "The {0} is different from the {1}";
-                    if (ratio < 0.0001)
+                    if (ratio < 1.0/10240)
                     {
                         mainLine += $", with a difference of {diff:G2}";
                     }
@@ -221,7 +221,7 @@ namespace NFluent.Helpers
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
                     var ratio = expected == 0.0 ? 1.0 : Math.Abs(diff / expected);
                     var mainLine = "The {0} is different from the {1}";
-                    if (ratio < 0.0001f)
+                    if (ratio < 1.0f/10240)
                     {
                         mainLine += $", with a difference of {diff:G2}";
                     }
