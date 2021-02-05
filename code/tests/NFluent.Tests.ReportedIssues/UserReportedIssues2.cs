@@ -282,7 +282,7 @@ namespace NFluent.Tests.FromIssues
             Test4
         }
 
-    // GH #238
+        // GH #238
         public class NTest
         {
             private class TestCase
@@ -350,8 +350,6 @@ namespace NFluent.Tests.FromIssues
             public int MyProperty { get; set; }
         }
 
-        private static double DecimalValue => 0.95000000000000006d;
-
         private class BaseClass
         {
             public BaseClass(string id)
@@ -401,42 +399,6 @@ namespace NFluent.Tests.FromIssues
             var expected = new[] {1, 2};
             var actual = new uint[] {1, 2};
             Check.That(actual).ContainsExactly(expected);
-        }
-
-        // GH #205 
-        [Test]
-        public void IsEqualTo_should_provide_details_and_suggest_isCloseTo()
-        {
-            using (new CultureSession("en-US"))
-            {
-                Check.ThatCode(() => Check.That(DecimalValue*(1<<16)).IsEqualTo(0.95d*(1<<16))).IsAFailingCheckWithMessage("",
-                    "The checked value is different from the expected one, with a difference of 7.3E-12. You may consider using IsCloseTo() for comparison.",
-                    "The checked value:",
-                    "\t[62259.200000000004]",
-                    "The expected value:",
-                    "\t[62259.2]");
-
-                Check.ThatCode(() => Check.That(0.9500001f*(1<<16)).IsEqualTo(0.95f*(1<<16))).IsAFailingCheckWithMessage("",
-                    "The checked value is different from the expected one, with a difference of 0.0078. You may consider using IsCloseTo() for comparison.",
-                    "The checked value:",
-                    "\t[62259.207]",
-                    "The expected value:",
-                    "\t[62259.2]");
-                Check.ThatCode(() => Check.That(100001f).IsEqualTo(100000f)).IsAFailingCheckWithMessage("",
-                    "The checked value is different from the expected one, with a difference of 1.",
-                    "The checked value:",
-                    "\t[100001]",
-                    "The expected value:",
-                    "\t[100000]");
-                
-                Check.ThatCode(() => Check.That(100000001d).IsEqualTo(100000000d)).IsAFailingCheckWithMessage("",
-                    "The checked value is different from the expected one, with a difference of 1.",
-                    "The checked value:",
-                    "\t[100000001]",
-                    "The expected value:",
-                    "\t[100000000]");
-                
-            }
         }
 
         [Test]

@@ -131,6 +131,30 @@ namespace NFluent.Kernel
         }
 
         /// <summary>
+        /// Checks that the checked value is strictly less than the comparand.
+        /// </summary>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The checked value is not strictly less than the comparand.
+        /// </exception>
+        public ICheckLink<ICheck<TN>> IsLessOrEqualThan(TN comparand)
+        {
+            ExtensibilityHelper.BeginCheck(check)
+                .ComparingTo(comparand, "less than", "greater than")
+                .FailWhen(sut => sut.CompareTo(comparand) > 0, "The {0} is greater than the {1}.")
+                .OnNegateWhen( sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1} whereas it must be greater.")
+                .OnNegate("The {0} is less than the {1} whereas it must be greater.")
+                .EndCheck();
+
+            return ExtensibilityHelper.BuildCheckLink(this.check);
+        }
+
+        /// <summary>
         /// Checks that the actual value is more than a comparand.
         /// </summary>
         /// <param name="comparand">
@@ -148,6 +172,29 @@ namespace NFluent.Kernel
                 .ComparingTo(comparand, "strictly greater than", "less than or equal to")
                 .FailWhen(sut => sut.CompareTo(comparand) < 0, "The {0} is less than the {1}.")
                 .FailWhen(sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1}.")
+                .OnNegate("The {0} is greater than the {1}.")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(this.check);
+        }
+
+        /// <summary>
+        /// Checks that the actual value is more than a comparand.
+        /// </summary>
+        /// <param name="comparand">
+        /// Comparand to compare the value to.
+        /// </param>
+        /// <returns>
+        /// A check link.
+        /// </returns>
+        /// <exception cref="FluentCheckException">
+        /// The value is not less than the comparand.
+        /// </exception>
+        public ICheckLink<ICheck<TN>> IsGreaterOrEqualThan(TN comparand)
+        {
+            ExtensibilityHelper.BeginCheck(this.check)
+                .ComparingTo(comparand, "greater than", "less than")
+                .FailWhen(sut => sut.CompareTo(comparand) < 0, "The {0} is less than the {1}.")
+                .OnNegateWhen(sut => sut.CompareTo(comparand) == 0, "The {0} is equal to the {1} whereas it must not.")
                 .OnNegate("The {0} is greater than the {1}.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);

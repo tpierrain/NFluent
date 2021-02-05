@@ -15,6 +15,7 @@
 
 namespace NFluent.Tests
 {
+    using NFluent.Helpers;
     using NUnit.Framework;
 
     internal class NUnitTests
@@ -23,6 +24,7 @@ namespace NFluent.Tests
         [Test]
         public void BasicTest()
         {
+            ExceptionHelper.ResetCache();
             Check.That("Unit").IsNotEmpty();
 
             Check.ThatCode(() => Check.That("Unit").IsEqualTo("great")).Throws<AssertionException>();

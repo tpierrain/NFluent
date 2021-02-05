@@ -3,19 +3,16 @@
 * You can provide anonymous types and tuples when using IsEqualTo against any type. The check will be made against all
 _sut_'s propertie.
 * Dropped support for Net Framework 2.0, 3.0, and 4.0. NFluent supports Net 3.5 SP1, Net. 4.5.2 +, Net Standard 1.3+ and Net Standard 2.0+.
- If you can't upgrade your framework version to a supported one, please use NFluent 2.7. 
+ If you can't upgrade your framework version to a supported one, please use NFluent 2.7.1.
 * `Check.ThatEnum`has been removed. You must use `Check.That` instead.
-# V 2.7.1
-# Fixes
-* HasFieldsWithSameValues failed to properly compare when the expected value contained duplicate string. 
-More generally, instances where only checked once for equality; any subsequent check was assumed to be succesful. 
-This could lead to false positive (i.e. checks succeeded when it should have failed). 
-This regression was introduced by V 2.2.0 in 02/2018. Sorry about that.
-  
-# GitHub Issues
-* #331
 
+## New Checks
+* `IsGreaterOrEqualThan`: Checks if _sut_ >= _expected_. 
+* `IsLessOrEqualThan`: Checks if _sut_ <= _expected_. 
 
+## New feautres
+* You can provide custom comparer for any type, using `Check.RegisterComparer` like this `Check.Register<MyType>(MyCustomComparer)`. 
+You can also use `RegisterLocalComparer` to limit its usage to a declaration scope.
 
 ## Breaking changes
 * Equality logic changed for `IDictionary`: dictionaries are considered equals if they have the same keys and
@@ -29,7 +26,8 @@ you need help.
 ## Fixes
 * HasFieldWithSameValues resulted in false positive when string fields had the same value.
 
-* Closed issues: #325, #331
+# GitHub Issues
+* #325, #330, #332
 
 ### Obsolete
 Here is the list of methods, classes and other obsolete stuff that have been removed in this version as well
@@ -49,3 +47,13 @@ problem for you, open an issue
 * `Properties` (available for enumeration): please use `Extracting` instead.
 * `Checker.BuildLinkWhich` (used for custom extension): please use `ExtensibilityHelper.BuildCheckLinkWhich` instead.
 * `Checker.ExecuteCheckAndProvideSubItem` (used for custom extension): please 'ExtensibilityHelper' static class methods instead.
+
+# V 2.7.1
+# Fixes
+* HasFieldsWithSameValues failed to properly compare when the expected value contained duplicate string. 
+More generally, instances where only checked once for equality; any subsequent check was assumed to be succesful. 
+This could lead to false positive (i.e. checks succeeded when it should have failed). 
+This regression was introduced by V 2.2.0 in 02/2018. Sorry about that.
+
+# GitHub Issues
+* #331

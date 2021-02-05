@@ -17,6 +17,7 @@ using System;
 
 namespace NFluent.Tests
 {
+    using Messages;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -76,6 +77,7 @@ namespace NFluent.Tests
         [Test]
         public void ShouldFailWithHashesWhenSimilar()
         {
+            EntityNamingLogic.ClearDefaultNameCache();
             Check.ThatCode(() => { Check.That(new Basic(1,2)).IsEqualTo(new Basic(1, 3)); })
                 .IsAFailingCheckWithMessage("",
                     "The checked struct is different from the expected one.",

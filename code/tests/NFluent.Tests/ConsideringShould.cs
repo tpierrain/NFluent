@@ -15,6 +15,7 @@
 
 namespace NFluent.Tests
 {
+    using System.Collections.Generic;
     using Extensibility;
     using NFluent.Helpers;
     using NUnit.Framework;
@@ -724,6 +725,15 @@ namespace NFluent.Tests
 
             // Assert
             Check.That(childOne).Considering().Public.Properties.IsEqualTo(childTwo);
+        }
+
+        [Test]
+        public void HandleEnumerations()
+        {
+            var sut = new { Items = new List<int> {1,2,3 } };
+            var expected = new { Items = new List<int> {1,2,3 } };
+
+            Check.That(sut).Considering().Public.Properties.IsEqualTo(expected);
         }
 
         [Test]

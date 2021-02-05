@@ -226,9 +226,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsLessOrEqualThanWorks()
+        {
+            Check.That(One).IsLessOrEqualThan(Twenty);
+        }
+
+        [Test]
         public void NotIsStrictlyLessThanWorks()
         {
             Check.That(Twenty).Not.IsStrictlyLessThan(One);
+        }
+
+        [Test]
+        public void IsNotLessOrEqualThanWorks()
+        {
+            Check.That(Twenty).Not.IsLessOrEqualThan(One);
         }
 
         [Test]
@@ -257,6 +269,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsLessOrEqualThanThrowsExceptionWhenFailing()
+        {
+            Check.ThatCode(() =>
+            {
+                Check.That(One).IsLessOrEqualThan(Zero);
+            })
+            .IsAFailingCheckWithMessage("",
+                    "The checked value is greater than the given one.",
+                    "The checked value:",
+                    "\t[1]",
+                    "The expected value: less than",
+                    "\t[0]");
+        }
+
+        [Test]
         public void NotIsStrictlyLessThanThrowsExceptionWhenFailing()
         {
             Check.ThatCode(() =>
@@ -271,7 +298,37 @@ namespace NFluent.Tests
                     "\t[20]");
         }
 
+        [Test]
+        public void NotIsLessOrEqualThanThrowsExceptionWhenFailing()
+        {
+            Check.ThatCode(() =>
+            {
+                Check.That(One).Not.IsLessOrEqualThan(Twenty);
+            })
+            .IsAFailingCheckWithMessage("",
+                    "The checked value is less than the given one whereas it must be greater.",
+                    "The checked value:",
+                    "\t[1]",
+                    "The expected value: greater than",
+                    "\t[20]");
+            Check.ThatCode(() =>
+                {
+                    Check.That(One).Not.IsLessOrEqualThan(One);
+                })
+                .IsAFailingCheckWithMessage("",
+                    "The checked value is equal to the given one whereas it must be greater.",
+                    "The checked value:",
+                    "\t[1]",
+                    "The expected value: greater than",
+                    "\t[1]");        }
+
         #endregion
+
+        [Test]
+        public void IsGreaterOrEqualWorks()
+        {
+            Check.That(Twenty).IsGreaterOrEqualThan(One);
+        }
 
         [Test]
         public void IsStrictlyGreaterThanWorks()
@@ -292,6 +349,21 @@ namespace NFluent.Tests
                     "\t[1]",
                     "The expected value: strictly greater than",
                     "\t[1]");
+        }
+
+        [Test]
+        public void IsGreaterOrEqualThanThrowsExceptionWhenFailing()
+        {
+            Check.ThatCode(() =>
+            {
+                Check.That(One).IsGreaterOrEqualThan(Twenty);
+            })
+            .IsAFailingCheckWithMessage("",
+                    "The checked value is less than the given one.",
+                    "The checked value:",
+                    "\t[1]",
+                    "The expected value: greater than",
+                    "\t[20]");
         }
 
         [Test]
@@ -321,6 +393,31 @@ namespace NFluent.Tests
                     "The checked value:",
                     "\t[20]",
                     "The expected value: less than or equal to",
+                    "\t[1]");
+        }
+
+        [Test]
+        public void NotIsGreaterOrEqualThanThrowsExceptionWhenFailing()
+        {
+            Check.ThatCode(() =>
+            {
+                Check.That(Twenty).Not.IsGreaterOrEqualThan(One);
+            })
+            .IsAFailingCheckWithMessage("",
+                    "The checked value is greater than the given one.",
+                    "The checked value:",
+                    "\t[20]",
+                    "The expected value: less than",
+                    "\t[1]");
+            Check.ThatCode(() =>
+            {
+                Check.That(One).Not.IsGreaterOrEqualThan(One);
+            })
+            .IsAFailingCheckWithMessage("",
+                    "The checked value is equal to the given one whereas it must not.",
+                    "The checked value:",
+                    "\t[1]",
+                    "The expected value: less than",
                     "\t[1]");
         }
 
