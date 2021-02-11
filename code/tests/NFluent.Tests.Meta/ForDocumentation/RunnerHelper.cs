@@ -151,6 +151,7 @@ namespace NFluent.Tests.ForDocumentation
             {
                 parameters.Add(new object[]{});
             }
+
             try
             {
                 foreach (var pars in parameters)
@@ -158,14 +159,17 @@ namespace NFluent.Tests.ForDocumentation
                     specificTest.Invoke(test, pars);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
                 if (CheckContext.DefaultNegated == false)
                 {
                     return;
                 }
-
+                if (e.InnerException is IgnoreException)
+                {
+                    return;
+                }
                 throw;
                 //}
 

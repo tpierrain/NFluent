@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NFluent.Tests</RootNamespace>
     <AssemblyName>NFluent.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -59,9 +59,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NFluent.45\NFluent.45.csproj">
+    <ProjectReference Include="..\..\src\NFluent.46\NFluent.46.csproj">
       <Project>{cf1d857f-658f-4e1f-8487-cd751f189e6a}</Project>
-      <Name>NFluent.45</Name>
+      <Name>NFluent.46</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -48,7 +48,12 @@ namespace NFluent.Tests
             {
                 Check.EqualMode = currentMode;
             }
+        }
 
+        [Test]
+        public void IsShouldWork()
+        {
+            Check.That(2).Is(2);
         }
 
         [Test]

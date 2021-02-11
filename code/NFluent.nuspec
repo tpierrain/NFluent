@@ -20,6 +20,7 @@
 If you can't upgrade your framework version to a supported one, please use NFluent 2.7.1.
 * `Check.ThatEnum`has been removed. You must use `Check.That` instead.
 ## New Checks
+* `Is`: Checks if _sut == expected_. This is a strongly typed equivalent to `IsEqualTo`.
 * `IsGreaterOrEqualThan`: Checks if _sut_ &gt;= _expected_.
 * `IsLessOrEqualThan`: Checks if _sut_ &lt;= _expected_.
 ## New feautres
@@ -36,11 +37,11 @@
 ## Fixes
 * HasFieldWithSameValues resulted in false positive when string fields had the same value.
 # GitHub Issues
-* #325, #330, #332
+* #325, #327, #330, #332
 ### Obsolete
 Here is the list of methods, classes and other obsolete stuff that have been removed in this version as well
 as workaround advices.
-* Drop support for Net 2.0 and 3.0: keep using NFluent V2.x versions
+* Drop support for Net 2.0 and 3.0: keep using NFluent V2.x versions if you support for these.
 * `ILambdaCheck`: the definition was kept to prevent breaking build, but it was no longer used. If this is a
 problem for you, open an issue
 * `IsPositive` (available for numbers): please use `IsStrictlyPositive` instead.
@@ -63,7 +64,7 @@
 This regression was introduced by V 2.2.0 in 02/2018. Sorry about that.
 # GitHub Issues
 * #331</releaseNotes>
-    <copyright>Copyright 2013-2020  Thomas PIERRAIN, Cyrille DUPUYDAUBY</copyright>
+    <copyright>Copyright 2013-2021 Thomas PIERRAIN, Cyrille DUPUYDAUBY</copyright>
     <language>en-US</language>
     <tags>tdd bdd test fluent check checks easy nunit xunit mbunit mstestsucks</tags>
   </metadata>
@@ -78,9 +79,9 @@
     <file src="Artifacts\Binaries\netstandard2.0\NFluent.xml" target="lib\netstandard2.0\" />
     <file src="Artifacts\Binaries\netstandard2.0\NFluent.pdb" target="lib\netstandard2.0\" />
     <!-- .NET 4.5 (for dynamics and tasks support) -->
-    <file src="Artifacts\Binaries\net45\NFluent.dll" target="lib\net45\" />
-    <file src="Artifacts\Binaries\net45\NFluent.xml" target="lib\net45\" />
-    <file src="Artifacts\Binaries\net45\NFluent.pdb" target="lib\net45\" />
+    <file src="Artifacts\Binaries\net46\NFluent.dll" target="lib\net46\" />
+    <file src="Artifacts\Binaries\net46\NFluent.xml" target="lib\net46\" />
+    <file src="Artifacts\Binaries\net46\NFluent.pdb" target="lib\net46\" />
     <!-- .NET 3.5 -->
     <file src="Artifacts\Binaries\net35\NFluent.dll" target="lib\net35\" />
     <file src="Artifacts\Binaries\net35\NFluent.xml" target="lib\net35\" />

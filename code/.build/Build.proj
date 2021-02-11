@@ -53,10 +53,10 @@
       <Fwk>core</Fwk>
     </ProjectFolder>
 
-    <ProjectFolder Include="$(SourcePath)\NFluent.45">
-      <Package>net45</Package>
+    <ProjectFolder Include="$(SourcePath)\NFluent.46">
+      <Package>net46</Package>
     </ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)\NFluent.45.Tests.Meta"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.46.Tests.Meta"/>
     <ProjectFolder Include="$(SourcePath)\NFluent.35">
       <Package>net35</Package>
     </ProjectFolder>
@@ -81,16 +81,16 @@
         <Framework>net-3.5</Framework>
         <DontReport>true</DontReport>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.45.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
-        <Framework>net-4.5</Framework>
+      <TestProjects Include='$(TestsPath)\NFluent.46.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
+        <Framework>net-4.6</Framework>
       <Coverage>false</Coverage>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.45.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
-        <Framework>net-4.5</Framework>
+      <TestProjects Include='$(TestsPath)\NFluent.46.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
+        <Framework>net-4.6</Framework>
       <Coverage>false</Coverage>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.45.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll'>
-        <Framework>net-4.5</Framework>
+      <TestProjects Include='$(TestsPath)\NFluent.46.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll'>
+        <Framework>net-4.6</Framework>
         <Coverage>false</Coverage>
       </TestProjects>
       <TestProjects Include='$(TestsPath)\NFluent.Tests.MsTest\NFluent.Tests.MsTest.csproj'>
@@ -124,8 +124,8 @@
         <Runner>Self</Runner>
         <Coverage>true</Coverage>
       </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.45.Tests.Meta\bin\$(Configuration)\NFluent.Tests.Meta.dll'>
-        <Framework>net-4.5</Framework>
+      <TestProjects Include='$(TestsPath)\NFluent.46.Tests.Meta\bin\$(Configuration)\NFluent.Tests.Meta.dll'>
+        <Framework>net-4.6</Framework>
         <Coverage>false</Coverage>
         <DontReport>true</DontReport>
       </TestProjects>

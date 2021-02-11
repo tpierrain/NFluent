@@ -5,12 +5,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{308A72A3-462B-4C4E-ABAE-9D9D49D251E7}</ProjectGuid>
+    <ProjectGuid>{C2EEC8DD-F390-4ECB-A169-25930896E1C1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NFluent.Tests.Extensions</RootNamespace>
-    <AssemblyName>NFluent.Tests.Extensions</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>NFluent.Tests.Meta</RootNamespace>
+    <AssemblyName>NFluent.Tests.Meta</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -33,6 +33,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\.build\NFluent.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
@@ -47,10 +53,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NFluent.45\NFluent.45.csproj">
+    <ProjectReference Include="..\..\src\NFluent.46\NFluent.46.csproj">
       <Project>{cf1d857f-658f-4e1f-8487-cd751f189e6a}</Project>
-      <Name>NFluent.45</Name>
+      <Name>NFluent.46</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NFluent.46.Tests\NFluent.46.Tests.csproj">
+      <Project>{0014c223-a481-4b87-a480-3d4792a9b276}</Project>
+      <Name>NFluent.46.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\.build\NFluent.snk">
+      <Link>NFluent.snk</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
@@ -60,7 +75,7 @@
       <Link>Properties\Version.cs</Link>
     </Compile>
   </ItemGroup>
-  <Import Project="..\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems" Label="Shared" />
+  <Import Project="..\NFluent.Tests.Meta\NFluent.Tests.Meta.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

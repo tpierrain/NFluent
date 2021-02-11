@@ -127,7 +127,7 @@ namespace NFluent.Tests
             Check.ThatAsyncCode(async () =>
             {
                 var result = await ReturnTheAnswerAfterAWhileAsync();
-            }).LastsLessThan(50, TimeUnit.Milliseconds);
+            }).LastsLessThan(150, TimeUnit.Milliseconds);
         }
 
 #endregion

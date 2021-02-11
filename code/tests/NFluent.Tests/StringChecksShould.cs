@@ -810,6 +810,10 @@ namespace NFluent.Tests
             var curLen = Check.StringTruncationLength;
             try
             {
+                if (!File.Exists(TestFiles.CheckedFile))
+                {
+                    Assert.Ignore("Test file not found.");
+                }
                 Check.StringTruncationLength = 209;
                 var checkString = File.ReadAllText(TestFiles.CheckedFile, Encoding.UTF8).Replace("\r\n", "");
                 var expectedString = File.ReadAllText(TestFiles.ExpectedFile, Encoding.UTF8).Replace("\r\n", "");
@@ -838,6 +842,10 @@ namespace NFluent.Tests
             var curLen = Check.StringTruncationLength;
             try
             {
+                if (!File.Exists(TestFiles.CheckedFile))
+                {
+                    Assert.Ignore("Test file not found.");
+                }
                 // large truncation
                 Check.StringTruncationLength = 10000;
                 var checkString = File.ReadAllText(TestFiles.CheckedFile, Encoding.UTF8).Replace("\r\n", "");

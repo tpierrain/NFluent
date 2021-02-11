@@ -357,6 +357,10 @@ namespace NFluent.Tests
         [Test]
         public void ContainsExactlyWorksOnLargeArrays()
         {
+            if (!File.Exists(TestFiles.CheckedFile))
+            {
+                Assert.Ignore("Test File Not found");
+            }
             var checkString = File.ReadAllBytes(TestFiles.CheckedFile);
             var expectedString = File.ReadAllBytes(TestFiles.CheckedFile);
 

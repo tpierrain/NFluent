@@ -5,12 +5,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C2EEC8DD-F390-4ECB-A169-25930896E1C1}</ProjectGuid>
+    <ProjectGuid>{95799318-9A09-46C8-AE53-2546F053EF40}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NFluent.Tests.Meta</RootNamespace>
-    <AssemblyName>NFluent.Tests.Meta</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>NFluent.Tests.Internals</RootNamespace>
+    <AssemblyName>NFluent.Tests.Internals</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DOTNET_45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -29,7 +29,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;DOTNET_45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -53,16 +53,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NFluent.45\NFluent.45.csproj">
-      <Project>{cf1d857f-658f-4e1f-8487-cd751f189e6a}</Project>
-      <Name>NFluent.45</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NFluent.45.Tests\NFluent.45.Tests.csproj">
-      <Project>{0014c223-a481-4b87-a480-3d4792a9b276}</Project>
-      <Name>NFluent.45.Tests</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\.build\NFluent.snk">
       <Link>NFluent.snk</Link>
     </None>
@@ -75,7 +65,13 @@
       <Link>Properties\Version.cs</Link>
     </Compile>
   </ItemGroup>
-  <Import Project="..\NFluent.Tests.Meta\NFluent.Tests.Meta.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NFluent.46\NFluent.46.csproj">
+      <Project>{cf1d857f-658f-4e1f-8487-cd751f189e6a}</Project>
+      <Name>NFluent.46</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\NFluent.Tests.Internals\NFluent.Tests.Internals.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
