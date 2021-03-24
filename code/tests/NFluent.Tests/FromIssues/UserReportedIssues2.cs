@@ -36,7 +36,26 @@ namespace NFluent.Tests.FromIssues
     public class UserReportedIssues2
     {
         [Test]
-        //https://github.com/tpierrain/NFluent/issues/333
+        // GH #334
+        public void IssueWithDictionaryIsEquivalent()
+        {
+            var si1 = new Dictionary<string, int> { { "a", 0 }, { "b", 1 }, { "c", 2 } };
+            var si2 = new Dictionary<string, int> { { "c", 2 }, { "a", 0 }, { "b", 1 } };
+            Check.That(si1).IsEquivalentTo(si2);
+
+            var letterA = "a";
+            var letterAanotherWay = new string("a".ToCharArray()); // forces unique instance
+            var sinotinterned1 = new Dictionary<string, int> { { letterA, 0 }, { "b", 1 }, { "c", 2 } };
+            var sinotinterned2 = new Dictionary<string, int> { { "c", 2 }, { letterAanotherWay, 0 }, { "b", 1 } };
+            Check.That(sinotinterned1).IsEquivalentTo(sinotinterned2);
+
+            var is1 = new Dictionary<int, string> { { 1, "va" }, { 2, "vb" }, { 0, "vc" } };
+            var is2 = new Dictionary<int, string> { { 0, "vc" }, { 1, "va" }, { 2, "vb" } };
+            Check.That(is1).IsEquivalentTo(is2);
+        }
+
+        [Test]
+        // GH #333
         public void PrecisionIssueWithDouble()
         {
             Check.ThatCode( ()=>

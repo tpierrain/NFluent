@@ -3,6 +3,7 @@
 ## Fixes
 * HasFieldWithSameValues resulted in false positive when string fields had the same value.
 * IsZero failed for very small double (<1E-28) in previous versions.
+* IsEquivalentTo was not permissive enougth for dictionaries.
 
 # GitHub Issues
 * #331, #333

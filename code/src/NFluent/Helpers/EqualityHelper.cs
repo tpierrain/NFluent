@@ -429,7 +429,7 @@ namespace NFluent.Helpers
                     else //if (valueDifferences.IsEquivalent)
                     {
                         // check if the dictionaries are equivalent anyway
-                        var expectedIndex = expectedDico.ContainsKey(actualKey) ? expectedDico.Keys.ToList().FindIndex(x => x == actualKey) : -1;
+                        var expectedIndex = expectedDico.ContainsKey(actualKey) ? expectedDico.Keys.ToList().FindIndex(x => FluentEquals(actualKey, x)) : -1;
                         if (expectedIndex >= 0)
                         {
 
