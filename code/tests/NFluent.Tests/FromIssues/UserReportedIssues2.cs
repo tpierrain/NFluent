@@ -36,6 +36,15 @@ namespace NFluent.Tests.FromIssues
     public class UserReportedIssues2
     {
         [Test]
+        //https://github.com/tpierrain/NFluent/issues/333
+        public void PrecisionIssueWithDouble()
+        {
+            Check.ThatCode( ()=>
+            Check.That(1E-29).IsZero()).IsAFailingCheckWithMessage("", "The checked value is different from zero.", "The checked value:", "	[1E-29]"); // should not succeed! (but does in v2.7.1)
+            Check.That(1E-29).IsNotZero(); // should not fail! (but does in v2.7.1)
+        }
+
+        [Test]
         // GH #320
         public void IssueWithDoubleAndInt()
         {

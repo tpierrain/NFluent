@@ -1,5 +1,11 @@
-# V 2.8.0
+# V 2.7.2
 
+## Fixes
+* HasFieldWithSameValues resulted in false positive when string fields had the same value.
+* IsZero failed for very small double (<1E-28) in previous versions.
+
+# GitHub Issues
+* #331, #333
 
 # V 2.7.1
 # Fixes
