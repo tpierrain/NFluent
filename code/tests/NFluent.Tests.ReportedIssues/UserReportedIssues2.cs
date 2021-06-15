@@ -111,7 +111,7 @@ namespace NFluent.Tests.FromIssues
                 4
             };
 
-            IEnumerable<int> expected = Enumerable.Range(1, 4);
+            var expected = Enumerable.Range(1, 4);
             
             CollectionAssert.AreEquivalent(expected, toBeChecked);  // OK 
             CollectionAssert.AreEqual(expected, toBeChecked);       // OK

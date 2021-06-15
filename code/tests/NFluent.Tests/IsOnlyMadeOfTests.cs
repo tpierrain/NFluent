@@ -18,7 +18,6 @@ namespace NFluent.Tests
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-
     using Helpers;
     using NFluent.Helpers;
     using NUnit.Framework;
@@ -257,7 +256,7 @@ namespace NFluent.Tests
                     "The expected value(s): at least one element different from",
                     "\t{3, 2, 3, 2, 2, 1} (6 items)");
         }
-        
+
         [Test]
         public void IsOnlyMadeOfWithStringCollectionWorksEvenWhenGivingSameExpectedValueMultipleTimes()
         {

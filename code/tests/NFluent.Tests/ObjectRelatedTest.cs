@@ -74,7 +74,7 @@ namespace NFluent.Tests
         public void CanDeclareCustomComparerForInterface()
         {
             var previous = Check.RegisterComparer<IEnumerable>(new NoOpComparer(true));
-            Check.That(new List()).IsEqualTo(new Dictionary<string, string>());
+            Check.That(new ArrayList()).IsEqualTo(new Dictionary<string, string>());
             Check.RegisterComparer<IEnumerable>(previous);
         }
 

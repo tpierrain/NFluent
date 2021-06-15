@@ -2,10 +2,7 @@
   "stryker-config": {
     "reporters": [
       "progress",
-      "html",
-      "json"
-      //      "dashboard",
-      //      "dots"
+      "html"
     ],
     "coverage-analysis": "perTest",
     "abort-test-on-fail": true,

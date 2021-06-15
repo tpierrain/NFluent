@@ -91,14 +91,14 @@ namespace NFluent.Kernel
         public IChecker<T, ICheck<T>> Checker => this.checker;
 
         /// <summary>
-        /// Checks whether the specified <see cref="object"/> is equal to this instance or not.
+        /// Checks whether the sut is equal to the expected value.
         /// </summary>
         /// <param name="obj">
         /// The <see cref="object"/> to compare with this instance.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="object"/> is equal to this instance; throws a <see cref="FluentCheckException"/> otherwise.
-        /// </returns>
+        /// always false. This is not a regular Equals implementation, as it does not compare <see cref="FluentCheck{T}"/> instances.
+        /// /// </returns>
         /// <exception cref="FluentCheckException">
         /// The specified <see cref="object"/> is not equal to this instance.
         /// </exception>

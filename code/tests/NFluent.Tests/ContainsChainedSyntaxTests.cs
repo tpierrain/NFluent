@@ -37,6 +37,15 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsOnlyMadeOfFailTest()
+        {
+            Check.ThatCode(()=>
+                Check.That(this.tresAmigos).Contains("dos", "un").Only()).IsAFailingCheck();
+            Check.ThatCode(()=>
+                Check.That((IEnumerable)this.tresAmigos).Contains("dos", "un").Only()).IsAFailingCheck();
+        }
+
+        [Test]
         public void ContainsInThatOrderSuccessTest()
         {
             Check.That(this.tresAmigos).Contains("un", "dos", "tres").InThatOrder();

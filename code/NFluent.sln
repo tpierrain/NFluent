@@ -32,8 +32,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.35.Tests.Internals"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuggetVersion", "tests\Nugget\NuggetVersion.csproj", "{50136517-047A-4081-AC30-878560F108DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Standard.13", "src\NFluent.Standard.13\NFluent.Standard.13.csproj", "{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "platforms", "platforms", "{261B1CE2-51CF-4F30-B689-3E78C3916F3E}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NFluent.Tests.Internals", "tests\NFluent.Tests.Internals\NFluent.Tests.Internals.shproj", "{AB38506B-6CD4-47ED-A085-A77E8A5BE26C}"
@@ -153,8 +151,6 @@ Global
 		tests\NFluent.Tests.Meta\NFluent.Tests.Meta.projitems*{c2eec8dd-f390-4ecb-a169-25930896e1c1}*SharedItemsImports = 4
 		src\NFluent.Generated\NFluent.Generated.projitems*{c90111a0-3ab2-40ed-b665-c0ddb8deb26e}*SharedItemsImports = 5
 		src\NFluent\NFluent.projitems*{c90111a0-3ab2-40ed-b665-c0ddb8deb26e}*SharedItemsImports = 5
-		src\NFluent.Generated\NFluent.Generated.projitems*{c9be0166-0bf9-4964-8d46-4a2c89d2b02b}*SharedItemsImports = 5
-		src\NFluent\NFluent.projitems*{c9be0166-0bf9-4964-8d46-4a2c89d2b02b}*SharedItemsImports = 5
 		src\NFluent.Generated\NFluent.Generated.projitems*{cf1d857f-658f-4e1f-8487-cd751f189e6a}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{cf1d857f-658f-4e1f-8487-cd751f189e6a}*SharedItemsImports = 4
 		src\NFluent\NFluent.projitems*{dbfa1137-b129-496a-9201-149f5178747e}*SharedItemsImports = 13
@@ -189,10 +185,6 @@ Global
 		{50136517-047A-4081-AC30-878560F108DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50136517-047A-4081-AC30-878560F108DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50136517-047A-4081-AC30-878560F108DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -284,7 +276,6 @@ Global
 		{6B88C45A-D45E-40FB-8635-D0E0EF0454E9} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 		{9E500148-4F6C-424A-AA09-801DB1749677} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 		{50136517-047A-4081-AC30-878560F108DF} = {E3F40977-9951-4FCE-AA2C-9D3D804D836C}
-		{C9BE0166-0BF9-4964-8D46-4A2C89D2B02B} = {6A12E9B8-849A-4421-AEB3-B768E78EDC8A}
 		{261B1CE2-51CF-4F30-B689-3E78C3916F3E} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
 		{AB38506B-6CD4-47ED-A085-A77E8A5BE26C} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
 		{0425A660-CA7D-43F6-93AB-F72C95D506E3} = {5BD348A4-E85B-4283-AA2A-01967F6F11C2}
