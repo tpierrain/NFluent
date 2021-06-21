@@ -53,6 +53,7 @@ public static class TestsCloningHelper
 				line = line.Replace("double ", config.TypeName + " ");
 				line = line.Replace("(double)", "(" + config.TypeName + ")");
 				line = line.Replace("double?", config.TypeName + "?");
+				line = line.Replace("double.", config.TypeName + ".");
 
 				line = line.Replace("on an integer value", "on a " + config.TypeName + " value");
 				line = line.Replace(@"// Since this class is the model/template for the generation of the tests on all the other numbers types, don't forget to re-generate all the other classes every time you change this one. To do that, just save the .\T4\NumberTestsGenerator.tt file within Visual Studio 2012. This will trigger the T4 code generation process.", @"#pragma warning restore 169");

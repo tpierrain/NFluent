@@ -253,10 +253,10 @@ namespace NFluent.Tests
 
             Check.ThatCode(() => Check.That(enumerable).Not.IsNotEqualTo(null)).IsAFailingCheckWithMessage(
                     "",
-                    "The checked enumerable is different from the expected object.",
+                    "The checked enumerable is different from the expected one.",
                     "The checked enumerable:",
                     "\t{45, 43, 54, 666} (4 items)",
-                    "The expected object:",
+                    "The expected enumerable:",
                     "\t[null]");
         }
 

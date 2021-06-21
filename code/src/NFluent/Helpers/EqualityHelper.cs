@@ -19,7 +19,7 @@ namespace NFluent.Helpers
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-#if NETSTANDARD1_3 || DOTNET_45
+#if DOTNET_45
     using System.Reflection;
 #endif
     using Extensibility;
@@ -63,23 +63,21 @@ namespace NFluent.Helpers
 
         private static IEqualityComparer FindComparer(Type searchType)
         {
-            if (searchType == null)
+            if (ComparerMap.Count == 0 || searchType == null)
             {
                 return null;
             }
 
             lock (ComparerMap)
             {
-                if (ComparerMap.Count == 0)
-                {
-                    return null;
-                }
                 if (ComparerMap.TryGetValue(searchType, out var comparer))
                 {
                     return comparer;
                 }
 
-                return searchType.GetInterfaces().Any(@interface => ComparerMap.TryGetValue(@interface, out comparer)) ? comparer : FindComparer(searchType.GetTypeInfo().BaseType);
+                return searchType.GetInterfaces().Any(@interface => ComparerMap.TryGetValue(@interface, out comparer))
+                    ? comparer
+                    : FindComparer(searchType.GetTypeInfo().BaseType);
             }
         }
 

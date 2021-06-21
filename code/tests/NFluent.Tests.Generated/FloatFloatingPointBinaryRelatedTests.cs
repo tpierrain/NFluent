@@ -134,7 +134,13 @@ namespace NFluent.Tests
                                                  "\t[20.1 (+/- 0.01)]");
             }
         }
-        
+
+
+        [Test]
+        public void IsEqualToWorksForZero()
+        {
+            Check.That(float.Epsilon).IsNotEqualTo(Zero);
+        }
         #endregion
     }
 }

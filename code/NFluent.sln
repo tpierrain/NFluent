@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
 		..\ISSUE_TEMPLATE.md = ..\ISSUE_TEMPLATE.md
 		..\LICENSE.txt = ..\LICENSE.txt
+		NFluent.nuspec = NFluent.nuspec
 		..\ReadMe.md = ..\ReadMe.md
 	EndProjectSection
 EndProject

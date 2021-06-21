@@ -70,12 +70,34 @@ namespace NFluent.Tests
             }
         }
 
+        private interface IForTest
+        {
+            void Foot();
+        }
+
+        private class ForTest : IForTest
+        {
+            public void Foot()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private class DerivedForTest : ForTest{}
+
+        // TODO: use obscure types to prevent disrupting other tests
         [Test]
         public void CanDeclareCustomComparerForInterface()
         {
-            var previous = Check.RegisterComparer<IEnumerable>(new NoOpComparer(true));
-            Check.That(new ArrayList()).IsEqualTo(new Dictionary<string, string>());
-            Check.RegisterComparer<IEnumerable>(previous);
+            var previous = Check.RegisterComparer<IForTest>(new NoOpComparer(true));
+            var expected = new ForTest();
+            Check.That(new ArrayList()).IsEqualTo(expected);
+            var previousDictionary = Check.RegisterComparer<ForTest>(new NoOpComparer(false));
+            Check.That(expected).IsNotEqualTo(expected);
+            Check.RegisterComparer<IForTest>(previous);
+            Check.RegisterComparer<ForTest>(new NoOpComparer(true));
+            Check.That(new DerivedForTest()).IsEqualTo(new DerivedForTest());
+            Check.RegisterComparer<ForTest>(previousDictionary);
         }
 
         [Test]

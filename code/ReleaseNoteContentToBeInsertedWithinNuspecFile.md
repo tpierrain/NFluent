@@ -26,6 +26,7 @@ you need help.
 
 ## Fixes
 * HasFieldWithSameValues resulted in false positive when string fields had the same value.
+* IsNotEqualTo now properly preserves expected type
 
 # GitHub Issues
 * #325, #327, #330, #332

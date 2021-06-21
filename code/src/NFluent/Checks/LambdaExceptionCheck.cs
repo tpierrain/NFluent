@@ -16,7 +16,6 @@
 namespace NFluent
 {
     using System;
-    using System.Linq.Expressions;
     using Extensibility;
     using Kernel;
 
@@ -64,8 +63,11 @@ namespace NFluent
 
                         resultException = resultException.InnerException;
                     }
-                    test.FailWhen(_ => resultException == null,
+                    if (resultException == null)
+                    {
+                        test.Fail(
                         "The {0} is not of the expected type.");
+                    }
                 })
                 .DefineExpectedType(typeof(TE))
                 .EndCheck();

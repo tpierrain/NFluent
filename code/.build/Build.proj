@@ -26,11 +26,6 @@
   <Import Project="buildlogic.targets"/>
 
   <ItemGroup>
-    <ProjectFolder Include="$(SourcePath)NFluent.Standard.13">
-      <CSproj>NFluent.Standard.13.csproj</CSproj>
-      <Package>netstandard1.3</Package>
-      <Fwk>core</Fwk>
-    </ProjectFolder>
     <ProjectFolder Include="$(SourcePath)NFluent.Standard.20">
       <CSproj>NFluent.Standard.20.csproj</CSproj>
       <Package>netstandard2.0</Package>
