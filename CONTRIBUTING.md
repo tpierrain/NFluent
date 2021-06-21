@@ -26,6 +26,7 @@ When you ask that we had a new assertion logic, please provide an example or a u
 - As of September 2019, we use **Visual Studio 2019 Community Edition**. We strongly advise you do the same.
 - You need to have support for **T4 templates**. You need to install **'Visual Studio Add-In development'** pack with the VS 2017 installer.  
 - You need the **NUnit3 adapter** in order to run tests from the IDE, or R#.
+- You need the **Nuget CLI** in your path; you can download the latest version here [here](https://www.nuget.org/downloads).
 - We recommend having *R#* and *NCrunch* installed, but those are not prerequisites.
 - The build script depends on *Python 2.x* (https://www.python.org/downloads/). But only NFluent team members needs it as it is used for publishing coverage data to CodeCov.io
 
@@ -36,9 +37,11 @@ When you ask that we had a new assertion logic, please provide an example or a u
 1. Configure the upstream repo (`git remote add upstream git://github.com/tpierrain/NFluent`)
 1. Create a local branch (`git checkout -b myBranch`)
 1. Work on your feature, following the __[NFluent Definition of Done (DoD) for Development](./docs/DevDoD.md)__.
-1. Rebase if required (see below)
-1. Push the branch up to GitHub (`git push origin myBranch`)
-1. Send a Pull Request on GitHub
+2. Run a local build to verify everything is ok. Use the [CI](./CI.cmd) file; this laucnh a CI cycle. If you have test errors, you need to fix them. Reach for us if
+you encounter issues (documentation may not be up to date, or the build script may have unwanted dependencies).
+4. Rebase if required (see below)
+5. Push the branch up to GitHub (`git push origin myBranch`)
+6. Send a Pull Request on GitHub
 
 You should **never** work on a clone of master, and you should **never** send a pull request from master - always from a branch. The reasons for this are detailed below.
 
