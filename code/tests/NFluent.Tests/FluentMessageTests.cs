@@ -84,7 +84,7 @@ namespace NFluent.Tests
                                             .WithEnumerableCount(givenValues.Length)
                                             .ToString();
 
-            Assert.AreEqual(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t{\"Luke\", \"Yoda\", \"Chewie\"} (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t{\"Luke\", \"Yoda\", \"Chewie\", \"Vader\"} (4 items)", message);
+            Assert.AreEqual(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t{\"Luke\",\"Yoda\",\"Chewie\"} (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t{\"Luke\",\"Yoda\",\"Chewie\",\"Vader\"} (4 items)", message);
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace NFluent.Tests
                                             .And.ReferenceValues(possibleElements).Label("The possible elements:")
                                             .ToString();
 
-            Assert.AreEqual(Environment.NewLine+ "The checked string is not one of the possible elements." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" + Environment.NewLine + "\t{\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"}", errorMessage);
+            Assert.AreEqual(Environment.NewLine+ "The checked string is not one of the possible elements." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" + Environment.NewLine + "\t{\"Paco de Lucia\",\"Jimi Hendrix\",\"Baden Powell\"}", errorMessage);
         }
 
         [Test]
@@ -146,9 +146,9 @@ namespace NFluent.Tests
                                             .ToString();
 
             Assert.AreEqual(Environment.NewLine+ "The checked enumerable is not one of the possible elements." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + 
-                            "\t{'T', 'h', 'e', ' ', 'B', 'l', 'a', 'c', 'k', ' ', 'K', 'e', 'y', 's'}" + Environment.NewLine + 
+                            "\t{'T','h','e',' ','B','l','a','c','k',' ','K','e','y','s'}" + Environment.NewLine + 
                             "The possible elements:" + Environment.NewLine + 
-                            "\t{'W', 'e', ' ', 'n', 'e', 'e', 'd', ' ', 't', 'o', ' ', 't', 'e', 's', 't', ' ', 't', 'h', 'e', ' ', ...}", errorMessage);
+                            "\t{'W','e',' ','n','e','e','d',' ','t','o',' ','t','e','s','t',' ','t','h','e',' ',...}", errorMessage);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>  Check.That(suspiciousEnumerable).Not.IsEqualTo(enumerable)).IsAFailingCheckWithMessage("",
                 "The checked enumerable is equal to the given one whereas it must not.",
                     "The expected enumerable: different from",
-                    "\t{45, 43, 54, 666} (4 items) of type: [System.Collections.Generic.List<int>]");
+                    "\t{45,43,54,666} (4 items) of type: [System.Collections.Generic.List<int>]");
         }
 
         private class List<T>: IEnumerable<T>

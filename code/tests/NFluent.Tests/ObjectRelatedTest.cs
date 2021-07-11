@@ -18,7 +18,6 @@ using System;
 namespace NFluent.Tests
 {
     using System.Collections;
-    using System.Collections.Generic;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -56,17 +55,19 @@ namespace NFluent.Tests
         [Test]
         public void CanDeclareCustomComparer()
         {
-            var previous = Check.RegisterComparer<object>(new NoOpComparer(true));
-            Check.That(new object()).IsEqualTo(new object());
-            Check.RegisterComparer<object>(previous);
+            Check.That(new ObjectRelatedTest()).Not.IsEqualTo(new ObjectRelatedTest());
+            var previous = Check.RegisterComparer<ObjectRelatedTest>(new NoOpComparer(true));
+            Check.That(new ObjectRelatedTest()).IsEqualTo(new ObjectRelatedTest());
+            Check.RegisterComparer<ObjectRelatedTest>(previous);
+            Check.That(new ObjectRelatedTest()).Not.IsEqualTo(new ObjectRelatedTest());
         }
 
         [Test]
         public void CanDeclareLocalCustomComparer()
         {
-            using (Check.RegisterLocalComparer<object>(new NoOpComparer(true)))
+            using (Check.RegisterLocalComparer<ObjectRelatedTest>(new NoOpComparer(true)))
             {
-                Check.That(new object()).IsEqualTo(new object());
+                Check.That(new ObjectRelatedTest()).IsEqualTo(new ObjectRelatedTest());
             }
         }
 

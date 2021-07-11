@@ -28,6 +28,10 @@ namespace NFluent.Helpers
     public enum TestFramework
     {
         /// <summary>
+        /// MsTest
+        /// </summary>
+        MsTest,
+        /// <summary>
         /// NUnit frameworks
         /// </summary>
         NUnit,
@@ -35,10 +39,6 @@ namespace NFluent.Helpers
         /// xUnit framework
         /// </summary>
         XUnit,
-        /// <summary>
-        /// MsTest
-        /// </summary>
-        MsTest,
         /// <summary>
         /// No known framework, using built in exceptions
         /// </summary>
@@ -54,7 +54,7 @@ namespace NFluent.Helpers
         private static readonly string ExceptionSeparator = Environment.NewLine + "--> ";
 
         private static readonly Dictionary<TestFramework, ExceptionConstructor> Exceptions =
-            new Dictionary<TestFramework, ExceptionConstructor>();
+            new();
 
         private const string Patterns = 
             "MsTest,microsoft.visualstudio.testplatform.testframework,Microsoft.VisualStudio.TestTools,AssertFailedException,AssertInconclusiveException;"+
@@ -71,7 +71,7 @@ namespace NFluent.Helpers
                 }
                 
                 // we need to identify required exception types
-                Exceptions[TestFramework.None] = new ExceptionConstructor(typeof(FluentCheckException), (message) => new FluentCheckException(message));
+                Exceptions[TestFramework.None] = new ExceptionConstructor(typeof(FluentCheckException), message => new FluentCheckException(message));
 
                 InitCache(Patterns);
 
@@ -104,7 +104,6 @@ namespace NFluent.Helpers
 
         private static void ExceptionScanner()
         {
-#if !NETSTANDARD1_3
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var exceptionConstructor in Exceptions.Values)
@@ -112,7 +111,6 @@ namespace NFluent.Helpers
                     exceptionConstructor.ScanAssembly(assembly);
                 }
             }
-#endif
         }
 
         /// <summary>

@@ -66,7 +66,7 @@ namespace NFluent.Tests
                 .IsAFailingCheckWithMessage("",
                     "The checked dictionary does not contain the expected key.",
                     "The checked dictionary:",
-                    "\t{[demo, value], [other, test]} (2 items)",
+                    "\t{[demo, value],[other, test]} (2 items)",
                     "Expected key:",
                     "\t[\"value\"]");
         }
@@ -87,7 +87,7 @@ namespace NFluent.Tests
             .IsAFailingCheckWithMessage("",
                     "The checked dictionary does contain the given key, whereas it must not.",
                     "The checked dictionary:",
-                    "\t{[demo, value], [other, test]} (2 items)",
+                    "\t{[demo, value],[other, test]} (2 items)",
                     "Forbidden key:",
                     "\t[\"demo\"]");
         }
@@ -108,7 +108,7 @@ namespace NFluent.Tests
                 .IsAFailingCheckWithMessage("",
                     "The checked dictionary does not contain the expected value.",
                     "The checked dictionary:",
-                    "\t{[demo, value], [other, test]} (2 items)",
+                    "\t{[demo, value],[other, test]} (2 items)",
                     "Expected value:",
                     "\t[\"demo\"]");
         }
@@ -129,7 +129,7 @@ namespace NFluent.Tests
                 .IsAFailingCheckWithMessage("",
                     "The checked dictionary does contain the given value, whereas it must not.",
                     "The checked dictionary:",
-                    "\t{[demo, value], [other, test]} (2 items)",
+                    "\t{[demo, value],[other, test]} (2 items)",
                     "Forbidden value:",
                     "\t[\"value\"]");
         }
@@ -148,7 +148,7 @@ namespace NFluent.Tests
                 .IsAFailingCheckWithMessage("",
                     "The checked dictionary does contain the given key-value pair, whereas it must not.",
                     "The checked dictionary:",
-                    "\t{[demo, value], [other, test]} (2 items)",
+                    "\t{[demo, value],[other, test]} (2 items)",
                     "Forbidden pair:", 
                     "\t[[demo, value]]");
         }
@@ -167,7 +167,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(customDic).ContainsKey("missing")).IsAFailingCheckWithMessage("",
                 "The checked enumerable does not contain the expected key.",
                 "The checked enumerable:",
-                "\t{[otherKey, 15], [key, 12]} (2 items)",
+                "\t{[otherKey, 15],[key, 12]} (2 items)",
                 "Expected key:",
                 "\t[\"missing\"]");
             // test with empty array
@@ -205,7 +205,7 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(roDico).ContainsKey("missing")).IsAFailingCheckWithMessage("",
             "The checked enumerable does not contain the expected key.",
                 "The checked enumerable:",
-                "\t{[demo, value], [other, test]} (2 items)",
+                "\t{[demo, value],[other, test]} (2 items)",
            "Expected key:",
                 "\t[\"missing\"]");
         }
@@ -297,7 +297,7 @@ namespace NFluent.Tests
                 "",
                 "The checked dictionary does not contain the expected value for the given key.",
                 "The checked dictionary:",
-                "\t{[demo, value], [other, test]} (2 items)",
+                "\t{[demo, value],[other, test]} (2 items)",
                 "Expected pair:",
                 "\t[[demo, 1]]");
 
@@ -308,7 +308,7 @@ namespace NFluent.Tests
                 "",
                 "The checked dictionary does not contain the expected key-value pair. The given key was not found.",
                 "The checked dictionary:",
-                "\t{[demo, value], [other, test]} (2 items)",
+                "\t{[demo, value],[other, test]} (2 items)",
                 "Expected pair:",
                 "\t[[demo2, 1]]");
         }
@@ -339,17 +339,17 @@ namespace NFluent.Tests
                 "The checked dictionary is different from the expected one.", 
                 "actual[\"foo\"] = 1 instead of 0.", 
                 "The checked dictionary:", 
-                "\t{[foo, 1], [bar, 1]} (2 items)", 
+                "\t{*[foo, 1]*,[bar, 1]} (2 items)", 
                 "The expected dictionary:", 
-                "\t{[bar, 1], [foo, 0]} (2 items)");
+                "\t{[bar, 1],*[foo, 0]*} (2 items)");
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 
                 "actual[\"foo\"] = 1 instead of 0.",
                 "The checked dictionary:", 
-                "\t{[bar, 1], [foo, 1]} (2 items)", 
+                "\t{[bar, 1],[foo, 1]} (2 items)", 
                 "The expected dictionary:", 
-                "\t{[bar, 1], [foo, 0]} (2 items)");
+                "\t{[bar, 1],[foo, 0]} (2 items)");
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo!"] = 0 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one. 2 differences found!", 
@@ -455,9 +455,9 @@ namespace NFluent.Tests
                 "The checked enumerable is not equivalent to the expected dictionary.",
                 "[\"extra\"]= 20 should be present but was not found.",
                 "The checked enumerable:", 
-                "\t{[otherKey, 15], [key, 12]} (2 items)", 
+                "\t{[otherKey, 15],[key, 12]} (2 items)", 
                 "The expected dictionary:", 
-                "\t{[otherKey, 15], [key, 12], [extra, 20]} (3 items)");
+                "\t{[otherKey, 15],[key, 12],[extra, 20]} (3 items)");
         }
        [Test]
         public void IsEquivalentToWorksForCustomEnumerationOfEntries()
@@ -474,9 +474,9 @@ namespace NFluent.Tests
                 "The checked enumerable is not equivalent to the expected dictionary.",
                 "[\"extra\"]= 20 should be present but was not found.",
                 "The checked enumerable:", 
-                "\t{[otherKey, 15], [key, 12]} (2 items)", 
+                "\t{[otherKey, 15],[key, 12]} (2 items)", 
                 "The expected dictionary:", 
-                "\t{[otherKey, 15], [key, 12], [extra, 20]} (3 items)");
+                "\t{[otherKey, 15],[key, 12],[extra, 20]} (3 items)");
         }
 
         [Test]
@@ -494,9 +494,9 @@ namespace NFluent.Tests
                 "The checked enumerable is not equivalent to the expected dictionary.",
                 "[\"extra\"]= 20 should be present but was not found.",
                 "The checked enumerable:", 
-                "\t{[otherKey, 15], [key, 12]} (2 items)", 
+                "\t{[otherKey, 15],[key, 12]} (2 items)", 
                 "The expected dictionary:", 
-                "\t{[otherKey, 15], [key, 12], [extra, 20]} (3 items)");
+                "\t{[otherKey, 15],[key, 12],[extra, 20]} (3 items)");
         }
 
         [Test]
@@ -507,7 +507,7 @@ namespace NFluent.Tests
                 Check.That(new Dictionary<string, object> { ["bar"] = new[] { "bar", "baz" } }).IsEquivalentTo(expected)).IsAFailingCheckWithMessage(
                 "", 
                 "The checked dictionary is not equivalent to the expected one.",
-                "actual's key \"bar\" value should not exist (value {\"bar\", \"baz\"})",
+                "actual's key \"bar\" value should not exist (value {\"bar\",\"baz\"})",
                 "The checked dictionary:", 
                 "\t{[bar, System.String[]]} (1 item)", 
                 "The expected dictionary:", 
@@ -524,7 +524,7 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                 Check.That(expected).IsEquivalentTo(new Dictionary<string, object>())).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is not equivalent to the expected one.",
-                "actual[\"foo\"] value should not exist (value {\"bar\", \"baz\"})",
+                "actual[\"foo\"] value should not exist (value {\"bar\",\"baz\"})",
             "The checked dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)", 
                 "The expected dictionary:", 

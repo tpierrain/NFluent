@@ -36,7 +36,7 @@ namespace NFluent.Tests
                 IsAFailingCheckWithMessage("", 
                     "The checked enumerable contains a duplicate item at position 1: [1].", 
                     "The checked enumerable:", 
-                    "\t{1, 1, 2, 3} (4 items)");
+                    "\t{1,*1*,2,3} (4 items)");
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace NFluent.Tests
                 IsAFailingCheckWithMessage("",
                     "The checked enumerable should contain duplicates.",
                     "The checked enumerable:",
-                    "\t{1, 2, 3, 4} (4 items)");
+                    "\t{1,2,3,4} (4 items)");
         }
 
         [Test]
@@ -67,9 +67,9 @@ namespace NFluent.Tests
                     "actual[3] value ('4') was found at index 0 instead of 3.", 
                     "actual[3] value ('1') was found at index 3 instead of 0.", 
                     "The checked enumerable:", 
-                    "\t{1, 2, 3, 4} (4 items)", 
+                    "\t{1,*2*,3,4} (4 items)", 
                     "The expected enumerable:", 
-                    "\t{4, 3, 2, 1} (4 items)");
+                    "\t{4,*3*,2,1} (4 items)");
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace NFluent.Tests
                 IsAFailingCheckWithMessage("",
                     "The checked enumerable contains a null item at position 2.",
                     "The checked enumerable:",
-                    "\t{\"test\", \"another\", null} (3 items)");
+                    "\t{\"test\",\"another\",null} (3 items)");
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace NFluent.Tests
                 IsAFailingCheckWithMessage("",
                     "The checked enumerable should contain at least one null entry.",
                     "The checked enumerable:",
-                    "\t{\"test\", \"another\"} (2 items)");
+                    "\t{\"test\",\"another\"} (2 items)");
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace NFluent.Tests
                 IsAFailingCheckWithMessage("",
                     "The checked enumerable contains an entry of a type different from String at position 2.",
                     "The checked enumerable:",
-                    "\t{\"test\", \"another\", 4} (3 items)");
+                    "\t{\"test\",\"another\",4} (3 items)");
         }
         
         [Test]
@@ -125,7 +125,7 @@ namespace NFluent.Tests
                 IsAFailingCheckWithMessage("",
                     "The checked enumerable should contain at least one entry of a type different from String.",
                     "The checked enumerable:",
-                    "\t{\"test\", \"another\"} (2 items)");
+                    "\t{\"test\",\"another\"} (2 items)");
         }
 
         [Test]
@@ -187,9 +187,9 @@ namespace NFluent.Tests
                     "The checked enumerable is not equivalent to the expected one.", 
                     "actual.Dimension(0) = 3 instead of 2.", 
                     "The checked enumerable:", 
-                    "\t{1, 2, 3} (3 items)", 
+                    "\t{1,2,3} (3 items)", 
                     "The expected enumerable:", 
-                    "\t{3, 2} (2 items)");
+                    "\t{3,2} (2 items)");
         }
 
         [Test]
@@ -202,9 +202,9 @@ namespace NFluent.Tests
                     "The checked enumerable is not equivalent to the expected one.", 
                     "1 should not exist (found in actual[0]); 4 should be found instead.", 
                     "The checked enumerable:", 
-                    "\t{1, 2, 3} (3 items)", 
+                    "\t{1,2,3} (3 items)", 
                     "The expected enumerable:", 
-                    "\t{3, 2, 4} (3 items)");
+                    "\t{3,2,4} (3 items)");
         }
 
         [Test]
@@ -255,11 +255,11 @@ namespace NFluent.Tests
                     Check.That((IEnumerable)array).IsEquivalentTo( new List<List<int>> {new List<int>{5, 4, 6}, new List<int>{3, 3, 1}})).
                 IsAFailingCheckWithMessage("", 
                     "The checked enumerable is not equivalent to the expected one.", 
-                    "{1, 2, 3} should not exist (found in actual[0]); {3, 3, 1} should be found instead.", 
+                    "{1,2,3} should not exist (found in actual[0]); {3,3,1} should be found instead.", 
                     "The checked enumerable:", 
-                    "\t{{1, 2, 3}, {4, 5, 6}} (2 items)", 
+                    "\t{{1,2,3},{4,5,6}} (2 items)", 
                     "The expected enumerable:", 
-                    "\t{{5, 4, 6}, {3, 3, 1}} (2 items)");
+                    "\t{{5,4,6},{3,3,1}} (2 items)");
         }
         
         [Test]
@@ -272,33 +272,33 @@ namespace NFluent.Tests
                 "The checked enumerable is not equivalent to the expected one.", 
                 "3 should not exist (found in actual[2]); 4 should be found instead.",
                 "The checked enumerable:",
-                "\t{1, 2, 3} (3 items)", 
+                "\t{1,2,3} (3 items)", 
                 "The expected enumerable:", 
-                "\t{1, 2, 4} (3 items)");
+                "\t{1,2,4} (3 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is not equivalent to the expected one.", 
                 "actual.Dimension(0) = 3 instead of 4.", 
                 "The checked enumerable:", 
-                "\t{1, 2, 3} (3 items)", 
+                "\t{1,2,3} (3 items)", 
                 "The expected enumerable:", 
-                "\t{1, 2, 3, 4} (4 items)");
+                "\t{1,2,3,4} (4 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4, 5)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is not equivalent to the expected one.", 
                 "actual.Dimension(0) = 3 instead of 5.",
                 "The checked enumerable:",
-                "\t{1, 2, 3} (3 items)", 
+                "\t{1,2,3} (3 items)", 
                 "The expected enumerable:", 
-                "\t{1, 2, 3, 4, 5} (5 items)");
+                "\t{1,2,3,4,5} (5 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is not equivalent to the expected one.", 
                 "actual.Dimension(0) = 3 instead of 2.",
                 "The checked enumerable:",
-                "\t{1, 2, 3} (3 items)", 
+                "\t{1,2,3} (3 items)", 
                 "The expected enumerable:", 
-                "\t{1, 2} (2 items)");
+                "\t{1,2} (2 items)");
 
             Check.ThatCode(() => Check.That<IEnumerable<int>>(null).IsEquivalentTo(1)).IsAFailingCheckWithMessage("",
                 "The checked enumerable is null whereas it should not.", 
@@ -329,9 +329,9 @@ namespace NFluent.Tests
             Check.ThatCode(()=> Check.That(GetData()).ContainsExactly("testt")).IsAFailingCheckWithMessage("", 
                 "The checked enumerable does not contain exactly the expected value(s). Elements are missing starting at index #4.", 
                 "The checked enumerable:", 
-                "\t{'t', 'e', 's', 't'} (4 items)", 
+                "\t{'t','e','s','t'} (4 items)", 
                 "The expected value(s):", 
-                "\t{'t', 'e', 's', 't', 't'} (5 items)");
+                "\t{'t','e','s','t',*'t'*} (5 items)");
         }
 
         [Test]
@@ -341,9 +341,9 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(array).Not.IsEquivalentTo(1, 2, 3)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is equivalent to the given one whereas it should not.", 
                 "The checked enumerable:",
-                "\t{1, 2, 3} (3 items)", 
+                "\t{1,2,3} (3 items)", 
                 "The expected enumerable: different from", 
-                "\t{1, 2, 3} (3 items)");
+                "\t{1,2,3} (3 items)");
         }
 
         [Test]
@@ -357,12 +357,12 @@ namespace NFluent.Tests
                 "The checked enumerable is not in ascending order, whereas it should.",
                 "At #5: [5] comes after [null].", 
                 "The checked enumerable:", 
-                "\t{null, 1, 2, 3, 5, null, 5} (7 items)");
+                "\t{null,1,2,3,5,null,5} (7 items)");
             Check.ThatCode(() => Check.That(new int?[] {4, 1, 2, 3, 5, null, 5}).IsInAscendingOrder()).IsAFailingCheckWithMessage(
                 "",
                 "The checked enumerable is not in ascending order, whereas it should.",
                 "At #1: [4] comes after [1].", "The checked enumerable:",
-                "\t{4, 1, 2, 3, 5, null, 5} (7 items)");
+                "\t{4,1,2,3,5,null,5} (7 items)");
         }
 
         [Test]
@@ -376,9 +376,9 @@ namespace NFluent.Tests
                     "The checked enumerable is different from the expected one.", 
                     "actual[4] does not exist. Expected 4.",
                     "The checked enumerable:", 
-                    "\t{0, 1, 2, 3} (4 items)", 
+                    "\t{0,1,2,3} (4 items)", 
                     "The expected enumerable:", 
-                    "\t{0, 1, 2, 3, 4} (5 items)");
+                    "\t{0,1,2,3,*4*} (5 items)");
         }
 
         class ComparerWithNullAtTheEnd: IComparer{
@@ -448,13 +448,13 @@ namespace NFluent.Tests
                 "The checked enumerable is not in descending order, whereas it should.",
                 "At #1: [null] comes before [1].", 
                 "The checked enumerable:", 
-                "\t{null, 1, 2, 3, 5, null, 5} (7 items)");
+                "\t{null,1,2,3,5,null,5} (7 items)");
             Check.ThatCode(() => Check.That(new int?[] {4, 1, 2, 3, 5, null, 5}).IsInDescendingOrder()).IsAFailingCheckWithMessage(
                 "",
                 "The checked enumerable is not in descending order, whereas it should.",
                 "At #2: [1] comes before [2].",
                 "The checked enumerable:",
-                "\t{4, 1, 2, 3, 5, null, 5} (7 items)");
+                "\t{4,1,2,3,5,null,5} (7 items)");
         }
     }
 }

@@ -29,7 +29,6 @@ namespace NFluent.Extensibility
         private IValueDescription value;
         private string comparisonLabel;
         private string customMessage;
-
  
         internal MessageBlock(FluentMessage message, GenericLabelBlock block)
         {

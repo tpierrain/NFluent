@@ -18,6 +18,8 @@ namespace NFluent.Helpers
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 #if DOTNET_45
     using System.Reflection;
@@ -89,7 +91,7 @@ namespace NFluent.Helpers
         public static bool CustomEquals<T, TU>(T sut, TU expected)
         {
             var comparer = FindComparer<T>() ?? FindComparer(expected?.GetType()) ?? DefaultComparer;
-            return comparer.Equals(sut, expected);
+            return comparer.Equals(expected, sut);
         }
 
         internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(ICheck<T> check,
@@ -131,7 +133,7 @@ namespace NFluent.Helpers
                     test.DefineExpectedValue(expected, modeLabel,
                             $"different from{negatedMode}");
                     var differenceDetails = FluentEquals(sut, expected, mode, comparer);
-                    if (!differenceDetails.IsDifferent)
+                    if (differenceDetails == null)
                     {
                         return;
                     }
@@ -153,9 +155,9 @@ namespace NFluent.Helpers
                         options |= MessageOption.WithHash;
                     }
 
-                    test.SetValuesIndex(differenceDetails.GetFirstIndex());
+                    test.SetValuesIndex(differenceDetails.ActualIndex, differenceDetails.Index);
 
-                    test.Fail(differenceDetails.GetErrorMessage(sut, expected), options);
+                    test.Fail(differenceDetails.GetMessage(false), options);
                 })
                 .OnNegate("The {0} is equal to the {1} whereas it must not.",
                     MessageOption.NoCheckedBlock | MessageOption.WithType)
@@ -166,7 +168,7 @@ namespace NFluent.Helpers
 
         internal static bool FluentEquals(object instance, object expected)
         {
-            return !FluentEquals(instance, expected, Check.EqualMode).IsDifferent;
+            return FluentEquals(instance, expected, Check.EqualMode) == null;
         }
 
         private static void PerformEqualCheckDouble(ICheck<double> check, object val)
@@ -236,13 +238,13 @@ namespace NFluent.Helpers
                 .EndCheck();
         }
 
-        internal static AggregatedDifference FluentEquals<TS, TE>(TS sut, TE expected, EqualityMode mode, IEqualityComparer comparer = null)
+
+        internal static DifferenceDetails FluentEquals<TS, TE>(TS sut, TE expected, EqualityMode mode, IEqualityComparer comparer = null)
         {
-            var result = new AggregatedDifference();
+            var result = DifferenceDetails.DoesNotHaveExpectedValue("sut", sut, expected, 0);
             if (comparer != null)
             {
-                result.SetAsDifferent(!comparer.Equals(expected, sut));
-                return result;
+                return !comparer.Equals(expected, sut) ? result : null;
             }
 
             switch (mode)
@@ -257,22 +259,30 @@ namespace NFluent.Helpers
                     var ope = actualType
                                   .GetMethod(operatorName, new[] { actualType, expectedType }) ?? expectedType
                                   .GetMethod(operatorName, new[] { actualType, expectedType });
+                    bool ret;
                     if (ope != null)
                     {
-                        var ret = (bool)ope.Invoke(null, new object[] { sut, expected });
+                        ret = (bool)ope.Invoke(null, new object[] { sut, expected });
                         if (mode == EqualityMode.OperatorNeq)
                         {
                             ret = !ret;
                         }
-                        result.SetAsDifferent(!ret);
                     }
                     else
                     {
-                        result.SetAsDifferent(!Equals(sut, expected));
+                        ret = Equals(sut, expected);
+                    }
+
+                    if (ret)
+                    {
+                        result = null;
                     }
                     break;
                 case EqualityMode.Equals:
-                    result.SetAsDifferent(!Equals(expected, sut));
+                    if (Equals(expected, sut))
+                    {
+                        result = null;
+                    }
                     break;
                 default:
                     throw new NotSupportedException();
@@ -303,12 +313,12 @@ namespace NFluent.Helpers
 
                     var scan = FluentEquals(sut, content, EqualityMode.FluentEquals);
 
-                    if (scan.IsEquivalent || !scan.IsDifferent)
+                    if ( scan == null || scan.IsEquivalent())
                     {
                         return;
                     }
 
-                    test.Fail(scan.GetErrorMessage(sut, content, true));
+                    test.Fail(scan.GetMessage(true));
                 }).DefineExpectedValue(content)
                 .OnNegate("The {checked} is equivalent to the {expected} whereas it should not.").EndCheck();
         }
@@ -321,7 +331,7 @@ namespace NFluent.Helpers
             }
 
             //ncrunch: no coverage start
-            [Obsolete("Not implemented")]
+            [ExcludeFromCodeCoverage]
             public int GetHashCode(object obj)
             {
                 throw new NotSupportedException();
@@ -337,7 +347,7 @@ namespace NFluent.Helpers
             }
 
             //ncrunch: no coverage start
-            [Obsolete("Not implemented")]
+            [ExcludeFromCodeCoverage]
             public int GetHashCode(T obj)
             {
                 throw new NotSupportedException();

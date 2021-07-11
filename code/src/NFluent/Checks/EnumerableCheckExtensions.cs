@@ -199,7 +199,7 @@ namespace NFluent
                                         ? $"The {{0}} does not contain exactly the expected value(s). There are extra elements starting at index #{index}."
                                         : $"The {{0}} does not contain exactly the expected value(s). First difference is at index #{index}.");
 
-                                test.SetValuesIndex(index);
+                                test.SetValuesIndex(index, index);
                                 failed = true;
                                 break;
                             }
@@ -214,7 +214,7 @@ namespace NFluent
 
                         test.Fail(
                             $"The {{0}} does not contain exactly the expected value(s). Elements are missing starting at index #{index}.");
-                        test.SetValuesIndex(index);
+                        test.SetValuesIndex(index, index);
 
                     }
                 }
@@ -336,6 +336,7 @@ namespace NFluent
                                 continue;
                             }
                             test.Fail($"The {{0}} does contain an element at index #{index} that does not match the given predicate: ({scan.Current.ToStringProperlyFormatted().DoubleCurlyBraces()}).");
+                            test.SetValuesIndex(index);
                             item = scan.Current;
                             label = $"element #{index}";
                             return;
@@ -711,6 +712,7 @@ namespace NFluent
                         if (store.Contains(entry, new EqualityHelper.EqualityComparer<object>()))
                         {
                             test.Fail($"The {{checked}} contains a duplicate item at position {store.Count}: [{entry}].");
+                            test.SetValuesIndex(store.Count);
                             return;
                         }
 

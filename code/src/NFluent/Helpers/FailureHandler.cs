@@ -16,6 +16,7 @@
 namespace NFluent.Helpers
 {
     using System;
+    using System.Linq;
     using Extensibility;
     using Extensions;
 
@@ -40,9 +41,10 @@ namespace NFluent.Helpers
                 .FailWhen(sut => ExceptionHelper.FailedExceptionType() != sut.GetTypeWithoutThrowingException(),
                     $"The exception raised is not of the expected type.")
                 .DefineExpectedType(ExceptionHelper.FailedExceptionType())
-                .CheckSutAttributes((sut) => sut.Message.SplitAsLines(), "error message")
-                .Analyze((messageLines, test) =>
+                .CheckSutAttributes((sut) => sut.Message, "error message")
+                .Analyze((message, test) =>
                 {
+                    var messageLines = message.SplitAsLines();
                     var expectedLines = (lines.Length == 1) ? lines[0].SplitAsLines() : lines;
                     for (var i = 0; i < expectedLines.Length; i++)
                     {
@@ -65,7 +67,7 @@ namespace NFluent.Helpers
                             test.Fail($"Too many lines in the error message starting at #{expectedLines.Length}");
                         }
                     }
-                }).DefineExpectedValue(lines).
+                }).DefineExpectedValue(string.Join(Environment.NewLine, lines.Select(l => l.ToString()).ToArray())).
                 EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

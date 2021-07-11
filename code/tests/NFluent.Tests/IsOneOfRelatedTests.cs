@@ -46,7 +46,7 @@ namespace NFluent.Tests
             "The checked string:", 
             "\t[\"fu\"]",
             "The expected string: one of these", 
-            "\t{\"foo\", \"bar\", \"foobar\"} (3 items)");
+            "\t{\"foo\",\"bar\",\"foobar\"} (3 items)");
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace NFluent.Tests
             "The checked string:", 
             "\t[\"foo\"]",
             "The expected string: none of these", 
-            "\t{\"foo\", \"bar\", \"foobar\"} (3 items)");
+            "\t{\"foo\",\"bar\",\"foobar\"} (3 items)");
         }
     }
 }

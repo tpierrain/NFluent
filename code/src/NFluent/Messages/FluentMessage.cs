@@ -152,10 +152,10 @@ namespace NFluent.Extensibility
         /// <returns>
         /// A <see cref="FluentMessage"/> to continue build the message.
         /// </returns>
-        public MessageBlock On<T>(T test, long index = 0)
+        public MessageBlock On<T>(T test, long? index = null)
         {
             var theType = test.GetTypeWithoutThrowingException();
-            this.checkedBlock = MessageBlock.Build(this, test, this.checkedLabel, index);
+            this.checkedBlock = MessageBlock.Build(this, test, this.checkedLabel, index??-1);
             this.For(theType);
             this.checkedType = theType;
             return this.checkedBlock;
@@ -169,9 +169,9 @@ namespace NFluent.Extensibility
         /// <returns>
         /// The created MessageBlock.
         /// </returns>
-        public MessageBlock Expected<T>(T expected, long index = 0)
+        public MessageBlock Expected<T>(T expected, long? index = null)
         {
-            this.expectedBlock = MessageBlock.Build(this, expected, this.expectedLabel, index);
+            this.expectedBlock = MessageBlock.Build(this, expected, this.expectedLabel, index ?? -1);
             this.For(expected.GetTypeWithoutThrowingException());
             return this.expectedBlock;
         }
@@ -185,7 +185,7 @@ namespace NFluent.Extensibility
         /// </returns>
         public MessageBlock ReferenceValues<T>(T expected)
         {
-            this.expectedBlock = MessageBlock.Build(this, expected, this.expectedLabel);
+            this.expectedBlock = MessageBlock.Build(this, expected, this.expectedLabel, -1);
             return this.expectedBlock;
         }
 
@@ -201,12 +201,12 @@ namespace NFluent.Extensibility
         /// <returns>
         /// The created MessageBlock.
         /// </returns>
-        public MessageBlock ExpectedValues<T>(T expectedValues, long index = 0)
+        public MessageBlock ExpectedValues<T>(T expectedValues, long? index = null)
         {
             this.expectedNamingLogic.SetPlural();
             this.expectedNamingLogic.EntityType = null;
             this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(this.expectedNamingLogic);
-            this.expectedBlock = MessageBlock.Build(this, expectedValues, this.expectedLabel, index, true);
+            this.expectedBlock = MessageBlock.Build(this, expectedValues, this.expectedLabel, index??-1, true);
             return this.expectedBlock;
         }
 
@@ -215,11 +215,32 @@ namespace NFluent.Extensibility
         /// alternative to the Expected block).
         /// </summary>
         /// <param name="givenValue">The given value.</param>
+        /// <param name="index">
+        /// The index to highlight.
+        /// </param>
         /// <returns>The created MessageBlock.</returns>
-        public MessageBlock WithGivenValue<T>(T givenValue)
+        public MessageBlock WithGivenValue<T>(T givenValue, long? index = null)
         {
             this.expectedLabel = GenericLabelBlock.BuildGivenBlock(this.expectedNamingLogic);
-            this.expectedBlock = MessageBlock.Build(this, givenValue, this.expectedLabel);
+            this.expectedBlock = MessageBlock.Build(this, givenValue, this.expectedLabel, index ?? -1);
+            return this.expectedBlock;
+        }
+ 
+        /// <summary>
+        /// Adds a message block to describe the given value (usually used as an 
+        /// alternative to the Expected block).
+        /// </summary>
+        /// <param name="givenValue">The given value.</param>
+        /// <param name="index">
+        /// The index to highlight.
+        /// </param>
+        /// <returns>The created MessageBlock.</returns>
+        public MessageBlock WithGivenValues<T>(T givenValue, long? index = null)
+        {
+            this.expectedNamingLogic.SetPlural();
+            this.expectedNamingLogic.EntityType = null;
+            this.expectedLabel = GenericLabelBlock.BuildGivenBlock(this.expectedNamingLogic);
+            this.expectedBlock = MessageBlock.Build(this, givenValue, this.expectedLabel, index ?? -1, true);
             return this.expectedBlock;
         }
 

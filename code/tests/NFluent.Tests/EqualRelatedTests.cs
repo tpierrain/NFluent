@@ -207,9 +207,9 @@ namespace NFluent.Tests
                     "actual[0] = 45 instead of 25.", 
                     "actual[3] = 666 instead of 667.",
                     "The checked enumerable:", 
-                    "\t{45, 43, 54, 666, 63} (5 items)", 
+                    "\t{*45*,43,54,666,63} (5 items)", 
                     "The expected enumerable:", 
-                    "\t{25, 43, 54, 667, 63} (5 items)");
+                    "\t{*25*,43,54,667,63} (5 items)");
         }
 
         [Test]
@@ -223,9 +223,9 @@ namespace NFluent.Tests
                     "The checked enumerable is different from the expected one.", 
                     "actual.Rank = 2 instead of 1.", 
                     "The checked enumerable:", 
-                    "\t{{0, 0, 0}, {0, 0, 0}} (6 items) of type: [int[,]]", 
+                    "\t{{0,0,0},{0,0,0}} (6 items) of type: [int[,]]", 
                     "The expected enumerable:", 
-                    "\t{0, 0, 0, 0, 0, 0} (6 items) of type: [int[]]");
+                    "\t{0,0,0,0,0,0} (6 items) of type: [int[]]");
         }
 
         [Test]
@@ -239,9 +239,9 @@ namespace NFluent.Tests
                     "The checked enumerable is different from the expected one.", 
                     "actual.Rank = 3 instead of 1.",
                     "The checked enumerable:", 
-                    "\t{{{0, 1}, {2, 3}, {4, 5}}, {{6, 7}, {8, 9}, {10, 11}}} (12 items) of type: [int[,,]]", 
+                    "\t{{{0,1},{2,3},{4,5}},{{6,7},{8,9},{10,11}}} (12 items) of type: [int[,,]]", 
                     "The expected enumerable:", 
-                    "\t{0, 0, 0, 0, 0, 0} (6 items) of type: [int[]]");
+                    "\t{0,0,0,0,0,0} (6 items) of type: [int[]]");
         }
 
         [Test]
@@ -277,9 +277,9 @@ namespace NFluent.Tests
                     "actual[1,0] = 0 instead of 2.", 
                     "actual[1,1] = 0 instead of 3.",
                     "The checked enumerable:", 
-                    "\t{{0, 0}, {0, 0}} (4 items)", 
+                    "\t{{0,*0*},{0,0}} (4 items)", 
                     "The expected enumerable:", 
-                    "\t{{0, 1}, {2, 3}} (4 items)");
+                    "\t{{0,*1*},{2,3}} (4 items)");
            
             Check.ThatCode(() =>
                 Check.That(otherArray).IsEqualTo(array)).
@@ -289,9 +289,9 @@ namespace NFluent.Tests
                     "actual[1,0] = 2 instead of 0.", 
                     "actual[1,1] = 3 instead of 0.",
                     "The checked enumerable:", 
-                    "\t{{0, 1}, {2, 3}} (4 items)",
+                    "\t{{0,*1*},{2,3}} (4 items)",
                     "The expected enumerable:", 
-                    "\t{{0, 0}, {0, 0}} (4 items)");
+                    "\t{{0,*0*},{0,0}} (4 items)");
         }
 
         [Test]
@@ -304,9 +304,9 @@ namespace NFluent.Tests
                     "The checked enumerable is different from the expected one.", 
                     "actual[23] = 'a' instead of '1'.", 
                     "The checked enumerable:", 
-                    "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', 'a', ' ', 'l', 'o', 'n', 'g', ' ', 'e', 'n', 'u', ...} (42 items)", 
+                    "\t{...,'n',' ','p','r','o','v','i','d','e',' ',*'a'*,' ','l','o','n','g',' ','e','n','u',...} (42 items)", 
                     "The expected enumerable:", 
-                    "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', '1', ' ', 'l', 'o', 'n', 'g', ' ', 'e', 'n', 'u', ...} (42 items)");
+                    "\t{...,'n',' ','p','r','o','v','i','d','e',' ',*'1'*,' ','l','o','n','g',' ','e','n','u',...} (42 items)");
         }
 
         [Test]
@@ -324,9 +324,9 @@ namespace NFluent.Tests
                     "actual[28] value ('g') was found at index 26 instead of 28.",                    
                     "... (14 differences omitted)",
                     "The checked enumerable:", 
-                    "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', 'a', ' ', 'l', 'o', 'n', 'g', ' ', 'e', 'n', 'u', ...} (42 items)", 
+                    "\t{...,'n',' ','p','r','o','v','i','d','e',' ',*'a'*,' ','l','o','n','g',' ','e','n','u',...} (42 items)", 
                     "The expected enumerable:", 
-                    "\t{..., 'n', ' ', 'p', 'r', 'o', 'v', 'i', 'd', 'e', ' ', 'l', 'o', 'n', 'g', ' ', 'e', 'n', 'u', 'm', 'e', ...} (42 items)");
+                    "\t{...,'n',' ','p','r','o','v','i','d','e',' ',*'l'*,'o','n','g',' ','e','n','u','m','e',...} (42 items)");
         }
 
         [Test]
@@ -495,14 +495,15 @@ namespace NFluent.Tests
                 "The checked enumerable is different from the expected one.", 
                 "actual.Dimension(0) = 4 instead of 2.", 
                 "The checked enumerable:", 
-                "\t{45, 43, 54, 666} (4 items)", 
+                "\t{45,43,54,666} (4 items)", 
                 "The expected enumerable:", 
-                "\t{666, 74} (2 items)");
+                "\t{666,74} (2 items)");
         }
 
         [Test]
         public void IsEqualToWorksWithArrayAndString()
         {
+            // this test prevent regression where `string` is processed like an array of `char`.
             var array = new[] {"thumb", "other"};
             var otherArray = new[] {"test", "other"};
 
@@ -511,32 +512,32 @@ namespace NFluent.Tests
                     Check.That(array).IsEqualTo(otherAsCharArray)).
                 IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one. 2 differences found!", 
-                    "actual[0] = \"thumb\" instead of {'t', 'h', 'u', 'm', 'b'}.", 
-                    "actual[1] = \"other\" instead of {'o', 't', 'h', 'e', 'r'}.", 
+                    "actual[0] = \"thumb\" instead of {'t','h','u','m','b'}.", 
+                    "actual[1] = \"other\" instead of {'o','t','h','e','r'}.", 
                     "The checked enumerable:", 
-                    "\t{\"thumb\", \"other\"} (2 items) of type: [string[]]", 
+                    "\t{*\"thumb\"*,\"other\"} (2 items) of type: [string[]]", 
                     "The expected enumerable:", 
-                    "\t{{'t', 'h', 'u', 'm', 'b'}, {'o', 't', 'h', 'e', 'r'}} (2 items) of type: [char[][]]");
+                    "\t{*{'t','h','u','m','b'}*,{'o','t','h','e','r'}} (2 items) of type: [char[][]]");
             
             Check.ThatCode(() =>
                     Check.That(otherAsCharArray).IsEqualTo(array)).
                 IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one. 2 differences found!", 
-                    "actual[0] = {'t', 'h', 'u', 'm', 'b'} instead of \"thumb\".", 
-                    "actual[1] = {'o', 't', 'h', 'e', 'r'} instead of \"other\".", 
+                    "actual[0] = {'t','h','u','m','b'} instead of \"thumb\".", 
+                    "actual[1] = {'o','t','h','e','r'} instead of \"other\".", 
                     "The checked enumerable:", 
-                    "\t{{'t', 'h', 'u', 'm', 'b'}, {'o', 't', 'h', 'e', 'r'}} (2 items) of type: [char[][]]",
+                    "\t{*{'t','h','u','m','b'}*,{'o','t','h','e','r'}} (2 items) of type: [char[][]]",
                     "The expected enumerable:", 
-                    "\t{\"thumb\", \"other\"} (2 items) of type: [string[]]");
+                    "\t{*\"thumb\"*,\"other\"} (2 items) of type: [string[]]");
             
             Check.ThatCode(() =>
             Check.That(array).IsEqualTo(otherArray)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is different from the expected one.", 
                 "actual[0] = \"thumb\" instead of \"test\".", 
                 "The checked enumerable:", 
-                "\t{\"thumb\", \"other\"} (2 items)", 
+                "\t{*\"thumb\"*,\"other\"} (2 items)", 
                 "The expected enumerable:", 
-                "\t{\"test\", \"other\"} (2 items)");
+                "\t{*\"test\"*,\"other\"} (2 items)");
         }
 
         [Test]
@@ -704,20 +705,21 @@ namespace NFluent.Tests
             otherRecursive.Add(interim);
             Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is different from the expected one.", 
-                "actual[1] = {{1, 2}, {{...}}} instead of {{{1, 2}, {{...}}}}.",
+                "actual[1] = {{1,2},{{...}}} instead of {{{1,2},{{...}}}}.",
                 "The checked enumerable:", 
-                "\t{{1, 2}, {{...}}} (2 items)", 
+                "\t{{1,2},{{...}}} (2 items)", 
                 "The expected enumerable:", 
-                "\t{{1, 2}, {{{1, 2}, {{...}}}}} (2 items)");
+                "\t{{1,2},{{{1,2},{{...}}}}} (2 items)");
+            
             Check.ThatCode(() => Check.That(new List<object> {a, a}).IsEqualTo(recursive)).
                 IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one. 2 differences found!", 
-                    "actual[1][0] = 1 instead of {1, 2}.", 
-                    "actual[1][1] = 2 instead of {{1, 2}, {{...}}}.",
+                    "actual[1][0] = 1 instead of {1,2}.", 
+                    "actual[1][1] = 2 instead of {{1,2}, {{...}}}.",
                     "The checked enumerable:", 
-                    "\t{{1, 2}, {1, 2}} (2 items)", 
+                    "\t{{1,2},{1,2}} (2 items)", 
                     "The expected enumerable:", 
-                    "\t{{1, 2}, {{...}}} (2 items)");
+                    "\t{{1,2},{{...}}} (2 items)");
         }
     }
 }

@@ -99,6 +99,7 @@ namespace NFluent
                     {
                         test.Fail(
                             $"The {{0}} has extra occurrences of the expected items. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] at position {itemIndex} is redundant.");
+                        test.SetValuesIndex(itemIndex, -1);
                         return;
                     }
 
@@ -163,7 +164,9 @@ namespace NFluent
 
         private static void ImplementInThatOrder<T>(ICheckLogic<IEnumerable<T>> checker, List<T> orderedList)
         {
-            checker.CantBeNegated("InThatOrder").ComparingTo(orderedList, "in that order", "").Analyze((sut, test) =>
+            checker.CantBeNegated("InThatOrder").
+                ComparingToValues(orderedList, orderedList.Count,"in that order", "").
+                Analyze((sut, test) =>
             {
                 var failingIndex = 0;
                 var scanIndex = 0;
@@ -184,6 +187,7 @@ namespace NFluent
                         {
                             test.Fail(
                                 $"The {{0}} does not follow to the expected order. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] appears too early in the list, at index '{failingIndex}'.");
+                            test.SetValuesIndex(failingIndex, index);
                             break;
                         }
                     }
@@ -195,6 +199,7 @@ namespace NFluent
                         {
                             test.Fail(
                                 $"The {{0}} does not follow to the expected order. Item [{item.ToStringProperlyFormatted().DoubleCurlyBraces()}] appears too late in the list, at index '{failingIndex}'.");
+                            test.SetValuesIndex(failingIndex, index);
                             break;
                         }
                     }

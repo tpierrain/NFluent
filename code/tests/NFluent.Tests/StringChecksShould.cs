@@ -50,7 +50,7 @@ namespace NFluent.Tests
                 .IsAFailingCheckWithMessage("", 
                     "The checked string is null.",
                              "The expected string: contains",
-                    "\t{\"fails\", \"anyway\"} (2 items)");
+                    "\t{\"fails\",\"anyway\"} (2 items)");
         }
 
         [Test]
@@ -58,11 +58,11 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => { Check.That(Alphabet).Contains("C", "a", "A", "z"); })
                 .IsAFailingCheckWithMessage("",
-                             "The checked string does not contain the expected value(s): {\"C\", \"A\"}",
+                             "The checked string does not contain the expected value(s): {\"C\",\"A\"}",
                               "The checked string:",
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]" ,
                     "The expected string: contains",
-                    "\t{\"C\", \"a\", \"A\", \"z\"} (4 items)");
+                    "\t{\"C\",\"a\",\"A\",\"z\"} (4 items)");
         }
 
         [Test]
@@ -70,11 +70,11 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => { Check.That(Alphabet).Contains("c", "0", "4"); })
                 .IsAFailingCheckWithMessage("",
-                             "The checked string does not contain the expected value(s): {\"0\", \"4\"}", 
+                             "The checked string does not contain the expected value(s): {\"0\",\"4\"}", 
                              "The checked string:",
                              "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
                     "The expected string: contains",
-                    "\t{\"c\", \"0\", \"4\"} (3 items)");
+                    "\t{\"c\",\"0\",\"4\"} (3 items)");
         }
 
         [Test]
@@ -95,11 +95,11 @@ namespace NFluent.Tests
         {
             Check.ThatCode(() => { Check.That(Alphabet).DoesNotContain("c", "z", "u"); })
                 .IsAFailingCheckWithMessage("",
-                             "The checked string contains unauthorized value(s): {\"c\", \"z\", \"u\"}",
+                             "The checked string contains unauthorized value(s): {\"c\",\"z\",\"u\"}",
                     "The checked string:",
                     "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
                              "The expected string: does not contain",
-                    "\t{\"c\", \"z\", \"u\"} (3 items)");
+                    "\t{\"c\",\"z\",\"u\"} (3 items)");
         }
 
         [Test]
@@ -143,7 +143,7 @@ namespace NFluent.Tests
                             "The checked string:",
                             "\t[\"abcdefghijklmnopqrstuvwxyz\"]",
                             "The expected value(s): in this order",
-                            "\t{\"cd\", \"ab\"} (2 items)");
+                            "\t{\"cd\",\"ab\"} (2 items)");
         }
 
         [Test]
@@ -355,7 +355,7 @@ namespace NFluent.Tests
             "The checked string:",
             "\t[\"The Black Keys\"]",
             "The expected string: one of these",
-            "\t{\"Paco de Lucia\", \"Jimi Hendrix\", \"Baden Powell\"} (3 items)");
+            "\t{\"Paco de Lucia\",\"Jimi Hendrix\",\"Baden Powell\"} (3 items)");
         }
 
         [Test]
@@ -390,7 +390,7 @@ namespace NFluent.Tests
                     "The checked string:",
                     "\t[\"The Black Keys\"]",
                     "The expected string: none of these",
-                    "\t{\"Metronomy\", \"Sigur Ros\", \"The Black Keys\", \"Get Well Soon\"} (4 items)");
+                    "\t{\"Metronomy\",\"Sigur Ros\",\"The Black Keys\",\"Get Well Soon\"} (4 items)");
         }
 
         [Test]

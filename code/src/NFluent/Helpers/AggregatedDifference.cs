@@ -23,17 +23,20 @@ namespace NFluent.Helpers
 
     internal class AggregatedDifference
     {
-        private readonly List<DifferenceDetails> details = new List<DifferenceDetails>();
+        private readonly List<DifferenceDetails> details = new();
+        private IList<AggregatedDifference> subs = new List<AggregatedDifference>();
         private bool different;
         public bool IsEquivalent { get; set; }
 
-        public bool IsDifferent => this.different || this.details.Count > 0;
+        public bool IsDifferent => this.different || this.Details.Any();
 
-        public DifferenceDetails this[int id] => this.details[id];
+        public DifferenceDetails this[int id] => this.Details.ElementAt(id);
+
+        private IEnumerable<DifferenceDetails> Details =>this.subs.SelectMany(s => s.Details).Union(this.details);
 
         public int GetCount(bool forEquivalence = false)
         {
-            return this.details.Count(x=>forEquivalence ? x.StillNeededForEquivalence : x.StillNeededForEquality);
+            return this.Details.Count(x=>forEquivalence ? x.StillNeededForEquivalence : x.StillNeededForEquality);
         }
 
         public void Add(DifferenceDetails detail)
@@ -48,21 +51,25 @@ namespace NFluent.Helpers
 
         public void Merge(AggregatedDifference other)
         {
-            this.details.AddRange(other.details);
+            this.subs.Add(other);
         }
 
-        public int GetFirstIndex()
+        public int GetActualIndex()
         {
-            return this.details.FirstOrDefault(x => x.StillNeededForEquality)?.ActualIndex ?? 0;
+            return this.Details.FirstOrDefault(x => x.StillNeededForEquality)?.ActualIndex ?? 0;
+        }
+        
+        public int GetExpectedIndex()
+        {
+            return this.Details.FirstOrDefault(x => x.StillNeededForEquality)?.ActualIndex ?? 0;
         }
         
         public bool DoesProvideDetails(object actual, object expected)
         {
-            if (this.details.Count == 1)
+            if (this.Details.Count() == 1)
             {
-                return !Equals(this.details[0].FirstValue, actual);
+                return !Equals(this.Details.First().FirstValue, actual);
             }
-
             return true;
         }
 
@@ -93,14 +100,15 @@ namespace NFluent.Helpers
                 var messages = 0;
                 for (var i = 0; messages < differenceDetailsCount; i++)
                 {
-                    if ((forEquivalence && !this.details[i].StillNeededForEquivalence)||(!forEquivalence && !this.details[i].StillNeededForEquality))
+                    var currentDetails = this.Details.ElementAt(i);
+                    if ((forEquivalence && !currentDetails.StillNeededForEquivalence)||(!forEquivalence && !currentDetails.StillNeededForEquality))
                     {
                         continue;
                     }
 
                     messages++;
                     messageText.AppendLine();
-                    messageText.Append(this.details[i].GetMessage(forEquivalence).DoubleCurlyBraces());
+                    messageText.Append(currentDetails.GetMessage(forEquivalence).DoubleCurlyBraces());
                 }
                     
                 if (differenceDetailsCount != errorCount)

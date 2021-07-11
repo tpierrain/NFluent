@@ -25,7 +25,7 @@ namespace NFluent.Helpers
 
     internal static class DifferenceFinders
     {
-        internal static AggregatedDifference ValueDifference<TA, TE>(TA firstItem, string firstName, TE otherItem)
+        internal static DifferenceDetails ValueDifference<TA, TE>(TA firstItem, string firstName, TE otherItem)
         {
             return ValueDifference(firstItem, firstName, otherItem, 0, new List<object>());
         }
@@ -52,39 +52,33 @@ namespace NFluent.Helpers
         /// <param name="refIndex">reference index (for collections)</param>
         /// <param name="firstSeen">track recursion</param>
         /// <returns></returns>
-        private static AggregatedDifference ValueDifference<TA, TE>(TA actual, string firstName, TE expected,
+        private static DifferenceDetails ValueDifference<TA, TE>(TA actual, string firstName, TE expected,
             int refIndex, ICollection<object> firstSeen)
         {
-            var result = new AggregatedDifference();
             // handle null case first
             if (expected == null)
             {
-                if (actual != null)
-                {
-                    result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, null, refIndex));
-                }
-
-                return result;
+                return actual == null
+                    ? null
+                    : DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, null, refIndex);
             }
 
             // if both equals from a BCL perspective, we are done.
-            if (EqualityHelper.CustomEquals(expected, actual))
+            if (EqualityHelper.CustomEquals(actual, expected))
             {
-                return result;
+                return null;
             }
 
             // handle actual is null
             if (actual == null)
             {
-                result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, null, expected, refIndex));
-                return result;
+                return DifferenceDetails.DoesNotHaveExpectedValue(firstName, null, expected, refIndex);
             }
 
             // do not recurse
             if (firstSeen.Contains(actual))
             {
-                result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, 0));
-                return result;
+                return DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex);
             }
 
             firstSeen = new List<object>(firstSeen) {actual};
@@ -95,12 +89,12 @@ namespace NFluent.Helpers
             // we silently convert numerical values
             if (commonType != null)
             {
-                return NumericalValueDifference(actual, firstName, expected, refIndex, commonType, result);
+                return NumericalValueDifference(actual, firstName, expected, refIndex, commonType);
             }
 
             if (type.TypeIsAnonymous())
             {
-                return AnonymousTypeDifference(actual, expected, type, result);
+                return AnonymousTypeDifference(actual, firstName, expected, type);
             }
 
             // handle enumeration
@@ -109,12 +103,10 @@ namespace NFluent.Helpers
                 return ValueDifferenceEnumerable(actual as IEnumerable, firstName, expected as IEnumerable, firstSeen);
             }
 
-            result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex));
-            return result;
+            return DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex);
         }
 
-        private static AggregatedDifference AnonymousTypeDifference<TA, TE>(TA actual, TE expected, Type type,
-            AggregatedDifference result)
+        private static DifferenceDetails AnonymousTypeDifference<TA, TE>(TA actual, string firstname, TE expected, Type type)
         {
             var criteria = new ClassMemberCriteria(BindingFlags.Instance);
             criteria.SetPublic();
@@ -123,40 +115,37 @@ namespace NFluent.Helpers
             // use field based comparison
             var wrapper = ReflectionWrapper.BuildFromInstance(type, expected, criteria);
             var actualWrapped = ReflectionWrapper.BuildFromInstance(actual.GetType(), actual, criteria);
-            foreach (var match in actualWrapped.MemberMatches(wrapper).Where(match => !match.DoValuesMatches))
-            {
-                result.Add(DifferenceDetails.FromMatch(match));
-            }
+            var differences = actualWrapped.MemberMatches(wrapper).Where(match => !match.DoValuesMatches).Select(DifferenceDetails.FromMatch).ToList();
 
-            return result;
+
+            return DifferenceDetails.DoesNotHaveExpectedDetails(firstname, actual, expected, 0, 0, differences);
         }
 
-        private static AggregatedDifference NumericalValueDifference<TA, TE>(TA actual, string firstName, TE expected,
-            int refIndex, Type commonType, AggregatedDifference result)
+        private static DifferenceDetails NumericalValueDifference<TA, TE>(TA actual, string firstName, TE expected,
+            int refIndex, Type commonType)
         {
             var convertedActual = Convert.ChangeType(actual, commonType);
             var convertedExpected = Convert.ChangeType(expected, commonType);
             if (convertedExpected.Equals(convertedActual))
             {
-                return result;
+                return null;
             }
 
-            result.Add(DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex));
-            return result;
+            return DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex);
         }
 
-        private static AggregatedDifference ValueDifferenceDictionary(IReadOnlyDictionary<object, object> sutDictionary,
+        private static DifferenceDetails ValueDifferenceDictionary(IReadOnlyDictionary<object, object> sutDictionary,
             string sutName,
             IReadOnlyDictionary<object, object> expectedDictionary,
             ICollection<object> firstItemsSeen)
         {
-            var valueDifferences = new AggregatedDifference {IsEquivalent = true};
-
             using var actualKeyIterator = sutDictionary.Keys.GetEnumerator();
             using var expectedKeyIterator = expectedDictionary.Keys.GetEnumerator();
             var stillExpectedKeys = true;
             var stillActualKeys = true;
             var index = 0;
+            var valueDifferences = new List<DifferenceDetails>();
+            var equivalent = true;
             for (;;)
             {
                 stillExpectedKeys = stillExpectedKeys && expectedKeyIterator.MoveNext();
@@ -170,16 +159,16 @@ namespace NFluent.Helpers
                         break;
                     }
 
+                    equivalent = false;
                     // the sut has extra key(s)
                     valueDifferences.Add(DifferenceDetails.WasNotExpected(
                         $"{sutName}[{actualKeyIterator.Current.ToStringProperlyFormatted()}]",
                         sutDictionary[actualKeyIterator.Current], index));
-                    valueDifferences.IsEquivalent = false;
                 }
                 else if (!stillActualKeys)
                 {
+                    equivalent = false;
                     // key not found
-                    valueDifferences.IsEquivalent = false;
                     valueDifferences.Add(DifferenceDetails.WasNotFound(
                         $"{sutName}[{expectedKeyIterator.Current.ToStringProperlyFormatted()}]",
                         // ReSharper disable once AssignNullToNotNullAttribute
@@ -196,41 +185,63 @@ namespace NFluent.Helpers
                         expectedKeyIterator.Current,
                         index,
                         firstItemsSeen);
-                    if (!expectedDictionary.TryGetValue(actualKey!, out _))
+
+                    if (expectedDictionary.TryGetValue(actualKey!, out var keyEntry))
                     {
-                        valueDifferences.Add(DifferenceDetails.WasNotExpected(
-                            $"{sutName}'s key {actualKey.ToStringProperlyFormatted()}", sutDictionary[actualKey],
-                            index));
-                        valueDifferences.IsEquivalent = false;
+                        var altIndex = 0;
+                        foreach (var key in expectedDictionary.Keys)
+                        {
+                            if (key == actualKey)
+                            {
+                                break;
+                            }
+                            altIndex++;
+                        }
+                        itemDiffs = ValueDifference(sutDictionary[actualKey],
+                            $"{sutName}[{actualKey.ToStringProperlyFormatted()}]",
+                            keyEntry,
+                            altIndex,
+                            firstItemsSeen);
+                        //valueDifferences.IsEquivalent &= itemDiffs == null || itemDiffs.IsEquivalent();
                     }
                     else
                     {
-                        itemDiffs = ValueDifference(sutDictionary[actualKey],
-                            $"{sutName}[{actualKey.ToStringProperlyFormatted()}]",
-                            expectedDictionary[actualKey],
-                            index,
-                            firstItemsSeen);
-                        valueDifferences.IsEquivalent &= !itemDiffs.IsDifferent || itemDiffs.IsEquivalent;
+                        equivalent = false;
+                        valueDifferences.Add(DifferenceDetails.WasNotExpected(
+                            $"{sutName}'s key {actualKey.ToStringProperlyFormatted()}", 
+                            sutDictionary[actualKey],
+                            index));
                     }
 
-                    valueDifferences.Merge(itemDiffs);
+                    if (itemDiffs != null)
+                    {
+                        if (!itemDiffs.IsEquivalent())
+                        {
+                            equivalent = false;
+                        }
+                        valueDifferences.Add(itemDiffs);
+                    }
                 }
 
                 index++;
             }
 
-            return valueDifferences;
+            if (valueDifferences.Count == 0)
+            {
+                return null;
+            }
+            return equivalent ? 
+                DifferenceDetails.DoesNotHaveExpectedDetailsButIsEquivalent(sutName, sutDictionary, expectedDictionary, 0, 0, valueDifferences) 
+                : DifferenceDetails.DoesNotHaveExpectedDetails(sutName, sutDictionary, expectedDictionary, 0, 0, valueDifferences);
         }
 
-        private static AggregatedDifference ValueDifferenceArray(Array firstArray, string firstName, Array secondArray,
+        private static DifferenceDetails ValueDifferenceArray(Array firstArray, string firstName, Array secondArray,
             ICollection<object> firstSeen)
         {
-            var valueDifferences = new AggregatedDifference();
             if (firstArray.Rank != secondArray.Rank)
             {
-                valueDifferences.Add(DifferenceDetails.DoesNotHaveExpectedAttribute($"{firstName}.Rank",
-                    firstArray.Rank, secondArray.Rank, 0));
-                return valueDifferences;
+                return DifferenceDetails.DoesNotHaveExpectedAttribute($"{firstName}.Rank",
+                    firstArray.Rank, secondArray.Rank);
             }
 
             for (var i = 0; i < firstArray.Rank; i++)
@@ -240,14 +251,12 @@ namespace NFluent.Helpers
                     continue;
                 }
 
-                valueDifferences.Add(DifferenceDetails.DoesNotHaveExpectedAttribute($"{firstName}.Dimension({i})",
+                return DifferenceDetails.DoesNotHaveExpectedAttribute($"{firstName}.Dimension({i})",
                     firstArray.SizeOfDimension(i),
-                    secondArray.SizeOfDimension(i),
-                    i));
-                return valueDifferences;
+                    secondArray.SizeOfDimension(i));
             }
 
-            return ScanEnumeration(firstArray, secondArray, index =>
+            return ScanEnumeration(firstArray, secondArray, firstName, index =>
             {
                 var temp = index;
                 var indices = new int[firstArray.Rank];
@@ -262,7 +271,7 @@ namespace NFluent.Helpers
             }, firstSeen);
         }
 
-        private static AggregatedDifference ValueDifferenceEnumerable(IEnumerable firstItem, string firstName,
+        private static DifferenceDetails ValueDifferenceEnumerable(IEnumerable firstItem, string firstName,
             IEnumerable otherItem,
             ICollection<object> firstSeen)
         {
@@ -282,19 +291,19 @@ namespace NFluent.Helpers
                 }
             }
 
-            return ScanEnumeration(firstItem, otherItem, x => $"{firstName}[{x}]", firstSeen);
+            return ScanEnumeration(firstItem, otherItem, firstName, x => $"{firstName}[{x}]", firstSeen);
         }
 
-        private static AggregatedDifference ScanEnumeration(IEnumerable firstItem, IEnumerable otherItem,
+        private static DifferenceDetails ScanEnumeration(IEnumerable firstItem, IEnumerable otherItem, string firstName,
             Func<int, string> namingCallback, ICollection<object> firstSeen)
         {
             var index = 0;
-            var mayBeEquivalent = true;
             var expected = new List<KeyValuePair<object, int>>();
             var unexpected = new List<KeyValuePair<object, int>>();
-            var aggregatedDifferences = new Dictionary<int, AggregatedDifference>();
-            var valueDifferences = new AggregatedDifference();
+            var aggregatedDifferences = new Dictionary<int, DifferenceDetails>();
+            var valueDifferences = new List<DifferenceDetails>();
             var scanner = otherItem.GetEnumerator();
+            var isEquivalent = true;
 
             foreach (var item in firstItem)
             {
@@ -308,10 +317,10 @@ namespace NFluent.Helpers
 
                 var aggregatedDifference = ValueDifference(item, firstItemName, scanner.Current, index, firstSeen);
 
-                if (aggregatedDifference.IsDifferent)
+                if (aggregatedDifference != null)
                 {
                     aggregatedDifferences.Add(index, aggregatedDifference);
-                    if (!aggregatedDifference.IsEquivalent)
+                    if (!aggregatedDifference.IsEquivalent())
                     {
                         // try to see it was at a different position
                         var indexOrigin = expected.FindIndex(pair => FluentEquivalent(pair.Key, item));
@@ -351,34 +360,40 @@ namespace NFluent.Helpers
             if (scanner.MoveNext())
             {
                 valueDifferences.Add(DifferenceDetails.WasNotFound(namingCallback(index), scanner.Current, index));
-                mayBeEquivalent = false;
+                isEquivalent = false;
             }
 
             foreach (var differencesValue in aggregatedDifferences.Values)
             {
-                valueDifferences.Merge(differencesValue);
+                valueDifferences.Add(differencesValue);
             }
-
+            
             for (var i = 0; i < Math.Min(unexpected.Count, expected.Count); i++)
             {
-                //aggregatedDifferences.Remove(unexpected[i].Value);
                 valueDifferences.Add(DifferenceDetails.WasFoundInsteadOf(namingCallback(unexpected[i].Value),
                     unexpected[i].Key,
                     expected[i].Key));
             }
-
-            if (mayBeEquivalent && valueDifferences.IsDifferent)
+            
+            if (isEquivalent)
             {
-                valueDifferences.IsEquivalent = expected.Count == 0 && unexpected.Count == 0;
+                isEquivalent = expected.Count == 0 && unexpected.Count == 0;
             }
 
-            return valueDifferences;
+            if (valueDifferences.Count == 0)
+            {
+                return null;
+            }
+
+            return isEquivalent ? 
+                DifferenceDetails.DoesNotHaveExpectedDetailsButIsEquivalent(firstName, firstItem, otherItem, 0, 0, valueDifferences)
+                : DifferenceDetails.DoesNotHaveExpectedDetails(firstName, firstItem, otherItem, 0, 0, valueDifferences);
         }
 
         private static bool FluentEquivalent<TS, TE>(TS instance, TE expected)
         {
             var scan = EqualityHelper.FluentEquals(instance, expected, Check.EqualMode);
-            return !scan.IsDifferent || scan.IsEquivalent;
+            return scan == null || scan.IsEquivalent();
         }
     }
 }

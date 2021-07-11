@@ -224,9 +224,9 @@ namespace NFluent.Tests
             }).IsAFailingCheckWithMessage("", 
                 "The checked enumerable does not contain exactly the expected value(s). First difference is at index #4.",
                 "The checked enumerable:",
-                "\t{\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concert\", \"Conjured Mana Cake\"} (6 items)",
+                "\t{\"+5 Dexterity Vest\",\"Aged Brie\",\"Elixir of the Mongoose\",\"Sulfuras, Hand of Ragnaros\",*\"Backstagex passes to a TAFKAL80ETC concert\"*,\"Conjured Mana Cake\"} (6 items)",
                 "The expected value(s):",
-                "\t{\"+5 Dexterity Vest\", \"Aged Brie\", \"Elixir of the Mongoose\", \"Sulfuras, Hand of Ragnaros\", \"Backstagex passes to a TAFKAL80ETC concer\", \"Conjured Mana Cake\"} (6 items)");
+                "\t{\"+5 Dexterity Vest\",\"Aged Brie\",\"Elixir of the Mongoose\",\"Sulfuras, Hand of Ragnaros\",*\"Backstagex passes to a TAFKAL80ETC concer\"*,\"Conjured Mana Cake\"} (6 items)");
         }
 
         [Test]

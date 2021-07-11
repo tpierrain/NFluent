@@ -46,7 +46,7 @@ namespace NFluent.Messages
         /// <summary>
         /// The instance type.
         /// </summary>
-        private Type type;
+        private readonly Type type;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumerationBlock{T}" /> class.

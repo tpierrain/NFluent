@@ -108,6 +108,7 @@ namespace NFluent
                 .Analyze((sut, test) =>
                 {
                     var match = false;
+                    var index = 0;
                     foreach (var value in values)
                     {
                         match = true;
@@ -124,8 +125,11 @@ namespace NFluent
 
                         if (match)
                         {
+                            test.SetValuesIndex(-1, index);
                             break;
                         }
+
+                        index++;
                     }
 
                     test.FailWhen(_ => !match, "The {0} is equal to none of the {1} whereas it should.");

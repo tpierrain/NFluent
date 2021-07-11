@@ -28,7 +28,7 @@ namespace NFluent
     internal static class EnumerableExtensions
     {
         private const string Ellipsis = "...";
-        private const string Separator = ", ";
+        private const string Separator = ",";
 
         /// <summary>
         ///     Returns the number of items present within the specified enumerable (returns 0 if the enumerable is null).
@@ -62,7 +62,7 @@ namespace NFluent
         /// <param name="fromIndex"></param>
         /// <param name="len"></param>
         /// <returns>A string containing all the <see cref="IEnumerable" /> elements, separated by the given separator.</returns>
-        public static string ToEnumeratedString(this IEnumerable enumerable, long fromIndex = 0, long len = 0)
+        public static string ToEnumeratedString(this IEnumerable enumerable, long fromIndex = -1, long len = 0)
         {
             if (enumerable is Array array)
             {
@@ -83,7 +83,7 @@ namespace NFluent
         }
 
         private static string ToEnumeratedStringAdvanced(this IEnumerable enumerable,
-            long referenceIndex, long numberOfItems, ICollection<object> seen)
+            long referenceIndex, long numberOfItemsToOutput, ICollection<object> seen)
         {
             if (seen.Contains(enumerable))
             {
@@ -93,10 +93,11 @@ namespace NFluent
             sb.Append('{');
             var iterator = enumerable.GetEnumerator();
             var copy = new List<object>(seen) {enumerable};
-            // we skip the first items
-            var firstIndex = Math.Max(0, referenceIndex - (numberOfItems / 2));
-            var lastItem = numberOfItems == 0 ? int.MaxValue : firstIndex + numberOfItems;
+            var itemCount = enumerable is ICollection collection ? collection.Count : long.MaxValue;
+            var firstIndex = Math.Max(0, referenceIndex - (numberOfItemsToOutput / 2));
+            var lastItem = numberOfItemsToOutput == 0 ? int.MaxValue : firstIndex + numberOfItemsToOutput;
 
+            // we skip the first items
             if (firstIndex > 0)
             {
                 for (var i = 0; i < firstIndex; i++)
@@ -106,6 +107,11 @@ namespace NFluent
                 sb.Append(Ellipsis);
             }
 
+            if (itemCount == 1 || lastItem == 1)
+            {
+                // we do not highlight a specific item if there is only one item
+                referenceIndex = -1;
+            }
             // items to display
             for (var i = firstIndex; i < lastItem; i++)
             {
@@ -122,20 +128,28 @@ namespace NFluent
                 }
 
                 var item = iterator.Current;
+                if (i == referenceIndex)
+                {
+                    sb.Append('*');
+                }
                 switch (item)
                 {
                     case string s:
                         sb.Append(s.ToStringProperlyFormatted());
                         break;
                     case IEnumerable sub:
-                        sb.Append(sub.ToEnumeratedStringAdvanced(referenceIndex, numberOfItems, copy));
+                        sb.Append(sub.ToEnumeratedStringAdvanced(-1, numberOfItemsToOutput, copy));
                         break;
                     default:
                         sb.Append(item.ToStringProperlyFormatted());
                         break;
                 }
+                if (i == referenceIndex)
+                {
+                    sb.Append('*');
+                }
 
-                if (i == lastItem-1)
+                if (i == lastItem-1 && lastItem < itemCount)
                 {
                     sb.Append(Ellipsis);
                 }
@@ -159,11 +173,24 @@ namespace NFluent
                 result.Append(Ellipsis);
                 result.Append(Separator);
             }
+
+            if (lastItem == 1)
+            {
+                // we do not highlight a specific item if there is only one item
+                referenceIndex = -1;
+            }
             for (var i = firstIndex; i < lastItem; i++)
             {
                 var closing = HandleDimensions(array, i, result, indices);
-
+                if (i == referenceIndex)
+                {
+                    result.Append('*');
+                }
                 result.Append(array.GetValue(indices).ToStringProperlyFormatted());
+                if (i == referenceIndex)
+                {
+                    result.Append('*');
+                }
                 result.Append(closing);
                 if (i != array.Length - 1)
                 {

@@ -380,7 +380,7 @@ namespace NFluent.Tests
             .IsAFailingCheckWithMessage("",
             "The checked enumerable is an instance of [int[]] whereas it must not.",
                     "The checked enumerable:",
-                    "\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 0} (10 items) of type: [int[]]",
+                    "\t{0,0,0,0,0,0,0,0,0,0} (10 items) of type: [int[]]",
                     "The expected value: different from",
                     "\tan instance of [int[]]");
         }
@@ -395,7 +395,7 @@ namespace NFluent.Tests
             .IsAFailingCheckWithMessage("",
                     "The checked enumerable is not an instance of [int].",
                     "The checked enumerable:",
-                    "\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 0} (10 items) of type: [int[]]",
+                    "\t{0,0,0,0,0,0,0,0,0,0} (10 items) of type: [int[]]",
                     "The expected value:",
                     "\tan instance of [int]");
         }

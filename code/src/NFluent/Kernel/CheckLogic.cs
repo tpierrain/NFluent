@@ -48,7 +48,8 @@ namespace NFluent.Kernel
         private bool enforceExpectedType;
         private bool failed;
         private bool parentFailed;
-        private long index;
+        private long? indexInSut;
+        private long? indexInExpected;
         private string label;
         private string lastError;
 
@@ -195,7 +196,7 @@ namespace NFluent.Kernel
 
             if (!this.Option.HasFlag(MessageOption.NoCheckedBlock))
             {
-                var block = fluentMessage.On(this.fluentSut.Value, this.index); 
+                var block = fluentMessage.On(this.fluentSut.Value, this.indexInSut); 
                 block.WithType(this.Option.HasFlag(MessageOption.WithType));
                 block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
 
@@ -205,28 +206,28 @@ namespace NFluent.Kernel
                 }
             }
 
-            if (this.withExpected && !this.Option.HasFlag(MessageOption.NoExpectedBlock))
+            if ((this.withExpected||this.withGiven) && !this.Option.HasFlag(MessageOption.NoExpectedBlock))
             {
                 MessageBlock block;
                 switch (this.expectedKind)
                 {
                     case ValueKind.Type:
-                        block = fluentMessage.Expected(this.expected);
+                        block = this.withGiven ? fluentMessage.WithGivenValue(this.expected) : fluentMessage.Expected(this.expected);
                         break;
                     case ValueKind.Values:
-                        block = fluentMessage.ExpectedValues(this.expected, this.index);
+                        block = this.withGiven ? fluentMessage.WithGivenValues(this.expected, this.indexInExpected) : fluentMessage.ExpectedValues(this.expected, this.indexInExpected);
                         if (this.expectedCount>0)
                         {
                             block.WithEnumerableCount(this.expectedCount);
                         }
                         break;
                     case ValueKind.Types:
-                        block = fluentMessage.Expected(this.expected, this.index);
+                        block = fluentMessage.Expected(this.expected, this.indexInExpected);
                         break;
                     default:
-                        block = this.IsNegated
-                            ? fluentMessage.WithGivenValue(this.expected)
-                            : fluentMessage.Expected(this.expected, this.index);
+                        block = (this.IsNegated || this.withGiven)
+                            ? fluentMessage.WithGivenValue(this.expected, this.indexInExpected)
+                            : fluentMessage.Expected(this.expected, this.indexInExpected);
                         block.WithType(this.Option.HasFlag(MessageOption.WithType));
                         block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
                         if (this.expected is IEnumerable list && !(this.expected is string))
@@ -250,10 +251,7 @@ namespace NFluent.Kernel
                     block.Comparison(this.Comparison);
                 }
             }
-            else if (this.withGiven)
-            {
-                fluentMessage.WithGivenValue(this.expected).Comparison(this.Comparison);
-            }
+
 
             this.fluentSut.Reporter.ReportError(fluentMessage.ToString());
         }
@@ -261,6 +259,13 @@ namespace NFluent.Kernel
         public ICheckLogic<T> ComparingTo<TU>(TU givenValue, string comparisonInfo, string negatedComparisonInfo)
         {
             this.DefineExpectations(givenValue, true, comparisonInfo, negatedComparisonInfo);
+            return this;
+        }
+
+        public ICheckLogic<T> ComparingToValues<TU>(IEnumerable<TU> givenValue, int count, string comparisonInfo, string negatedComparisonInfo)
+        {
+            this.DefineExpectations(givenValue, true, comparisonInfo, negatedComparisonInfo, count, typeof(TU));
+            this.expectedKind = ValueKind.Values;
             return this;
         }
 
@@ -338,9 +343,10 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> SetValuesIndex(long indexInEnum)
+        public ICheckLogic<T> SetValuesIndex(long indexInSut, long indexInExpected = -1)
         {
-            this.index = indexInEnum;
+            this.indexInSut = indexInSut;
+            this.indexInExpected = indexInExpected;
             return this;
         }
 

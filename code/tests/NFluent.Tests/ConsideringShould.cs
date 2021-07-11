@@ -431,9 +431,9 @@ namespace NFluent.Tests
                 "",
                 "The checked value's field 'arrayOfInts' does not have the expected value.",
                 "The checked value's field 'arrayOfInts':",
-                "\t{0, 0, 0, 0} (4 items)", 
+                "\t{0,0,0,0} (4 items)", 
                 "The expected value's field 'arrayOfInts':",
-                 "\t{0, 0, 0, 0, 0} (5 items)");
+                 "\t{0,0,0,0,0} (5 items)");
             
             Check.ThatCode(() => { Check.That(new {arrayOfInts =  "INTS"}).Considering().NonPublic.Fields.IsEqualTo(expected); })
                 .IsAFailingCheckWithMessage("", 
@@ -441,7 +441,7 @@ namespace NFluent.Tests
                     "The checked value's field 'arrayOfInts':", 
                     "\t[\"INTS\"] of type: [string]", 
                     "The expected value's field 'arrayOfInts':", 
-                    "\t{0, 0, 0, 0, 0} (5 items) of type: [int[]]");
+                    "\t{0,0,0,0,0} (5 items) of type: [int[]]");
         }
 
         [Test]
@@ -490,7 +490,7 @@ namespace NFluent.Tests
                 "The checked value:", 
                 "\t[{ TheProperty = 13 }]", 
                 "The expected object: one of these", 
-                "\t{{ TheProperty = 12 }, { TheProperty = 14 }} (2 items)");
+                "\t{{ TheProperty = 12 },{ TheProperty = 14 }} (2 items)");
             Check.ThatCode(()=>
             {
                 Check.That(sut).Considering().Public.Properties.IsOneOf();
@@ -513,7 +513,7 @@ namespace NFluent.Tests
                 "The checked value is equal to one of the given value(s) whereas it should not.", 
                 "The checked value:", "\t[{ TheProperty = 13 }]", 
                 "The expected object: none of these", 
-                "\t{{ TheProperty = 12 }, { TheProperty = 13 }} (2 items)");
+                "\t{{ TheProperty = 12 },*{ TheProperty = 13 }*} (2 items)");
         }
 
         [Test]
@@ -576,7 +576,7 @@ namespace NFluent.Tests
             ).IsAFailingCheckWithMessage("",
                 "The checked value is equal to one of expected one whereas it should not.",
                 "The checked value:",
-                "	[{ me = ..., x = 2 }]");
+                "	[{ me = ... , x = 2 }]");
         }
 
         [Test]
@@ -671,7 +671,7 @@ namespace NFluent.Tests
             }).IsAFailingCheckWithMessage("", 
                 "The checked value does not contain the same reference than the given one, whereas it should.", 
                 "The checked value:", 
-                "\t[{ Property = {  } }]", 
+                "\t[{ Property = {} }]", 
                 "The expected value: same as", 
                 "\t[{ Property = System.Object }]");
         }

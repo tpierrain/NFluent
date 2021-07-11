@@ -13,16 +13,25 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+#if DOTNET_35
+namespace System.Diagnostics
+{
+    /// <summary>
+    /// Place holder for 
+    /// </summary>
+    [AttributeUsage(AttributeTargets.All)]
+    public class ExcludeFromCodeCoverageAttribute : Attribute
+    {
+
+    }
+}
+#endif
+
 namespace NFluent
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using Extensibility;
-    using Extensions;
-#if NETSTANDARD1_3
-    using System.Reflection;
-#endif
+    using System.Linq;
 
 #if DOTNET_35
     /// <summary>
@@ -63,19 +72,8 @@ namespace NFluent
         public static bool IsNullOrWhiteSpace(string testedText)
         {
 #if DOTNET_35
-            if (string.IsNullOrEmpty(testedText))
-            {
-                return true;
-            }
+            return string.IsNullOrEmpty(testedText) || testedText.All(char.IsWhiteSpace);
 
-            foreach (var character in testedText)
-            {
-                if (!char.IsWhiteSpace(character))
-                {
-                    return false;
-                }
-            }
-            return true;
 #else
             return string.IsNullOrWhiteSpace(testedText);
 #endif
@@ -83,43 +81,13 @@ namespace NFluent
 
         public static long LongLength<T>(this T[] array)
         {
-#if NETSTANDARD1_3
-            return array.Length;
-#else
             return array.LongLength;
-#endif
         }
+
         public static long LongLength(this System.Array array)
         {
-#if NETSTANDARD1_3
-            return array.Length;
-#else
             return array.LongLength;
-#endif
         }
-
-#if NETSTANDARD1_3
-        public static long GetLongLength(this System.Array array, int index)
-        {
-            return array.GetLength(index);
-        }
-
-        public static object GetValue(this System.Array array, long[] indices)
-        {
-            var shorterIndices = new int[indices.Length];
-            for (var i = 0; i < indices.Length; i++)
-            {
-                shorterIndices[i] = (int) indices[i];
-            }
-
-            return array.GetValue(shorterIndices);
-        }
-
-        public static bool IsInstanceOfType(this System.Type type, object instance)
-        {
-            return type.GetTypeInfo().IsAssignableFrom(instance.GetType().GetTypeInfo());
-        }
-#endif
     }
 
 #if DOTNET_35

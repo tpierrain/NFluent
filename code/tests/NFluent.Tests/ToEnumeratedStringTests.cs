@@ -25,14 +25,14 @@ namespace NFluent.Tests
         public void ToEnumeratedStringParticularBehaviourWithStrings()
         {
             var guitarHeroes = new[] { "Hendrix", "Paco de Lucia", "Django Reinhardt", "Baden Powell" };
-            Check.That(guitarHeroes.ToStringProperlyFormatted()).IsEqualTo(@"{""Hendrix"", ""Paco de Lucia"", ""Django Reinhardt"", ""Baden Powell""}");
+            Check.That(guitarHeroes.ToStringProperlyFormatted()).IsEqualTo(@"{""Hendrix"",""Paco de Lucia"",""Django Reinhardt"",""Baden Powell""}");
         }
 
         [Test]
         public void ToEnumeratedStringWorksFineWithStrings()
         {
             var departments = new[] { 93, 56, 35, 75 };
-            Check.That(departments.ToStringProperlyFormatted()).IsEqualTo("{93, 56, 35, 75}");
+            Check.That(departments.ToStringProperlyFormatted()).IsEqualTo("{93,56,35,75}");
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace NFluent.Tests
         {
             var variousStuffs = new ArrayList { 93, null, "hell yeah!" };
 
-            Check.That(variousStuffs.ToStringProperlyFormatted()).IsEqualTo(@"{93, null, ""hell yeah!""}");
+            Check.That(variousStuffs.ToStringProperlyFormatted()).IsEqualTo(@"{93,null,""hell yeah!""}");
         }
 
         [Test]

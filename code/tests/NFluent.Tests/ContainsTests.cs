@@ -64,11 +64,11 @@ namespace NFluent.Tests
             })
             .IsAFailingCheckWithMessage("",
                     "The checked enumerable does not contain the expected value(s):", 
-                    "\t{666, 1974}", 
+                    "\t{666,1974}", 
                     "The checked enumerable:", 
-                    "\t{1, 2, 3} (3 items)", 
+                    "\t{1,2,3} (3 items)", 
                     "The expected value(s):", 
-                    "\t{3, 2, 666, 1974} (4 items)");
+                    "\t{3,2,666,1974} (4 items)");
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace NFluent.Tests
         [Test]
         public void NotContainsThrowsExceptionWhenFailingWithArrays()
         {
-            var integers = new[] { 1, 2, 3 };
+            var integers = new[] {1, 2, 3 };
 
             Check.ThatCode(() =>
             {
@@ -90,9 +90,9 @@ namespace NFluent.Tests
             .IsAFailingCheckWithMessage("", 
                     "The checked enumerable contains all the given values whereas it must not.", 
                     "The checked enumerable:",
-                    "\t{1, 2, 3} (3 items)", 
+                    "\t{1,2,3} (3 items)", 
                     "The expected value(s): different from",
-                    "\t{3, 2, 1} (3 items)");
+                    "\t{3,2,1} (3 items)");
         }
 
         #endregion
@@ -113,6 +113,15 @@ namespace NFluent.Tests
             var integers = new List<int> { 1, 2, 3, 1974 };
             IEnumerable<int> expected = new List<int> { 3, 2, 1 };
             Check.That(integers).Contains(expected);
+        }
+
+
+        [Test]
+        public void ContainsWithGenericEnumerableFailsWhenNotContains()
+        {
+            var integers = new List<int> { 1, 2, 3, 1974 };
+            IEnumerable<int> expected = new List<int> { 3, 2, 1 , 4};
+            Check.That(integers).Not.Contains(expected);
         }
 
         [Test]
@@ -182,11 +191,11 @@ namespace NFluent.Tests
             })
             .IsAFailingCheckWithMessage("",
                     "The checked enumerable does not contain the expected value(s):",
-                    "\t{666, 1974}", 
+                    "\t{666,1974}", 
                     "The checked enumerable:",
-                    "\t{1, 2, 3} (3 items)",
+                    "\t{1,2,3} (3 items)",
                     "The expected value(s):", 
-                    "\t{3, 2, 666, 1974} (4 items)");
+                    "\t{3,2,666,1974} (4 items)");
         }
 
         [Test]
@@ -214,11 +223,10 @@ namespace NFluent.Tests
                 "' ' should not exist (found in actual[29]); 'e' should be found instead.",
                 "'.' should not exist (found in actual[30]); 'x' should be found instead.",
                 "The checked enumerable:", 
-                "\t{'t', 'h', 'i', 's', ' ', 'i', 's', ' ', 's', 'o', 'm', 'e', ' ', 'a', 'c', 't', 'u', 'a', 'l', ' ', ...} (31 items)", 
+                "\t{'t','h','i','s',' ','i','s',' ','s','o','m','e',' ','a','c','t','u','a','l',' ',...} (31 items)", 
                 "The expected enumerable:", 
-                "\t{'t', 'h', 'i', 's', ' ', 'i', 's', ' ', 's', 'o', 'm', 'e', ' ', 'e', 'x', 'p', 'e', 'c', 't', 'e', ...} (31 items)");
+                "\t{'t','h','i','s',' ','i','s',' ','s','o','m','e',' ','e','x','p','e','c','t','e',...} (31 items)");
         }
-
 #endregion
     }
 }

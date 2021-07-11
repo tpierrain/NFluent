@@ -378,23 +378,23 @@ namespace NFluent.Helpers
             }
 
             var resultAsText = new StringBuilder(100);
-            resultAsText.Append("{ ");
+            resultAsText.Append('{');
             var first = true;
             foreach (var sub in this.GetSubExtendedMemberInfosFields())
             {
                 if (!first)
                 {
-                    resultAsText.Append(", ");
+                    resultAsText.Append(',');
                 }
                 else
                 {
                     first = false;
                 }
 
-                resultAsText.AppendFormat("{0} = {1}", sub.NameInSource, sub.ToString(scanned));
+                resultAsText.AppendFormat(" {0} = {1} ", sub.NameInSource, sub.ToString(scanned));
             }
 
-            resultAsText.Append(" }");
+            resultAsText.Append('}');
             return resultAsText.ToString();
         }
 
