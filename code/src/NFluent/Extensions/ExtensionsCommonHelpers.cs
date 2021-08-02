@@ -87,11 +87,7 @@ namespace NFluent.Extensions
                 case DateTime time:
                     return string.Format(CultureInfo.InvariantCulture, "{0:o}, Kind = {1}", time, time.Kind);
                 case bool b:
-#if !NETSTANDARD1_3
                     return b.ToString(CultureInfo.InvariantCulture);
-#else
-                    return b.ToString();
-#endif
                 case double d:
                     return d.ToString(CultureInfo.InvariantCulture);
                 case float f:

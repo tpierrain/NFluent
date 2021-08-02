@@ -16,6 +16,7 @@
 namespace NFluent.Messages
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using Extensions;
 
@@ -71,6 +72,7 @@ namespace NFluent.Messages
         /// <param name="itemsCount">
         /// The number of items of the enumerable instance.
         /// </param>
+        [ExcludeFromCodeCoverage]
         public void WithEnumerableCount(long itemsCount)
         {
             throw new NotImplementedException();

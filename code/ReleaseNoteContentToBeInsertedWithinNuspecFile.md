@@ -27,6 +27,7 @@ you need help.
 ## Fixes
 * HasFieldWithSameValues resulted in false positive when string fields had the same value.
 * IsNotEqualTo now properly preserves expected type
+* Ilmproved rerporting of differences for enumerations and dictionaries to make them more consistent and fixed some inaccuracies.
 
 # GitHub Issues
 * #325, #327, #330, #332

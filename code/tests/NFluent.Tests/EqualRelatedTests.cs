@@ -317,20 +317,53 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(first).IsEqualTo("A sentence can provide long enumeration.  ".ToCharArray()))
                 .IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one. 19 differences found!", 
-                    "actual[25] value ('l') was found at index 23 instead of 25.", 
-                    "actual[26] value ('o') was found at index 24 instead of 26.", 
-                    "actual[27] value ('n') was found at index 25 instead of 27.", 
-                    "actual[27] value (' ') was found at index 27 instead of 24.", 
-                    "actual[28] value ('g') was found at index 26 instead of 28.",                    
+                    "actual[23] value ('a') was found at index 23 instead of 34.", 
+                    "actual[24] value (' ') was found at index 24 instead of 27.", 
+                    "actual[25] value ('l') was found at index 25 instead of 23.", 
+                    "actual[26] value ('o') was found at index 26 instead of 24.", 
+                    "actual[27] value ('n') was found at index 27 instead of 25.",                    
                     "... (14 differences omitted)",
                     "The checked enumerable:", 
                     "\t{...,'n',' ','p','r','o','v','i','d','e',' ',*'a'*,' ','l','o','n','g',' ','e','n','u',...} (42 items)", 
                     "The expected enumerable:", 
-                    "\t{...,'n',' ','p','r','o','v','i','d','e',' ',*'l'*,'o','n','g',' ','e','n','u','m','e',...} (42 items)");
+                    "\t{...,'o','n','g',' ','e','n','u','m','e','r',*'a'*,'t','i','o','n','.',' ',' '} (42 items)");
         }
 
         [Test]
-        public void IsEqualToThrowsExceptionWhenFailingWithString()
+        public void
+            ShouldProvideSmartDiffAnalysis()
+        {
+            Check.ThatCode(() => Check.That("23".ToCharArray()).IsEqualTo("12".ToCharArray()))
+                .IsAFailingCheckWithMessage("",
+                    "The checked enumerable is different from the expected one. 2 differences found!",
+                    "actual[0] value ('2') was found at index 0 instead of 1.", 
+                    "actual[1] = '3' instead of '2'.",
+                    "The checked enumerable:", 
+                    "\t{*'2'*,'3'} (2 items)",
+                    "The expected enumerable:",
+	                "\t{'1',*'2'*} (2 items)");
+        }
+
+        [Test]
+        public void
+            ShouldProvideSmartDiffAnalysis2()
+        {
+            var first = "l.".ToCharArray();
+            var other = ". ".ToCharArray();
+            Check.ThatCode(() => Check.That(first).IsEqualTo(other))
+                .IsAFailingCheckWithMessage("",
+                    "The checked enumerable is different from the expected one. 2 differences found!",
+                    "actual[0] = 'l' instead of '.'.", 
+                    "actual[1] value ('.') was found at index 1 instead of 0.",
+                    "The checked enumerable:", 
+                    "\t{*'l'*,'.'} (2 items)",
+                    "The expected enumerable:",
+	                "\t{*'.'*,' '} (2 items)");
+        }
+
+        [Test]
+        public void 
+            IsEqualToThrowsExceptionWhenFailingWithString()
         {
             var first = "Son of a test";
 
@@ -695,9 +728,9 @@ namespace NFluent.Tests
         }
         
         [Test]
-        public void HandleRecursion()
+        public void HandleDoubleRecursion()
         {
-            List<int> a = new List<int> {1, 2};
+            var a = new List<int> {1, 2};
             var recursive = new List<object> {a};
             recursive.Add(recursive);
             var otherRecursive = new List<object> {a};
@@ -707,19 +740,28 @@ namespace NFluent.Tests
                 "The checked enumerable is different from the expected one.", 
                 "actual[1] = {{1,2},{{...}}} instead of {{{1,2},{{...}}}}.",
                 "The checked enumerable:", 
-                "\t{{1,2},{{...}}} (2 items)", 
+                "\t{{1,2},*{{...}}*} (2 items)", 
                 "The expected enumerable:", 
-                "\t{{1,2},{{{1,2},{{...}}}}} (2 items)");
-            
-            Check.ThatCode(() => Check.That(new List<object> {a, a}).IsEqualTo(recursive)).
+                "\t{{1,2},*{{{1,2},{{...}}}}*} (2 items)");
+        }
+
+        [Test]
+        public void HandleSimpleRecursion()
+        {
+            var a = new List<int> {1, 2};
+            var recursive = new List<object> {a};
+            var sut = new List<object> {a, a};
+            recursive.Add(recursive);
+
+            Check.ThatCode(() => Check.That(sut).IsEqualTo(recursive)).
                 IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one. 2 differences found!", 
                     "actual[1][0] = 1 instead of {1,2}.", 
-                    "actual[1][1] = 2 instead of {{1,2}, {{...}}}.",
+                    "actual[1][1] = 2 instead of {{1,2},{{...}}}.",
                     "The checked enumerable:", 
-                    "\t{{1,2},{1,2}} (2 items)", 
+                    "\t{{1,2},*{1,2}*} (2 items)", 
                     "The expected enumerable:", 
-                    "\t{{1,2},{{...}}} (2 items)");
+                    "\t{{1,2},*{{...}}*} (2 items)");
         }
     }
 }

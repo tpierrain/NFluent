@@ -32,6 +32,5 @@ namespace NFluent.Kernel
             : base(message)
         {
         }
-
     }
 }

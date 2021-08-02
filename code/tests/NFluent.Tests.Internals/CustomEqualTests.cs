@@ -51,7 +51,7 @@ namespace NFluent.Tests
             Check.That(result).IsNull();
 
             result = DifferenceFinders.ValueDifference(this.list, "a", new List<List<int>> {this.a, this.a});
-            Check.That(result[0].FirstName).IsEqualTo("a[1][0]");
+            Check.That(result[0].FirstName).IsEqualTo("a[1]");
         }
 
         [Test]

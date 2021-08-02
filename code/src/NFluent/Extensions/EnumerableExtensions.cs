@@ -18,6 +18,7 @@ namespace NFluent
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using Extensions;
     using System.Linq;
@@ -286,9 +287,10 @@ namespace NFluent
                     return this.wrapped.MoveNext();
                 }
 
+                [ExcludeFromCodeCoverage]
                 public void Reset()
                 {
-                   this.wrapped.Reset();
+                    throw new NotImplementedException();
                 }
 
                 public T Current => (T) this.wrapped.Current;

@@ -195,17 +195,13 @@ namespace NFluent.Messages
             {
                 this.nameBuilder = other.nameBuilder;
             }
-            if (this.EntityType == null)
-            {
-                this.EntityType = other.EntityType;
-            }
+
+            this.EntityType ??= other.EntityType;
         }
 
         internal EntityNamingLogic Clone()
         {
-            var result = new EntityNamingLogic();
-            result.EntityType = this.EntityType;
-            result.nameBuilder = this.nameBuilder;
+            var result = new EntityNamingLogic {EntityType = this.EntityType, nameBuilder = this.nameBuilder};
             return result;
         }
     }

@@ -235,12 +235,12 @@ namespace NFluent.Extensibility
         /// The index to highlight.
         /// </param>
         /// <returns>The created MessageBlock.</returns>
-        public MessageBlock WithGivenValues<T>(T givenValue, long? index = null)
+        public MessageBlock WithGivenValues<T>(T givenValue, long index)
         {
             this.expectedNamingLogic.SetPlural();
             this.expectedNamingLogic.EntityType = null;
             this.expectedLabel = GenericLabelBlock.BuildGivenBlock(this.expectedNamingLogic);
-            this.expectedBlock = MessageBlock.Build(this, givenValue, this.expectedLabel, index ?? -1, true);
+            this.expectedBlock = MessageBlock.Build(this, givenValue, this.expectedLabel, index, true);
             return this.expectedBlock;
         }
 

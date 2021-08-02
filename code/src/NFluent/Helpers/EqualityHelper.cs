@@ -18,7 +18,6 @@ namespace NFluent.Helpers
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 #if DOTNET_45
@@ -241,7 +240,7 @@ namespace NFluent.Helpers
 
         internal static DifferenceDetails FluentEquals<TS, TE>(TS sut, TE expected, EqualityMode mode, IEqualityComparer comparer = null)
         {
-            var result = DifferenceDetails.DoesNotHaveExpectedValue("sut", sut, expected, 0);
+            var result = DifferenceDetails.DoesNotHaveExpectedValue("sut", sut, expected, 0, 0);
             if (comparer != null)
             {
                 return !comparer.Equals(expected, sut) ? result : null;

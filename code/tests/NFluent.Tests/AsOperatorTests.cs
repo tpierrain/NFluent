@@ -48,6 +48,16 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldSupportWhich()
+        {
+            Check.ThatCode( () => Check.That(42).As("answer").IsInstanceOf<int>().Which.Not.IsEqualTo(42))
+                .IsAFailingCheckWithMessage("",
+                    "The checked [answer] is equal to the given one whereas it must not.",
+                    "The expected [answer]: different from",
+                    "\t[42] of type: [int]");
+        }
+
+        [Test]
         public void
             ShouldOfferCustomMessage()
         {

@@ -17,6 +17,7 @@ namespace NFluent.Helpers
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     internal class DictionaryWrapper<TK, TV, TKSource, TVSource> 
         : IReadOnlyDictionary<TK, TV>
@@ -124,9 +125,10 @@ namespace NFluent.Helpers
                 return this.keyEnumerator.MoveNext();
             }
 
+            [ExcludeFromCodeCoverage]
             public void Reset()
             {
-                this.keyEnumerator.Reset();
+                throw new NotImplementedException();
             }
 
             public KeyValuePair<TK, TV> Current => new KeyValuePair<TK, TV>((TK)this.keyEnumerator.Key, (TV)this.keyEnumerator.Value);

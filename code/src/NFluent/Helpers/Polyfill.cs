@@ -14,7 +14,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 #if DOTNET_35
-namespace System.Diagnostics
+namespace System.Diagnostics.CodeAnalysis
 {
     /// <summary>
     /// Place holder for 
@@ -22,18 +22,15 @@ namespace System.Diagnostics
     [AttributeUsage(AttributeTargets.All)]
     public class ExcludeFromCodeCoverageAttribute : Attribute
     {
-
     }
 }
 #endif
 
 namespace NFluent
 {
-    using System;
+#if DOTNET_35
     using System.Collections.Generic;
     using System.Linq;
-
-#if DOTNET_35
     /// <summary>
     /// Delegates that has a return value and takes one parameter.
     /// </summary>
@@ -99,7 +96,6 @@ namespace NFluent
         TValue this[TKey key] { get; }
         IEnumerable<TKey> Keys {  get; }
         IEnumerable<TValue> Values { get; }
-
     }
 #endif
 }

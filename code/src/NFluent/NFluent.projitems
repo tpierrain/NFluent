@@ -20,7 +20,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\MessageOption.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\AggregatedDifference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeOffsetRangeBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeRangeBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DictionaryWrapper.cs" />

@@ -62,14 +62,14 @@ namespace NFluent.Tests
             Check.ThatCode(() => Check.That(new[] {1, 2, 3, 4}).IsEqualTo(array)).
                 IsAFailingCheckWithMessage("", 
                     "The checked enumerable is different from the expected one. 4 differences found! But they are equivalent.", 
-                    "actual[2] value ('3') was found at index 1 instead of 2.", 
-                    "actual[2] value ('2') was found at index 2 instead of 1.", 
-                    "actual[3] value ('4') was found at index 0 instead of 3.", 
-                    "actual[3] value ('1') was found at index 3 instead of 0.", 
+                    "actual[0] value ('1') was found at index 0 instead of 3.", 
+                    "actual[1] value ('2') was found at index 1 instead of 2.", 
+                    "actual[2] value ('3') was found at index 2 instead of 1.", 
+                    "actual[3] value ('4') was found at index 3 instead of 0.", 
                     "The checked enumerable:", 
-                    "\t{1,*2*,3,4} (4 items)", 
+                    "\t{*1*,2,3,4} (4 items)", 
                     "The expected enumerable:", 
-                    "\t{4,*3*,2,1} (4 items)");
+                    "\t{4,3,2,*1*} (4 items)");
         }
 
         [Test]
@@ -218,8 +218,8 @@ namespace NFluent.Tests
         {
             var array = new[] {new []{1, 2, 3}, new []{4, 5, 6}};
             var altArray = new[] {new []{4, 5, 6}, new []{1, 2, 3}};
-//            Check.That((IEnumerable)array).IsEquivalentTo(altArray);
-//            Check.That((IEnumerable)array).IsEquivalentTo( new []{4, 5, 6}, new []{1, 3, 2});
+            Check.That((IEnumerable)array).IsEquivalentTo(altArray);
+            Check.That((IEnumerable)array).IsEquivalentTo( new []{4, 5, 6}, new []{1, 3, 2});
             Check.That((IEnumerable)array).IsEquivalentTo( new []{1, 3, 2}, new []{5, 4, 6});
         }
         
@@ -244,6 +244,21 @@ namespace NFluent.Tests
             Check.That(dictOf3_B).IsEquivalentTo(customDico); 
 #endif
         }
+
+#if !DOTNET_35
+        [Test]
+        public void IsEquivalentGeneratesCorrectErrorMessage()
+        {
+            var dictOf3_A = new Dictionary<string, string> { { "aa", "AA" }, { "bb", "BB" }, { "cc", "CC" } };
+            var dictOf3_B = new Dictionary<string, string> { { "cc", "CC" }, { "aa", "AB" }, { "bb", "BB" } };
+            var dictOf2 = new Dictionary<string, string> { { "cc", "CC" }, { "bb", "BB" } };
+
+            var dictOf2Dict_A = new Dictionary<string, Dictionary<string, string>> { { "key1", dictOf2 }, { "key2", dictOf3_A } };
+            var dictOf2Dict_C = new Dictionary<string, IReadOnlyDictionary<string, string>> { { "key1", new RoDico(dictOf2)} , { "key2", new RoDico(dictOf3_B) } };
+            Check.ThatCode(
+                () => Check.That(dictOf2Dict_A).IsEquivalentTo(dictOf2Dict_C)).IsAFailingCheck();
+        }
+#endif
 
         [Test]
         public void CheckIsEquivalentOnNestedEquivalentEnumerable()

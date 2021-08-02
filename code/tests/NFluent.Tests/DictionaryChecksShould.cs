@@ -15,16 +15,14 @@
 
 namespace NFluent.Tests
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using Helpers;
 #if !DOTNET_35
-    using System.Collections.ObjectModel;
+    using SutClasses;
 #endif
     using NFluent.Helpers;
     using NUnit.Framework;
-    using SutClasses;
 
     [TestFixture]
     public class DictionaryChecksShould
@@ -227,7 +225,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void FailsOnHastable()
+        public void FailsOnHashtable()
         {
             var basic = new Hashtable {["foo"] = "bar"};
             Check.ThatCode(()=>
@@ -333,48 +331,48 @@ namespace NFluent.Tests
         public void IsEqualToFailsOnDifference()
         {
             // just change the order
-            var expected = new Dictionary<string, int> { ["bar"] = 1,  ["foo"] = 0 };
-            Check.ThatCode( () =>
-            Check.That(new Dictionary<string, int> { ["foo"] = 1, ["bar"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+            var expected = new Dictionary<string, int> { ["bar"] = 1,  ["foo"] = 0, ["fizz"] = 3};
+            /*Check.ThatCode( () =>
+            Check.That(new Dictionary<string, int> { ["foo"] = 1, ["bar"] = 1, ["fizz"] = 3 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 
                 "actual[\"foo\"] = 1 instead of 0.", 
                 "The checked dictionary:", 
-                "\t{*[foo, 1]*,[bar, 1]} (2 items)", 
+                "\t{*[foo, 1]*,[bar, 1],[fizz, 3]} (3 items)", 
                 "The expected dictionary:", 
-                "\t{[bar, 1],*[foo, 0]*} (2 items)");
+                "\t{[bar, 1],*[foo, 0]*,[fizz, 3]} (3 items)");
             Check.ThatCode( () =>
-            Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo"] = 1 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+            Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo"] = 1, ["fizz"] = 3}).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 
                 "actual[\"foo\"] = 1 instead of 0.",
                 "The checked dictionary:", 
-                "\t{[bar, 1],[foo, 1]} (2 items)", 
+                "\t{[bar, 1],*[foo, 1]*,[fizz, 3]} (3 items)", 
                 "The expected dictionary:", 
-                "\t{[bar, 1],[foo, 0]} (2 items)");
+                "\t{[bar, 1],*[foo, 0]*,[fizz, 3]} (3 items)");
             Check.ThatCode( () =>
-            Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo!"] = 0 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+            Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo!"] = 0, ["fizz"] = 3}).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one. 2 differences found!", 
                 "actual's key \"foo!\" should not exist (value 0).",
                 "actual key[1] = \"foo!\" instead of \"foo\".",
                 "The checked dictionary:",
-                "\t{[bar, 1], [foo!, 0]} (2 items)",
+                "\t{[bar, 1],*[foo!, 0]*,[fizz, 3]} (3 items)",
                 "The expected dictionary:", 
-                "\t{[bar, 1], [foo, 0]} (2 items)");
+                "\t{[bar, 1],[foo, 0],[fizz, 3]} (3 items)");*/
             Check.ThatCode( () =>
-            Check.That(new Dictionary<string, int> { ["bar"] = 1}).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+            Check.That(new Dictionary<string, int> { ["bar"] = 1, ["fizz"] = 3}).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 
                 "actual[\"foo\"] does not exist. Expected [\"foo\"]= 0.", 
                 "The checked dictionary:", 
-                "\t{[bar, 1]} (1 item)", 
+                "\t{[bar, 1],[fizz, 3]} (2 items)", 
                 "The expected dictionary:", 
-                "\t{[bar, 1], [foo, 0]} (2 items)");
+                "\t{[bar, 1],*[foo, 0]*,[fizz, 3]} (3 items)");
             Check.ThatCode( () =>
-                Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo"] = 0, ["extra"] = 2 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
+                Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo"] = 0, ["fizz"] = 3, ["extra"] = 2 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 
                 "actual[\"extra\"] should not exist (value 2).",
                 "The checked dictionary:", 
-                "\t{[bar, 1], [foo, 0], [extra, 2]} (3 items)", 
+                "\t{[bar, 1],[foo, 0],[fizz, 3],*[extra, 2]*} (4 items)", 
                 "The expected dictionary:", 
-                "\t{[bar, 1], [foo, 0]} (2 items)");
+                "\t{[bar, 1],[foo, 0],[fizz, 3]} (3 items)");
         }
 
         [Test]
@@ -384,13 +382,8 @@ namespace NFluent.Tests
             dico["first"] = dico;
             var expectedDico = new Dictionary<string, object>();
             expectedDico["first"] = expectedDico;
-
-            Check.ThatCode(() => Check.That(dico).IsEqualTo(expectedDico)).IsAFailingCheckWithMessage("",
-                "The checked dictionary is different from the expected one.", 
-                "The checked dictionary:", 
-                "\t{[first, System.Collections.Generic.Dictionary`2[System.String,System.Object]]} (1 item)", 
-                "The expected dictionary:", 
-                "\t{[first, System.Collections.Generic.Dictionary`2[System.String,System.Object]]} (1 item)");
+            // this used to fail (as a precaution against infinite recursion, but it has been properly implemented in V3.
+            Check.That(dico).IsEqualTo(expectedDico);
         }
 
         [Test]
@@ -402,8 +395,8 @@ namespace NFluent.Tests
                 Check.That(dictionary).IsEqualTo(new Dictionary<int, int[]> {[0] = new[] {1, 2, 3}})).
                 IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one. 2 differences found! But they are equivalent.", 
-                "actual[2] value ('2') was found at index 1 instead of 2.", 
-                "actual[2] value ('3') was found at index 2 instead of 1.", 
+                "actual[0][1] value ('3') was found at index 1 instead of 2.", 
+                "actual[0][2] value ('2') was found at index 2 instead of 1.", 
                 "The checked dictionary:", 
                 "\t{[0, System.Int32[]]} (1 item)", 
                 "The expected dictionary:", 
@@ -500,26 +493,39 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void IsIsEquivalentFailsWithProperErrorMessage()
+        public void IsIsEquivalentFailsWithProperErrorMessageWhenWrongKey()
         {
             var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
             Check.ThatCode(() =>
                 Check.That(new Dictionary<string, object> { ["bar"] = new[] { "bar", "baz" } }).IsEquivalentTo(expected)).IsAFailingCheckWithMessage(
                 "", 
                 "The checked dictionary is not equivalent to the expected one.",
-                "actual's key \"bar\" value should not exist (value {\"bar\",\"baz\"})",
+                "[\"bar\"]= {\"bar\",\"baz\"} should not exist (found in actual); [\"foo\"]= {\"bar\",\"baz\"} should be found instead.",
                 "The checked dictionary:", 
                 "\t{[bar, System.String[]]} (1 item)", 
                 "The expected dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)");
+        }
+
+        [Test]
+        public void IsIsEquivalentFailsWithProperErrorMessageWithWrongVal()
+        {
+            var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
             Check.ThatCode(() =>
                 Check.That(new Dictionary<string, object> { ["foo"] = new[] { "bar", "bar" } }).IsEquivalentTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is not equivalent to the expected one.", 
-                "\"bar\" should not exist (found in actual[1]); \"baz\" should be found instead.",
+                "\"bar\" should not exist (found in actual[\"foo\"][1]); \"baz\" should be found instead.",
                 "The checked dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)", 
                 "The expected dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)");
+        }
+
+        [Test]
+        public void IsIsEquivalentFailsWithProperErrorMessageWhenEmptySut()
+        {
+            var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
+
             // added due to GH #307
             Check.ThatCode(() =>
                 Check.That(expected).IsEquivalentTo(new Dictionary<string, object>())).IsAFailingCheckWithMessage("", 
@@ -529,6 +535,13 @@ namespace NFluent.Tests
                 "\t{[foo, System.String[]]} (1 item)", 
                 "The expected dictionary:", 
                 "\t{} (0 item)");
+        }
+
+        [Test]
+        public void IsIsEquivalentFailsWithProperErrorMessageWhenSutIsNull()
+        {
+            var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
+
             Check.ThatCode(() =>
                 Check.That((IDictionary<string, object>) null).IsEquivalentTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is null whereas it should not.", 
@@ -536,6 +549,13 @@ namespace NFluent.Tests
                 "\t[null]", 
                 "The expected dictionary:",
                 "\t{[foo, System.String[]]} (1 item)");
+
+        }
+
+        [Test]
+        public void IsIsEquivalentFailsWithProperErrorMessageWhenExpectedIsNull()
+        {
+            var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
             Check.ThatCode(() =>
                 Check.That(new Dictionary<string, object> { ["foo"] = new[] { "bar", "bar" } }).IsEquivalentTo((IDictionary<string, object>)null)).IsAFailingCheckWithMessage(
                 "", 
