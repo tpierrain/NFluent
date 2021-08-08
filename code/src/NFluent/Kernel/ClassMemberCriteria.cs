@@ -32,6 +32,7 @@ namespace NFluent.Kernel
 
         public void CaptureFields()
         {
+            // Stryker disable once Unary: Mutation does not alter behaviour
             this.BindingFlagsForFields |= this.GetBindingFlags();
         }
 
@@ -44,6 +45,7 @@ namespace NFluent.Kernel
         public void CaptureProperties()
 
         {
+            // Stryker disable once Unary: Mutation does not alter behaviour
             this.BindingFlagsForProperties |= this.GetBindingFlags();
         }
 

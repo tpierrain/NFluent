@@ -43,8 +43,8 @@ namespace NFluent
                     foreach (var content in context.OriginalComparand)
                     {
                         var firstIndex = sut.IndexOf(content, StringComparison.Ordinal);
-                        var lastIndexOf = sut.LastIndexOf(content, StringComparison.Ordinal);
-                        if (firstIndex != lastIndexOf)
+                        var lastIndexOf = sut.IndexOf(content, firstIndex+1, StringComparison.Ordinal);
+                        if (lastIndexOf != -1)
                         {
                             test.Fail(
                                 $"The {{0}} contains {content.ToStringProperlyFormatted().DoubleCurlyBraces()} at {firstIndex} and {lastIndexOf}, where as it must contains it once.");
@@ -82,6 +82,7 @@ namespace NFluent
                         }
 
                         test.Fail("The {0} does not contain the expected strings in the correct order.");
+                        // Stryker disable once Statement: Mutation does not alter behaviour
                         return;
                     }
                 }).

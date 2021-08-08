@@ -17,7 +17,8 @@ You can also use `RegisterLocalComparer` to limit its usage to a declaration sco
 
 ## Breaking changes
 * Equality logic changed for `IDictionary`: dictionaries are considered equals if they have the same keys and
-the same values for each key. In NFluent V2, they were considered as **different** but **equivalent**.
+the same values for each key. In NFluent V2, entries needed to be declared in the some order or else they were considered as **different** but **equivalent**.
+* You need to specify
 * `IsAnInstanceOf<nullableType>(null)` now fails (with an appropriate message). Previously, it did succeed. But,
 as captured in issue #68, this behavior was triggered by a bug and kept due to a poor error message when fixed.
 * The `IStructCheck<T>` interface has been removed as well as associated extensibility helper. Those were dedicated

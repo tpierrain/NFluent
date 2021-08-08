@@ -111,20 +111,11 @@ namespace NFluent
                     var index = 0;
                     foreach (var value in values)
                     {
-                        match = true;
-                        foreach (var memberMatch in sut.MemberMatches(value))
-                        {
-                            if (memberMatch.DoValuesMatches)
-                            {
-                                continue;
-                            }
-
-                            match = false;
-                            break;
-                        }
+                        match = sut.MemberMatches(value).All(memberMatch => memberMatch.DoValuesMatches);
 
                         if (match)
                         {
+                            // Stryker disable once Unary: Mutation does not alter behaviour
                             test.SetValuesIndex(-1, index);
                             break;
                         }
@@ -183,7 +174,6 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .Analyze((sut, test) =>
                 {
-                    sut.MemberMatches(expected);
                     foreach (var match in sut.MemberMatches(expected))
                     {
                         if (!match.ExpectedFieldFound)
@@ -221,7 +211,6 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .Analyze((sut, test) =>
                 {
-                    sut.MemberMatches(expected);
                     foreach (var match in sut.MemberMatches(expected))
                     {
                         if (!match.ExpectedFieldFound)

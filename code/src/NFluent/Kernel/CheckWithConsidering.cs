@@ -20,18 +20,11 @@ namespace NFluent.Kernel
     internal class CheckWithConsidering: FluentCheck<ReflectionWrapper>, ICheckPlusAnd, IMembersSelection
     {
         public CheckWithConsidering(ReflectionWrapper value, bool negated) : base(value, negated)
-        {
-        }
+        {}
 
         /// <inheritdoc />
-        public IFieldsOrProperties Public
-        {
-            get
-            {
-                this.Value.Criteria.SetPublic();
-                return this;
-            }
-        }
+        /// <remarks>Public is by default</remarks>
+        public IFieldsOrProperties Public => this;
 
         /// <inheritdoc />
         public IFieldsOrProperties NonPublic

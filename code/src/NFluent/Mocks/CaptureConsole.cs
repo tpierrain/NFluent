@@ -54,6 +54,7 @@ namespace NFluent.Mocks
         }
 
         /// <inheritdoc />
+        // Stryker disable once Statement: Can't cover dispose mutations
         public void Dispose()
         {
             Console.SetOut(this.oldOut);

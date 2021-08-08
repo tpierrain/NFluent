@@ -111,13 +111,13 @@ namespace NFluent.Tests
         [Test]
         public void ContainsOnceFailsProperly()
         {
-            Check.ThatCode(() => { Check.That("abcdefghijklmnopqrstuvwxylmnopz").Contains("lmnop").Once(); })
+            Check.ThatCode(() => { Check.That("abcdefghijklmnopqrstuvwxylmnopzlmnop").Contains("lmnop", "op").Once(); })
                 .IsAFailingCheckWithMessage("",
                     "The checked string contains \"lmnop\" at 11 and 25, where as it must contains it once.",
                     "The checked string:",
-                    "\t[\"abcdefghijklmnopqrstuvwxylmnopz\"]",
+                    "\t[\"abcdefghijklmnopqrstuvwxylmnopzlmnop\"]",
                     "The expected value(s): once",
-                    "\t{\"lmnop\"} (1 item)");
+                    "\t{\"lmnop\",\"op\"} (2 items)");
         }
 
         [Test]

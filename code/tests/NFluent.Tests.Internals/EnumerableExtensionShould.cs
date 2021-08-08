@@ -33,11 +33,6 @@ namespace NFluent.Tests
             Check.That(iterator).IsNotNull();
             Check.That(iterator.MoveNext()).IsTrue();
             Check.That(iterator.Current).IsEqualTo(1);
-            iterator.Reset();
-
-            Check.That(iterator.MoveNext()).IsTrue();
-            Check.That(iterator.Current).IsEqualTo(1);
-
             Check.That(((IEnumerator) iterator).Current).IsEqualTo(1);
 
             iterator.Dispose();

@@ -82,6 +82,7 @@ namespace NFluent.Messages
         /// </summary>
         public static void ClearDefaultNameCache()
         {
+            // Stryker disable once Statement: Mutation does not alter behaviour
             NamingCache.Clear();
         }
 

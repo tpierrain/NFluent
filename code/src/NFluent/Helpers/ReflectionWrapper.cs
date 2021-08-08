@@ -38,7 +38,8 @@ namespace NFluent.Helpers
         ///     The auto property mask.
         /// </summary>
         private static readonly Regex AutoPropertyMask;
-        private readonly string labelPattern = string.Empty;
+
+        private readonly string labelPattern;
         private readonly string prefix = string.Empty;
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace NFluent.Helpers
 
         internal ClassMemberCriteria Criteria { get; set; }
 
-        internal string MemberLabel => string.Format(this.labelPattern, this.MemberLongName);
+        internal string MemberLabel => this.labelPattern == null ? this.MemberLongName : string.Format(this.labelPattern, this.MemberLongName);
 
         internal object Value { get; }
 
@@ -150,6 +151,7 @@ namespace NFluent.Helpers
 
             if (!scanField(this, depth))
             {
+                // Stryker disable once Statement: Mutation does not alter behaviour
                 return;
             }
 

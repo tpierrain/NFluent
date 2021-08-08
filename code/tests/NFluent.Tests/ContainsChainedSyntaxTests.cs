@@ -53,6 +53,8 @@ namespace NFluent.Tests
             Check.That(this.tresAmigos).Contains("un", "un", "dos", "tres").InThatOrder();
             Check.That(this.tresAmigos).Contains("dos", "tres").InThatOrder();
             Check.That((IEnumerable)this.tresAmigos).Contains("dos", "tres").InThatOrder();
+
+            Check.ThatCode(()=> Check.That((IEnumerable) this.tresAmigos).Contains("tres", "dos").InThatOrder()).IsAFailingCheck();
         }
 
         [Test]
@@ -119,7 +121,9 @@ namespace NFluent.Tests
         {
             Check.That(this.tresAmigos).Contains(this.tresAmigos).Once();
             Check.That((IEnumerable) this.tresAmigos).Contains(this.tresAmigos).Once();
-            Check.That((IEnumerable) this.tresAmigos).Contains(new[] { "un", "dos", "tres" }).Once();
+            Check.That((IEnumerable) this.tresAmigos).Contains("un", "dos", "tres").Once();
+            Check.ThatCode( ()=>
+            Check.That((IEnumerable) new[] { "un", "dos", "dos", "tres" }).Contains("un", "dos", "tres").Once()).IsAFailingCheck();
         }
 
         [Test]
@@ -153,7 +157,7 @@ namespace NFluent.Tests
         [Test]
         public void ContainsOnceFails()
         {
-            var tresAmigosAndMore = new[] { "un", "dos", "tres", "tres" };
+            var tresAmigosAndMore = new[] { "un", "dos", "tres", "tres", "dos" };
             Check.ThatCode(() =>
             {
                 Check.That(tresAmigosAndMore).Contains(this.tresAmigos).Once();
@@ -161,7 +165,7 @@ namespace NFluent.Tests
             .IsAFailingCheckWithMessage("",
                     "The checked enumerable has extra occurrences of the expected items. Item [\"tres\"] at position 3 is redundant.",
                     "The checked enumerable:",
-                    "\t{\"un\",\"dos\",\"tres\",*\"tres\"*} (4 items)",
+                    "\t{\"un\",\"dos\",\"tres\",*\"tres\"*,\"dos\"} (5 items)",
                     "The expected enumerable: once of",
                     "\t{\"un\",\"dos\",\"tres\"} (3 items)");
         }

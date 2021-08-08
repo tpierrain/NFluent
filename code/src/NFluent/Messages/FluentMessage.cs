@@ -240,7 +240,7 @@ namespace NFluent.Extensibility
             this.expectedNamingLogic.SetPlural();
             this.expectedNamingLogic.EntityType = null;
             this.expectedLabel = GenericLabelBlock.BuildGivenBlock(this.expectedNamingLogic);
-            this.expectedBlock = MessageBlock.Build(this, givenValue, this.expectedLabel, index, true);
+            this.expectedBlock = MessageBlock.Build(this, givenValue, this.expectedLabel, index);
             return this.expectedBlock;
         }
 

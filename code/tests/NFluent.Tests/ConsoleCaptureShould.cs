@@ -4,6 +4,7 @@
 namespace NFluent.Tests
 {
     using System;
+    using System.IO;
     using Mocks;
 
     [TestFixture]

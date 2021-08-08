@@ -141,7 +141,7 @@ namespace NFluent
         {
             var orderedList = new List<T>(check.OriginalComparand);
             var checker = ExtensibilityHelper.BeginCheck(check.AccessCheck);
-                ImplementInThatOrder(checker, orderedList);
+            ImplementInThatOrder(checker, orderedList);
             return check;
         }
 
@@ -158,7 +158,7 @@ namespace NFluent
         {
             var orderedList = new List<object>(check.OriginalComparand.Cast<object>());
             var checker = ExtensibilityHelper.BeginCheckAs(check.AccessCheck, enumerable => enumerable.Cast<object>());
-                ImplementInThatOrder(checker, orderedList);
+            ImplementInThatOrder(checker, orderedList);
             return check;
         }
 

@@ -125,7 +125,7 @@ namespace NFluent.Helpers
 
         private static DifferenceDetails AnonymousTypeDifference<TA, TE>(TA actual, string firstname, TE expected, Type type)
         {
-            var criteria = new ClassMemberCriteria(BindingFlags.Instance);
+            var criteria = new ClassMemberCriteria(BindingFlags.Instance|BindingFlags.Public);
             criteria.CaptureProperties();
             criteria.CaptureFields();
             // use field based comparison

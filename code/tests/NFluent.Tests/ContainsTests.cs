@@ -121,7 +121,8 @@ namespace NFluent.Tests
         {
             var integers = new List<int> { 1, 2, 3, 1974 };
             IEnumerable<int> expected = new List<int> { 3, 2, 1 , 4};
-            Check.That(integers).Not.Contains(expected);
+            Check.ThatCode(()=>
+                Check.That(integers).Contains(expected)).IsAFailingCheck();
         }
 
         [Test]

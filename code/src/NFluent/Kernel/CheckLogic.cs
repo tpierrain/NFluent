@@ -141,6 +141,7 @@ namespace NFluent.Kernel
             }
 
             this.lastError = error;
+            // Stryker disable once Unary: Mutation does not alter behaviour
             this.options |= options;
             return this;
         }
@@ -157,11 +158,6 @@ namespace NFluent.Kernel
                 sut => string.IsNullOrEmpty(propertyName) ? sut.SutName.EntityName : $"{sut.SutName.EntityName}'s {propertyName}");
             var result = new CheckLogic<TU>(sutWrapper);
 
-            if (this.cannotBetNegated)
-            {
-                result.SetNotNegatable(this.negatedError);
-            }
-
             result.parentFailed = this.failed;
             result.parentNegatedFailed = this.negatedFailed;
             result.parent = this;
@@ -173,7 +169,9 @@ namespace NFluent.Kernel
         public void EndCheck()
         {
             if (this.parentFailed)
+            {
                 this.parent.EndCheck();
+            }
 
             if (this.child != null && !this.IsNegated && !this.failed)
             {

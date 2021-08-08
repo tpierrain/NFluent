@@ -65,10 +65,12 @@ namespace NFluent.Tests
         [Test]
         public void CanDeclareLocalCustomComparer()
         {
+            Check.That(new ObjectRelatedTest()).Not.IsEqualTo(new ObjectRelatedTest());
             using (Check.RegisterLocalComparer<ObjectRelatedTest>(new NoOpComparer(true)))
             {
                 Check.That(new ObjectRelatedTest()).IsEqualTo(new ObjectRelatedTest());
             }
+            Check.That(new ObjectRelatedTest()).Not.IsEqualTo(new ObjectRelatedTest());
         }
 
         private interface IForTest

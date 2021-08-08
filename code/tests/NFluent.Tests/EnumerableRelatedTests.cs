@@ -754,13 +754,13 @@ namespace NFluent.Tests
         public void IsSubSetOfFailsWhenExpected()
         {
             IEnumerable<string> randomWords = new List<string> { "yes", "foo"};
-            IEnumerable<string> expectedWords = new List<string> { "yes", "foo", "bar" };
+            IEnumerable<string> expectedWords = new List<string> { "yes", "foo", "bar" , "other" };
             Check.ThatCode(() =>
                 Check.That(expectedWords).IsSubSetOf(randomWords)).
                 IsAFailingCheckWithMessage("", 
                     "The checked enumerable contains \"bar\" which is absent from expected value(s).", 
                     "The checked enumerable:", 
-                    "\t{\"yes\",\"foo\",\"bar\"} (3 items)", 
+                    "\t{\"yes\",\"foo\",\"bar\",\"other\"} (4 items)", 
             "The expected value(s):", 
             "\t{\"yes\",\"foo\"} (2 items)");
         }

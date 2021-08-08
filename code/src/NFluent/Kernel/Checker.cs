@@ -79,7 +79,6 @@ namespace NFluent.Kernel
         public FluentMessage BuildShortMessage(string message)
         {
             var result = FluentMessage.BuildMessage(message);
-            result.For(typeof(T));
             return result;
         }
 

@@ -409,12 +409,12 @@ namespace NFluent
 
                             index = i;
                             item = scan.Current;
+                            // Stryker disable once Statement: Mutation does not alter behaviour
                             break;
                         }
                         if (!index.HasValue)
                         {
                             test.Fail("The {0} does not contain any element that matches the given predicate.");
-                            return;
                         }
                         label = $"element #{index}";
                     }
@@ -477,23 +477,22 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailIfNull("The {0} is null, whereas it must have one element.")
                 .Analyze((sut, test) =>
+                {
+                    using var enumerator = sut.GetEnumerator();
+                    if (!enumerator.MoveNext())
                     {
-                        using (var enumerator = sut.GetEnumerator())
+                        test.Fail("The {0} is empty, whereas it must have one element.");
+                    }
+                    else
+                    {
+                        item = enumerator.Current;
+                        if (enumerator.MoveNext())
                         {
-                            if (!enumerator.MoveNext())
-                            {
-                                test.Fail("The {0} is empty, whereas it must have one element.");
-                                return;
-                            }
-
-                            item = enumerator.Current;
-
-                            if (enumerator.MoveNext())
-                            {
-                                test.Fail("The {0} contains more than one element, whereas it must have one element only.");
-                            }
+                            test.Fail(
+                                "The {0} contains more than one element, whereas it must have one element only.");
                         }
-                    })
+                    }
+                })
                 .OnNegate("The {0} has exactly one element, whereas it should not.")
                 .EndCheck();
             
@@ -713,6 +712,7 @@ namespace NFluent
                         {
                             test.Fail($"The {{checked}} contains a duplicate item at position {store.Count}: [{entry}].");
                             test.SetValuesIndex(store.Count);
+                            // Stryker disable once Statement: Mutation does not alter behaviour
                             return;
                         }
 
@@ -741,6 +741,7 @@ namespace NFluent
                         if (entry == null)
                         {
                             test.Fail($"The {{checked}} contains a null item at position {index}.");
+                            // Stryker disable once Statement: Mutation does not alter behaviour
                             return;
                         }
 
@@ -770,6 +771,7 @@ namespace NFluent
                         if (!type.IsInstanceOfType(entry))
                         {
                             test.Fail($"The {{checked}} contains an entry of a type different from {type.Name} at position {index}.");
+                            // Stryker disable once Statement: Mutation does not alter behaviour
                             return;
                         }
 
@@ -842,7 +844,7 @@ namespace NFluent
 
             // Prepares the list to return
             var values = expectedValues as IList<object> ?? expectedValues.Cast<object>().ToList();
-            var notFoundValues = values.ToList();
+            var notFoundValues = new List<object>(values);
 
             var comparer = new EqualityHelper.EqualityComparer<object>();
 
@@ -856,6 +858,7 @@ namespace NFluent
                     }
 
                     notFoundValues.RemoveAll(one => comparer.Equals(one, expectedValue));
+                    // Stryker disable once Statement: Mutation does not alter behaviour
                     break;
                 }
             }

@@ -41,7 +41,7 @@ namespace NFluent.Helpers
                 .FailWhen(sut => ExceptionHelper.FailedExceptionType() != sut.GetTypeWithoutThrowingException(),
                     $"The exception raised is not of the expected type.")
                 .DefineExpectedType(ExceptionHelper.FailedExceptionType())
-                .CheckSutAttributes((sut) => sut.Message, "error message")
+                .CheckSutAttributes(sut => sut.Message, "error message")
                 .Analyze((message, test) =>
                 {
                     var messageLines = message.SplitAsLines();
@@ -123,9 +123,10 @@ namespace NFluent.Helpers
                 .FailWhen((sut) => ExceptionHelper.InconclusiveExceptionType() != sut.GetTypeWithoutThrowingException(),
                     $"The exception raised is not of the expected type.")
                 .DefineExpectedType(ExceptionHelper.InconclusiveExceptionType())
-                .CheckSutAttributes((sut) => sut.Message.SplitAsLines(), "error message")
-                .Analyze((messageLines, test) =>
+                .CheckSutAttributes(sut => sut.Message, "error message")
+                .Analyze((message, test) =>
                 {
+                    var messageLines = message.SplitAsLines();
                     var expectedLines = (criteria.Length == 1) ? criteria[0].SplitAsLines() : criteria;
                     for (var i = 0; i < expectedLines.Length; i++)
                     {
@@ -149,7 +150,7 @@ namespace NFluent.Helpers
                         test.Fail($"Too many lines in the error message starting at #{expectedLines.Length}");
                     }
                 }).
-                DefineExpectedValue(criteria).
+                DefineExpectedValue(string.Join(Environment.NewLine, criteria.Select(l => l.ToString()).ToArray())).
                 EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);

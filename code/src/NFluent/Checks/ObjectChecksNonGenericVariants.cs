@@ -103,12 +103,14 @@ namespace NFluent
                 .DefinePossibleTypes(types, "anything but", "")
                 .Analyze((sut, test) =>
                 {
+                    var sutType = sut.GetTypeWithoutThrowingException();
                     foreach (var type in types)
                     {
-                        if (sut.GetTypeWithoutThrowingException() == type)
+                        if (sutType == type)
                         {
                             test.Fail(
                                 $"The {{0}}'s type is [{type.ToStringProperlyFormatted()}] where as it must not.", MessageOption.WithType);
+                            // Stryker disable once Statement: Mutation does not alter behaviour
                             break;
                         }
                     }

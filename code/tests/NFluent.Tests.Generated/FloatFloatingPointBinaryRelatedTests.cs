@@ -37,7 +37,6 @@ namespace NFluent.Tests
         private const float InfiniteNumber = Twenty / Zero;
         private const float TwentyF = 20F;
 
-
         #region IsNaN
 
         [Test]

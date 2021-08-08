@@ -82,7 +82,7 @@ namespace NFluent.Tests
             var expected = new {TheProperty = 12};
             Check.ThatCode(() =>
             {
-                Check.That(sut).Considering().Properties.IsNoInstanceOfType(expected.GetType());
+                Check.That(sut).Considering().Public.Properties.IsNoInstanceOfType(expected.GetType());
             }).IsAFailingCheckWithMessage(
                     "", 
                     Criteria.FromRegEx("The checked value is an instance of \\[<>f__AnonymousType\\d<int>\\] whereas it must not\\."), 
@@ -468,6 +468,16 @@ namespace NFluent.Tests
             var sut = new SutClass(12, 13);
             Check.That(sut).Considering().Public.Properties.HasDifferentValueThan(new SutClass(11, 12));
         }
+        
+        [Test]
+        public void
+        WorkForHasNotSameValueWhenSame()
+        {
+            var sut = new SutClass(12, 13);
+            Check.ThatCode(value: () =>
+                Check.That(sut).Considering().Public.Properties.HasDifferentValueThan(new SutClass(12, 13))).
+                IsAFailingCheck();
+        }
 
         [Test]
         public void
@@ -476,6 +486,7 @@ namespace NFluent.Tests
             var sut = new SutClass(12, 13);
             Check.That(sut).Considering().Public.Properties.IsOneOf(new {TheProperty = 12}, new {TheProperty = 13});
         }
+
 
         [Test]
         public void
@@ -496,9 +507,20 @@ namespace NFluent.Tests
                 Check.That(sut).Considering().Public.Properties.IsOneOf();
             }).IsAFailingCheckWithMessage("", 
                 "The checked value is equal to none of the expected object whereas it should.", 
-                "The checked value:", "\t[{ TheProperty = 13 }]", 
+                "The checked value:", 
+                "\t[{ TheProperty = 13 }]", 
                 "The expected object: one of these", 
                 "\t{} (0 item)");
+            
+            Check.ThatCode(()=>
+            {
+                Check.That(sut).Considering().Public.Properties.And.Public.Fields.IsOneOf(new {TheProperty = 12, TheField = 12}, new {TheProperty = 13, TheField = 13});
+            }).IsAFailingCheckWithMessage("", 
+                "The checked value is equal to none of the expected object whereas it should.", 
+                "The checked value:", 
+                "\t[{ TheField = 12 , TheProperty = 13 }]", 
+                "The expected object: one of these", 
+                "\t{{ TheProperty = 12, TheField = 12 },{ TheProperty = 13, TheField = 13 }} (2 items)");
         }
 
         [Test]
@@ -508,12 +530,13 @@ namespace NFluent.Tests
             var sut = new SutClass(12, 13);
             Check.ThatCode(()=>
             {
-                Check.That(sut).Considering().Public.Properties.Not.IsOneOf(new {TheProperty = 12}, new {TheProperty = 13});
+                Check.That(sut).Considering().Public.Properties.Not.IsOneOf(new {TheProperty = 12}, new {TheProperty = 13}, new {TheProperty = 13});
             }).IsAFailingCheckWithMessage("", 
                 "The checked value is equal to one of the given value(s) whereas it should not.", 
-                "The checked value:", "\t[{ TheProperty = 13 }]", 
+                "The checked value:", 
+                "\t[{ TheProperty = 13 }]", 
                 "The expected object: none of these", 
-                "\t{{ TheProperty = 12 },*{ TheProperty = 13 }*} (2 items)");
+                "\t{{ TheProperty = 12 },*{ TheProperty = 13 }*,{ TheProperty = 13 }} (3 items)");
         }
 
         [Test]
@@ -597,6 +620,17 @@ namespace NFluent.Tests
                 "\t[System.Object]", 
                 "The expected value's property 'Property':",
                 "\t[null]");
+ 
+            Check.ThatCode(() =>
+            {
+                Check.That(new {Property = sharedReference, OtherProperty = sharedReference}).Considering().Public.Properties
+                    .IsSameReferenceAs(new {Property = (object) null, OtherProperty = (object) null});
+            }).IsAFailingCheckWithMessage("", 
+                "The checked value's property 'Property' does not reference the expected one.", 
+                "The checked value's property 'Property':", 
+                "\t[System.Object]", 
+                "The expected value's property 'Property':",
+                "\t[null]");
 
             Check.ThatCode(() =>
             {
@@ -628,8 +662,8 @@ namespace NFluent.Tests
                 .IsDistinctFrom(new {Property = new object()});
             Check.ThatCode(() =>
             {
-                Check.That(new {Property = sharedReference}).Considering().Public.Properties
-                    .IsDistinctFrom(new {Property = sharedReference});
+                Check.That(new {Property = sharedReference, OtherProperty = sharedReference}).Considering().Public.Properties
+                    .IsDistinctFrom(new {Property = sharedReference, OtherProperty = sharedReference});
             }).IsAFailingCheckWithMessage(
                 "", 
                 "The checked value's property 'Property' does reference the given one, whereas it should not.", 
@@ -741,6 +775,9 @@ namespace NFluent.Tests
         {
             Check.That(new { field = MockEqual.True()}).Considering().All.Fields.IsEqualTo(new { field = MockEqual.True()});
             Check.That(new { field = MockEqual.True()}).Considering().All.Fields.Equals(new { field = MockEqual.True()});
+            Check.ThatCode(()=>
+                Check.That(new { field = MockEqual.True()}).Considering().All.Fields.Equals(new { field = MockEqual.False()})).
+                IsAFailingCheck();
         }
         
         [Test]

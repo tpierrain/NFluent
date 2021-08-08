@@ -76,6 +76,7 @@ namespace NFluent.Helpers
                     return comparer;
                 }
 
+                // Stryker disable once Linq: Mutation does not alter behaviour
                 return searchType.GetInterfaces().Any(@interface => ComparerMap.TryGetValue(@interface, out comparer))
                     ? comparer
                     : FindComparer(searchType.GetTypeInfo().BaseType);
@@ -144,6 +145,7 @@ namespace NFluent.Helpers
                          && sut.GetType() != expected.GetType() 
                          && !(sut.GetType().IsNumerical() && expected.GetType().IsNumerical())))
                     {
+                        // Stryker disable once Assignment: Mutation does not alter behaviour
                         options |= MessageOption.WithType;
                     }
 
@@ -151,6 +153,7 @@ namespace NFluent.Helpers
                     if (sut != null && expected != null && sut.GetType() == expected.GetType()
                         && sut.ToStringProperlyFormatted() == expected.ToStringProperlyFormatted())
                     {
+                        // Stryker disable once Assignment: Mutation does not alter behaviour
                         options |= MessageOption.WithHash;
                     }
 

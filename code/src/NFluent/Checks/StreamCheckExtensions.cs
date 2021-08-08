@@ -53,6 +53,7 @@ namespace NFluent
 
                         test.Fail(
                             $"The {{0}} doesn't have the same content as the expected one (despite the fact that they have the same Length: {sut.Length}).");
+                        // Stryker disable once Statement: Mutation does not alter behaviour
                         break;
                     }
 

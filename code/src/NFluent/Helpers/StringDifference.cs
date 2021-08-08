@@ -118,11 +118,7 @@ namespace NFluent.Helpers
             while (index <=text.Length)
             {
                 var start = index;
-                if (index == text.Length)
-                {
-                    temp.Add(string.Empty);
-                    break;
-                }
+
                 index = text.IndexOf(Linefeed, start);
                 if (index < 0)
                 {
@@ -194,6 +190,7 @@ namespace NFluent.Helpers
                 else if (result != stringDifference.Kind)
                 {
                     result = DifferenceMode.General;
+                    // Stryker disable once Statement: Mutation does not alter behaviour
                     break;
                 }
             }
@@ -295,8 +292,6 @@ namespace NFluent.Helpers
             return str.Replace("\t", "<<tab>>");
         }
 
-        #region Static Methods
-
         private static StringDifference Build(int line, string actual, string expected, bool ignoreCase, bool isFullText)
         {
             if (actual == null)
@@ -368,17 +363,12 @@ namespace NFluent.Helpers
                 }
                 else if (StringExtensions.CompareCharIgnoringCase(actualChar, expectedChar))
                 {
-                    if (ignoreCase)
+                    if (ignoreCase || type == DifferenceMode.CaseDifference)
                     {
                         continue;
                     }
 
                     // difference in case only
-                    if (type == DifferenceMode.CaseDifference)
-                    {
-                        continue;
-                    }
-
                     type = DifferenceMode.CaseDifference;
                     position = i;
                 }
@@ -504,7 +494,5 @@ namespace NFluent.Helpers
 
             return message;
         }
-
-        #endregion
     }
 }

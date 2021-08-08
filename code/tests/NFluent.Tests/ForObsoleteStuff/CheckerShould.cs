@@ -58,6 +58,8 @@
             Check.ThatCode(() =>
             { checker.ExecuteCheck(() => { }, "should not fail").And.IsEqualTo(3);
             }).IsAFailingCheck();
+            Check.ThatCode(() => checker.ExecuteCheck(() => throw ExceptionHelper.BuildException("failed"), "dont care"))
+                .IsAFailingCheck();
         }
 
         [Test]

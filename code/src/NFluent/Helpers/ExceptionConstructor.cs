@@ -61,6 +61,7 @@ namespace NFluent.Helpers
 
             if (!assembly.FullName.ToLowerInvariant().Contains(this.assemblyNameBeginning))
             {
+                // Stryker disable once Statement: Mutation does not alter behaviour
                 return;
             }
 
