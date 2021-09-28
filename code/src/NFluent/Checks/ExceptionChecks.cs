@@ -44,7 +44,7 @@ namespace NFluent
                 .SetSutName("exception")
                 .CheckSutAttributes(sut =>  sut.Message, "message")
                 .FailWhen(sut => sut != exceptionMessage, "The {0} is not as expected.")
-                .DefineExpectedValue(exceptionMessage, "", "")
+                .DefineExpectedValue(exceptionMessage, "")
                 .EndCheck();
 
             return new CheckLink<ILambdaExceptionCheck<T>>(checker);
@@ -80,7 +80,7 @@ namespace NFluent
                 .FailWhen(_=> !found, $"There is no property [{propertyName}] on exception type [{typeof(T).Name}].", MessageOption.NoCheckedBlock)
                 .FailWhen(sut => !EqualityHelper.FluentEquals(sut, propertyValue),
                     "The {0} does not have the expected value.")
-                .DefineExpectedValue(propertyValue, "", "")
+                .DefineExpectedValue(propertyValue, "")
                 .EndCheck();
  
             return new CheckLink<ILambdaExceptionCheck<T>>(checker);
@@ -140,7 +140,7 @@ namespace NFluent
                 .CheckSutAttributes(sut => propertyExpression.Compile().Invoke(sut), $"property [{propertyName}]")
                 .FailWhen(sut => !EqualityHelper.FluentEquals(sut, propertyValue),
                     "The {0} does not have the expected value.")
-                .DefineExpectedValue(propertyValue, "", "")
+                .DefineExpectedValue(propertyValue, "")
                 .EndCheck();
             
             return new CheckLink<ILambdaExceptionCheck<T>>(checker);

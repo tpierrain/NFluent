@@ -404,7 +404,7 @@ namespace NFluent.Tests
         }
 
         [Test]
-        public void SupportIsEqualWithEnum()
+        public void SupportIsEqualWithEnumerable()
         {
             var expectedDico = new Dictionary<string, object>();
             expectedDico["first"] = expectedDico;
@@ -412,7 +412,7 @@ namespace NFluent.Tests
 
             Check.ThatCode(() => Check.That(sut).IsEqualTo(expectedDico)).IsAFailingCheckWithMessage("",
                 "The checked enumerable is different from the expected dictionary.",
-                "actual[0] = \"first\" instead of [first, System.Collections.Generic.Dictionary`2[System.String,System.Object]].", 
+                "\"first\" should not exist (found in actual[0]); [first, System.Collections.Generic.Dictionary`2[System.String,System.Object]] should be found instead.", 
                 "The checked enumerable:", 
                 "\t{\"first\"} (1 item) of type: [System.Collections.Generic.List<string>]", 
             "The expected dictionary:", 

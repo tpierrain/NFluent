@@ -155,7 +155,7 @@ namespace NFluent.Extensibility
         public MessageBlock On<T>(T test, long? index = null)
         {
             var theType = test.GetTypeWithoutThrowingException();
-            this.checkedBlock = MessageBlock.Build(this, test, this.checkedLabel, index??-1);
+            this.checkedBlock = MessageBlock.Build(this, test, this.checkedLabel, index ?? EnumerableExtensions.NullIndex);
             this.For(theType);
             this.checkedType = theType;
             return this.checkedBlock;
@@ -171,7 +171,7 @@ namespace NFluent.Extensibility
         /// </returns>
         public MessageBlock Expected<T>(T expected, long? index = null)
         {
-            this.expectedBlock = MessageBlock.Build(this, expected, this.expectedLabel, index ?? -1);
+            this.expectedBlock = MessageBlock.Build(this, expected, this.expectedLabel, index ?? EnumerableExtensions.NullIndex);
             this.For(expected.GetTypeWithoutThrowingException());
             return this.expectedBlock;
         }
@@ -185,7 +185,7 @@ namespace NFluent.Extensibility
         /// </returns>
         public MessageBlock ReferenceValues<T>(T expected)
         {
-            this.expectedBlock = MessageBlock.Build(this, expected, this.expectedLabel, -1);
+            this.expectedBlock = MessageBlock.Build(this, expected, this.expectedLabel, EnumerableExtensions.NullIndex);
             return this.expectedBlock;
         }
 
@@ -206,7 +206,7 @@ namespace NFluent.Extensibility
             this.expectedNamingLogic.SetPlural();
             this.expectedNamingLogic.EntityType = null;
             this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(this.expectedNamingLogic);
-            this.expectedBlock = MessageBlock.Build(this, expectedValues, this.expectedLabel, index??-1, true);
+            this.expectedBlock = MessageBlock.Build(this, expectedValues, this.expectedLabel, index ?? EnumerableExtensions.NullIndex, true);
             return this.expectedBlock;
         }
 
@@ -222,7 +222,7 @@ namespace NFluent.Extensibility
         public MessageBlock WithGivenValue<T>(T givenValue, long? index = null)
         {
             this.expectedLabel = GenericLabelBlock.BuildGivenBlock(this.expectedNamingLogic);
-            this.expectedBlock = MessageBlock.Build(this, givenValue, this.expectedLabel, index ?? -1);
+            this.expectedBlock = MessageBlock.Build(this, givenValue, this.expectedLabel, index ?? EnumerableExtensions.NullIndex);
             return this.expectedBlock;
         }
  

@@ -209,7 +209,7 @@ namespace NFluent.Tests
 
 
         [Test]
-        public void ContainsFailsWithTruncatedTextsForLargeArray()
+        public void IsEquivalentFailsWithTruncatedTextsForLargeArray()
         {
             const string expected = "this is some expected long text";
             const string actual = "this is some actual long text .";
@@ -217,12 +217,12 @@ namespace NFluent.Tests
                 Check.That(actual.ToCharArray()).IsEquivalentTo(expected.ToCharArray())
             ).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is not equivalent to the expected one. 6 differences found!", 
-                "'a' should not exist (found in actual[13]); 'p' should be found instead.", 
+                "'a' should not exist (found in actual[13]); 'x' should be found instead.", 
                 "'u' should not exist (found in actual[16]); 'e' should be found instead.", 
-                "'a' should not exist (found in actual[17]); 'e' should be found instead.", 
+                "'a' should not exist (found in actual[17]); 'p' should be found instead.", 
                 "'l' should not exist (found in actual[20]); 'd' should be found instead.", 
                 "' ' should not exist (found in actual[29]); 'e' should be found instead.",
-                "'.' should not exist (found in actual[30]); 'x' should be found instead.",
+                "'.' should not exist (found in actual[30]); 'e' should be found instead.",
                 "The checked enumerable:", 
                 "\t{'t','h','i','s',' ','i','s',' ','s','o','m','e',' ','a','c','t','u','a','l',' ',...} (31 items)", 
                 "The expected enumerable:", 

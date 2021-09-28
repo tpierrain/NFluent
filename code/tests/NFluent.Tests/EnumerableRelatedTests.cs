@@ -255,7 +255,7 @@ namespace NFluent.Tests
                     "",
                     "The checked enumerable is different from the expected one.",
                     "The checked enumerable:",
-                    "\t{*45*,43,54,666} (4 items)",
+                    "\t{45,43,54,666} (4 items)",
                     "The expected enumerable:",
                     "\t[null]");
         }

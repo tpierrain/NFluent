@@ -25,17 +25,17 @@ namespace NFluent.Helpers
     {
         private readonly DifferenceMode mode;
         private readonly DifferenceDetails[] subs;
-        private readonly long index;
-        private long actualIndex;
+        private readonly long expectedIndex;
+        private readonly long actualIndex;
 
-        private DifferenceDetails(string firstName, object firstValue, object secondValue, long index, long actualIndex, DifferenceMode mode, IEnumerable<DifferenceDetails> subs = null)
+        private DifferenceDetails(string firstName, object firstValue, object secondValue, long expectedIndex, long actualIndex, DifferenceMode mode, IEnumerable<DifferenceDetails> subs = null)
         {
             this.mode = mode;
             this.FirstName = firstName;
             this.FirstValue = firstValue;
             this.SecondValue = secondValue;
-            this.index = index;
-            this.ActualIndex = actualIndex;
+            this.expectedIndex = expectedIndex;
+            this.actualIndex = actualIndex;
             if (subs != null)
             {
                 this.subs = subs.ToArray();
@@ -57,17 +57,23 @@ namespace NFluent.Helpers
 
         public static DifferenceDetails WasNotExpected(string checkedName, object value, long index)
         {
-            return new(checkedName, value, null, -1, index, DifferenceMode.Extra);
+            return new DifferenceDetails(checkedName, value, null, EnumerableExtensions.NullIndex, index, DifferenceMode.Extra);
         }
 
         public static DifferenceDetails DoesNotHaveExpectedValue(string checkedName, object value, object expected, long sutIndex, long expectedIndex)
         {
-            return new(checkedName, value, expected, expectedIndex, sutIndex, DifferenceMode.Value);
+            return new DifferenceDetails(checkedName, value, expected, expectedIndex, sutIndex, DifferenceMode.Value);
         }
 
-        public static DifferenceDetails DoesNotHaveExpectedAttribute(string checkedName, object value, object expected, long index = -1)
+        public static DifferenceDetails IsDifferent(object value, object expected)
         {
-            return new(checkedName, value, expected, index, index, DifferenceMode.Attribute);
+            // Stryker disable once String: Mutation does not alter behaviour
+            return new DifferenceDetails(string.Empty, value, expected, EnumerableExtensions.NullIndex, EnumerableExtensions.NullIndex, DifferenceMode.Value);
+        }
+
+        public static DifferenceDetails DoesNotHaveExpectedAttribute(string checkedName, object value, object expected, long index = EnumerableExtensions.NullIndex)
+        {
+            return new DifferenceDetails(checkedName, value, expected, index, index, DifferenceMode.Attribute);
         }
 
         public static DifferenceDetails DoesNotHaveExpectedDetails(string checkedName, object value, object expected,
@@ -77,29 +83,29 @@ namespace NFluent.Helpers
             {
                 return null;
             }
-            return new(checkedName, value, expected, expectedIndex, actualIndex,DifferenceMode.Value, details);
+            return new DifferenceDetails(checkedName, value, expected, expectedIndex, actualIndex,DifferenceMode.Value, details);
         }
 
         public static DifferenceDetails DoesNotHaveExpectedDetailsButIsEquivalent(string checkedName, object value,
             object expected,
             long actualIndex, long expectedIndex, ICollection<DifferenceDetails> details)
         {
-            return new(checkedName, value, expected, expectedIndex, actualIndex, DifferenceMode.Equivalent, details);
+            return new DifferenceDetails(checkedName, value, expected, expectedIndex, actualIndex, DifferenceMode.Equivalent, details);
         }
 
         public static DifferenceDetails WasNotFound(string checkedName, object expected, long index)
         {
-            return new(checkedName, null, expected, index, -1, DifferenceMode.Missing);
+            return new DifferenceDetails(checkedName, null, expected, index, EnumerableExtensions.NullIndex, DifferenceMode.Missing);
         }
 
         public static DifferenceDetails WasFoundElseWhere(string checkedName, object value, long expectedIndex, long actualIndex)
         {
-            return new(checkedName, value, null, expectedIndex, actualIndex, DifferenceMode.Moved);
+            return new DifferenceDetails(checkedName, value, null, expectedIndex, actualIndex, DifferenceMode.Moved);
         }
 
-        public static DifferenceDetails WasFoundInsteadOf(string checkedName, object checkedValue, object expectedValue, long index = -1)
+        public static DifferenceDetails WasFoundInsteadOf(string checkedName, object checkedValue, object expectedValue, long checkedIndex = EnumerableExtensions.NullIndex, long expectedIndex = EnumerableExtensions.NullIndex)
         {
-            return new(checkedName, checkedValue, expectedValue, index, index, DifferenceMode.FoundInsteadOf);
+            return new DifferenceDetails(checkedName, checkedValue, expectedValue, expectedIndex, checkedIndex, DifferenceMode.FoundInsteadOf);
         }
 
         public static DifferenceDetails FromMatch(MemberMatch match)
@@ -119,12 +125,23 @@ namespace NFluent.Helpers
 
         public object SecondValue { get; internal set; }
 
-        public long Index => this.subs is {Length: > 0} ? this.subs[0].index : this.index;
+        public long Index => this.expectedIndex;
 
-        public long ActualIndex
+        public long ActualIndex => this.actualIndex;
+
+        public void GetFirstDifferenceIndexes(out long actual, out long expected)
         {
-            get => this.subs is { Length: > 0 } ? this.subs[0].actualIndex : this.actualIndex;
-            internal set => this.actualIndex = value;
+            if (this.subs == null || this.subs.Length == 0)
+            {
+                actual = this.actualIndex;
+                expected = this.expectedIndex;
+                return;
+            }
+
+            var firstDetail = this.subs.FirstOrDefault();
+
+            actual = firstDetail.ActualIndex;
+            expected = firstDetail.Index;
         }
 
         public DifferenceDetails WithoutEquivalenceErrors() => new(this.FirstName, this.FirstValue, this.SecondValue, this.Index, this.ActualIndex, this.mode, this.Details(false));
@@ -134,15 +151,14 @@ namespace NFluent.Helpers
             if (this.subs is {Length: > 0})
             {
                 return this.subs.
-                    SelectMany(s => s.Details(forEquivalence, false)).
-                    Where(d => (forEquivalence && d.StillNeededForEquivalence) || (!forEquivalence && d.StillNeededForEquality));
+                    //Where(d => (forEquivalence && (d.StillNeededForEquivalence || d.IsEquivalent()) ) || (!forEquivalence && d.StillNeededForEquality)).
+                    SelectMany(s => s.Details(forEquivalence, false));
             }
 
             if (firstLevel && this.mode == DifferenceMode.Value)
             {
                 return Enumerable.Empty<DifferenceDetails>();
             }
-
             return new[] {this};
         }
 
@@ -200,7 +216,7 @@ namespace NFluent.Helpers
                     ? $"{this.SecondValue.ToStringProperlyFormatted()} should be present but was not found."
                     : $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.",
                 DifferenceMode.Moved =>
-                $"{this.FirstName} value ('{this.FirstValue}') was found at index {this.ActualIndex} instead of {this.Index}.",
+                $"{this.FirstName} value ('{this.FirstValue}') was found at index {this.actualIndex} instead of {this.Index}.",
                 DifferenceMode.Attribute =>
                 $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.",
                 DifferenceMode.FoundInsteadOf =>

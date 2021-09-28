@@ -36,7 +36,7 @@ namespace NFluent.Helpers
         {
             ExtensibilityHelper.BeginCheck(check)
                 .SetSutName("fluent check")
-                .CheckSutAttributes((sut) => sut.RaisedException, "raised exception")
+                .CheckSutAttributes(sut => sut.RaisedException, "raised exception")
                 .FailIfNull("The check succeeded whereas it should have failed.")
                 .FailWhen(sut => ExceptionHelper.FailedExceptionType() != sut.GetTypeWithoutThrowingException(),
                     $"The exception raised is not of the expected type.")

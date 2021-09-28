@@ -132,7 +132,7 @@ namespace NFluent.Helpers
                     }
                     test.DefineExpectedValue(expected, modeLabel,
                             $"different from{negatedMode}");
-                    var differenceDetails = FluentEquals(sut, expected, mode, comparer);
+                    var differenceDetails = FluentEquals(sut, expected, mode, DifferenceFinders.Option.Detailed, comparer);
                     if (differenceDetails == null)
                     {
                         return;
@@ -157,7 +157,8 @@ namespace NFluent.Helpers
                         options |= MessageOption.WithHash;
                     }
 
-                    test.SetValuesIndex(differenceDetails.ActualIndex, differenceDetails.Index);
+                    differenceDetails.GetFirstDifferenceIndexes(out var actualIndex, out var expectedIndex);
+                    test.SetValuesIndex(actualIndex, expectedIndex);
 
                     test.Fail(differenceDetails.GetMessage(false), options);
                 })
@@ -170,7 +171,13 @@ namespace NFluent.Helpers
 
         internal static bool FluentEquals(object instance, object expected)
         {
-            return FluentEquals(instance, expected, Check.EqualMode) == null;
+            return FluentEquals(instance, expected, Check.EqualMode, DifferenceFinders.Option.Fast) == null;
+        }
+
+        internal static bool FluentEquivalent<TS, TE>(TS actual, TE expected)
+        {
+            var result = FluentEquals(actual, expected, Check.EqualMode, DifferenceFinders.Option.Equivalence);
+            return result == null || result.IsEquivalent();
         }
 
         private static void PerformEqualCheckDouble(ICheck<double> check, object val)
@@ -240,10 +247,9 @@ namespace NFluent.Helpers
                 .EndCheck();
         }
 
-
-        internal static DifferenceDetails FluentEquals<TS, TE>(TS sut, TE expected, EqualityMode mode, IEqualityComparer comparer = null)
+        private static DifferenceDetails FluentEquals<TS, TE>(TS sut, TE expected, EqualityMode mode, DifferenceFinders.Option option, IEqualityComparer comparer = null)
         {
-            var result = DifferenceDetails.DoesNotHaveExpectedValue("sut", sut, expected, 0, 0);
+            var result = DifferenceDetails.IsDifferent(sut, expected);
             if (comparer != null)
             {
                 return !comparer.Equals(expected, sut) ? result : null;
@@ -252,7 +258,7 @@ namespace NFluent.Helpers
             switch (mode)
             {
                 case EqualityMode.FluentEquals:
-                    return DifferenceFinders.ValueDifference(sut, SutLabel, expected);
+                    return DifferenceFinders.ValueDifference(sut, SutLabel, expected, option);
                 case EqualityMode.OperatorEq:
                 case EqualityMode.OperatorNeq:
                     var actualType = sut.GetTypeWithoutThrowingException();
@@ -313,7 +319,7 @@ namespace NFluent.Helpers
                         return;
                     }
 
-                    var scan = FluentEquals(sut, content, EqualityMode.FluentEquals);
+                    var scan = FluentEquals(sut, content, EqualityMode.FluentEquals, DifferenceFinders.Option.Detailed | DifferenceFinders.Option.Equivalence);
 
                     if ( scan == null || scan.IsEquivalent())
                     {

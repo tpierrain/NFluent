@@ -17,6 +17,7 @@ namespace NFluent.Extensions
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -57,7 +58,7 @@ namespace NFluent.Extensions
         /// <returns>true if <see paramref="type"/> is anonymous.</returns>
         public static bool TypeIsAnonymous(this Type type)
         {
-            return type.TypeHasAttribute(typeof(CompilerGeneratedAttribute)) && type.Name.Contains("Anonymous");
+            return type.Name.Contains("Anonymous") && type.TypeHasAttribute(typeof(CompilerGeneratedAttribute));
         }
 
         /// <summary>
@@ -72,14 +73,53 @@ namespace NFluent.Extensions
         }
 
         /// <summary>
-        ///     Returns true if the provided type implements IEnumerable, disregarding well known enumeration (string).
+        /// Returns true if the provided type implements IEnumerable, disregarding well known enumeration (string).
         /// </summary>
         /// <param name="type">type to assess</param>
         /// <param name="evenWellKnown">treat well known enumerations (string) as enumeration as well</param>
-        /// <returns>true is <see paramref="type" /> should treated as an enumeration.</returns>
+        /// <returns>true if <see paramref="type" /> should treated as an enumeration.</returns>
         public static bool IsAnEnumeration(this Type type, bool evenWellKnown)
         {
-            return type.GetInterfaces().Contains(typeof(IEnumerable)) && (evenWellKnown || type != typeof(string));
+            return (evenWellKnown || type!=typeof(string)) && type.GetInterfaces().Any(t => t == typeof(IEnumerable));
+        }
+
+        /// <summary>
+        /// Type is an ISet implementation.
+        /// </summary>
+        /// <param name="type">type to assess</param>
+        /// <returns>true if type is an ISet implementation.</returns>
+        // TODO: not used yet, contemplate removal
+        public static bool IsASet(this Type type)
+        {
+#if DOTNET_35
+            return false;
+#else
+            return type.GetInterfaces().Any(t => t.IsConstructedGenericType && t.GetGenericTypeDefinition() == typeof(ISet<>));
+#endif
+        }
+
+        /// <summary>
+        /// Type is an ISet implementation.
+        /// </summary>
+        /// <param name="type">type to assess</param>
+        /// <returns>true if type is an ISet implementation.</returns>
+        public static bool IsACollection(this Type type)
+        {
+            return type.GetInterfaces().Any(t => t == typeof(ICollection) || t.IsGenericType && t.GetGenericTypeDefinition() == typeof(ICollection<>));
+        }
+
+        /// <summary>
+        /// Type is an ISet implementation.
+        /// </summary>
+        /// <param name="type">type to assess</param>
+        /// <returns>true if type is an ISet implementation.</returns>
+        public static bool IsAList(this Type type)
+        {
+#if DOTNET_35
+            return false;
+#else
+            return type.GetInterfaces().Any(t => t == typeof(IList));
+#endif
         }
 
         /// <summary>

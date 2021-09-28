@@ -270,13 +270,46 @@ namespace NFluent.Tests
                     Check.That((IEnumerable)array).IsEquivalentTo( new List<List<int>> {new List<int>{5, 4, 6}, new List<int>{3, 3, 1}})).
                 IsAFailingCheckWithMessage("", 
                     "The checked enumerable is not equivalent to the expected one.", 
-                    "{1,2,3} should not exist (found in actual[0]); {3,3,1} should be found instead.", 
+                    "2 should not exist (found in actual[0][1]); 3 should be found instead.", 
                     "The checked enumerable:", 
                     "\t{{1,2,3},{4,5,6}} (2 items)", 
                     "The expected enumerable:", 
                     "\t{{5,4,6},{3,3,1}} (2 items)");
+            Check.ThatCode(()=>
+                    Check.That((IEnumerable)array).IsEquivalentTo( new List<List<int>> {new List<int>{3, 3, 1}, new List<int>{4, 5, 6}})).
+                IsAFailingCheckWithMessage("", 
+                    "The checked enumerable is not equivalent to the expected one.", 
+                    "2 should not exist (found in actual[0][1]); 3 should be found instead.", 
+                    "The checked enumerable:", 
+                    "\t{{1,2,3},{4,5,6}} (2 items)", 
+                    "The expected enumerable:", 
+                    "\t{{3,3,1},{4,5,6}} (2 items)");
         }
         
+        [Test]
+        public void CheckIsEqualWorksOnSet()
+        {
+            var actual = new HashSet<int> { 1, 2, 3 };
+            var expected = new HashSet<int> { 3, 1, 2 };
+            Check.That(actual).IsEqualTo(expected);
+        }
+
+        [Test]
+        public void CheckIsEqualFailOnDifferentSet()
+        {
+            var actual = new HashSet<int> { 1, 2, 3 };
+            var expected = new HashSet<int> { 3, 4, 2 };
+
+            Check.ThatCode(()=>
+            Check.That(actual).IsEqualTo(expected)).IsAFailingCheckWithMessage("",
+            "The checked enumerable is different from the expected one.",
+            "1 should not exist (found in actual[0]); 4 should be found instead.",
+            "The checked enumerable:",
+            "\t{*1*,2,3} (3 items)",
+            "The expected enumerable:",
+            "\t{3,*4*,2} (3 items)");
+        }
+
         [Test]
         public void
             CheckForEquivalencyFailsWithProperMessage()

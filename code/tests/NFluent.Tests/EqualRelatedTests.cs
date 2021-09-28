@@ -736,7 +736,9 @@ namespace NFluent.Tests
             var otherRecursive = new List<object> {a};
             var interim = new List<object> {recursive};
             otherRecursive.Add(interim);
-            Check.ThatCode(() => Check.That(recursive).IsEqualTo(otherRecursive)).IsAFailingCheckWithMessage("", 
+            Check.ThatCode(() => 
+                Check.That(recursive).IsEqualTo(otherRecursive)
+                ).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is different from the expected one.", 
                 "actual[1] = {{1,2},{{...}}} instead of {{{1,2},{{...}}}}.",
                 "The checked enumerable:", 

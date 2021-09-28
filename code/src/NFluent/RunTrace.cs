@@ -16,10 +16,10 @@ namespace NFluent
 {
     using System;
     using System.Diagnostics;
+#if !DOTNET_35
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-#if !DOTNET_35
     using System.Threading.Tasks;
 #endif
 
@@ -136,11 +136,9 @@ namespace NFluent
             }
             finally
             {
-                watch.Stop();
-                result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
-
                 // ReSharper disable PossibleLossOfFraction
                 result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
+                result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
             }
         }
 

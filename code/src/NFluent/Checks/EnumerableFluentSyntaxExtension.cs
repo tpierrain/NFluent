@@ -165,7 +165,7 @@ namespace NFluent
         private static void ImplementInThatOrder<T>(ICheckLogic<IEnumerable<T>> checker, List<T> orderedList)
         {
             checker.CantBeNegated("InThatOrder").
-                ComparingToValues(orderedList, orderedList.Count,"in that order", "").
+                DefineExpectedValues(orderedList, orderedList.Count,"in that order", "").
                 Analyze((sut, test) =>
             {
                 var failingIndex = 0;

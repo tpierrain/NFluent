@@ -94,7 +94,6 @@ namespace NFluent.Kernel
 
         private void SetNotNegatable(string message)
         {
-            this.DoNotNeedNegatedMessage();
             this.cannotBetNegated = true;
             if (this.IsNegated)
             {
@@ -141,7 +140,7 @@ namespace NFluent.Kernel
             }
 
             this.lastError = error;
-            // Stryker disable once Unary: Mutation does not alter behaviour
+            // Stryker disable once Assignment: Mutation does not alter behaviour
             this.options |= options;
             return this;
         }
@@ -250,20 +249,12 @@ namespace NFluent.Kernel
                 }
             }
 
-
             this.fluentSut.Reporter.ReportError(fluentMessage.ToString());
         }
 
         public ICheckLogic<T> ComparingTo<TU>(TU givenValue, string comparisonInfo, string negatedComparisonInfo)
         {
             this.DefineExpectations(givenValue, true, comparisonInfo, negatedComparisonInfo);
-            return this;
-        }
-
-        public ICheckLogic<T> ComparingToValues<TU>(IEnumerable<TU> givenValue, int count, string comparisonInfo, string negatedComparisonInfo)
-        {
-            this.DefineExpectations(givenValue, true, comparisonInfo, negatedComparisonInfo, count, typeof(TU));
-            this.expectedKind = ValueKind.Values;
             return this;
         }
 
@@ -278,6 +269,7 @@ namespace NFluent.Kernel
         public ICheckLogic<T> DefineExpectedValue<TU>(TU newExpectedValue, string comparisonMessage,
             string negatedComparison1)
         {
+            // Stryker disable once boolean: Mutation does not alter behaviour
             this.DefineExpectations(newExpectedValue, false, comparisonMessage, negatedComparison1);
             return this;
         }
@@ -314,7 +306,7 @@ namespace NFluent.Kernel
         {
             this.expectedKind = ValueKind.Type;
             this.options |= MessageOption.WithType;
-            return this.DefineExpectedValue(new TypeOfInstanceValue(expectedInstanceType), string.Empty, this.doNotNeedNegatedMessage ? "":"different from");
+            return this.DefineExpectedValue(new TypeOfInstanceValue(expectedInstanceType), string.Empty, "different from");
         }
 
         public ICheckLogic<T> DefineExpectedValues<TU>(IEnumerable<TU> values, long count, string comparisonMessage = null,
@@ -341,7 +333,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> SetValuesIndex(long indexInSut, long indexInExpected = -1)
+        public ICheckLogic<T> SetValuesIndex(long indexInSut, long indexInExpected = EnumerableExtensions.NullIndex)
         {
             this.indexInSut = indexInSut;
             this.indexInExpected = indexInExpected;

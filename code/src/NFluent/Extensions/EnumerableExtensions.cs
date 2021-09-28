@@ -30,6 +30,7 @@ namespace NFluent
     {
         private const string Ellipsis = "...";
         private const string Separator = ",";
+        public const long NullIndex = -1;
 
         /// <summary>
         ///     Returns the number of items present within the specified enumerable (returns 0 if the enumerable is null).
@@ -38,9 +39,9 @@ namespace NFluent
         /// <returns>The number of items present within the specified enumerable (returns 0 if the enumerable is null).</returns>
         public static long Count(this IEnumerable enumerable)
         {
-            if (enumerable is ICollection collec)
+            if (enumerable is ICollection collection)
             {
-                return collec.Count;
+                return collection.Count;
             }
             return enumerable?.Cast<object>().LongCount() ?? 0;
         }
@@ -63,7 +64,7 @@ namespace NFluent
         /// <param name="fromIndex"></param>
         /// <param name="len"></param>
         /// <returns>A string containing all the <see cref="IEnumerable" /> elements, separated by the given separator.</returns>
-        public static string ToEnumeratedString(this IEnumerable enumerable, long fromIndex = -1, long len = 0)
+        public static string ToEnumeratedString(this IEnumerable enumerable, long fromIndex = NullIndex, long len = 0)
         {
             if (enumerable is Array array)
             {
@@ -111,7 +112,7 @@ namespace NFluent
             if (itemCount == 1 || lastItem == 1)
             {
                 // we do not highlight a specific item if there is only one item
-                referenceIndex = -1;
+                referenceIndex = NullIndex;
             }
             // items to display
             for (var i = firstIndex; i < lastItem; i++)
@@ -139,7 +140,7 @@ namespace NFluent
                         sb.Append(s.ToStringProperlyFormatted());
                         break;
                     case IEnumerable sub:
-                        sb.Append(sub.ToEnumeratedStringAdvanced(-1, numberOfItemsToOutput, copy));
+                        sb.Append(sub.ToEnumeratedStringAdvanced(NullIndex, numberOfItemsToOutput, copy));
                         break;
                     default:
                         sb.Append(item.ToStringProperlyFormatted());
@@ -178,7 +179,7 @@ namespace NFluent
             if (lastItem == 1)
             {
                 // we do not highlight a specific item if there is only one item
-                referenceIndex = -1;
+                referenceIndex = NullIndex;
             }
             for (var i = firstIndex; i < lastItem; i++)
             {
@@ -278,6 +279,7 @@ namespace NFluent
                 {
                     if (this.wrapped is IDisposable disposable)
                     {
+                        // Stryker disable once Statement: Can't test this line
                         disposable.Dispose();
                     }
                 }

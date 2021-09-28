@@ -52,6 +52,7 @@ namespace NFluent.Messages
             return new GenericLabelBlock("expected", "given", namer);
         }
 
+
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>

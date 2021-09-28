@@ -21,6 +21,7 @@ namespace NFluent.Tests
 
     public class CustomEqualTests
     {
+
         private readonly List<int> a = new List<int> {1, 2};
         private readonly List<int> b = new List<int> {3, 4};
 
@@ -42,7 +43,7 @@ namespace NFluent.Tests
         {
             // List contains new instances of lists same as a and b
             var result = DifferenceFinders.ValueDifference(this.a, "a", this.b);
-            Check.That(result.Count).IsEqualTo(4);
+            Check.That(result.Count).IsEqualTo(2);
             Check.That(result[0].FirstName).IsEqualTo("a[0]");
             Check.That(result[0].FirstValue).IsEqualTo(1);
             Check.That(result[0].SecondValue).IsEqualTo(3);
