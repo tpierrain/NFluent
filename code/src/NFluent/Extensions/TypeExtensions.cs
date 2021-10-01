@@ -92,7 +92,7 @@ namespace NFluent.Extensions
         public static bool IsASet(this Type type)
         {
 #if DOTNET_35
-            return false;
+            return type.IsGenericType && type.Name == typeof(HashSet<>).Name;
 #else
             return type.GetInterfaces().Any(t => t.IsConstructedGenericType && t.GetGenericTypeDefinition() == typeof(ISet<>));
 #endif
@@ -115,11 +115,7 @@ namespace NFluent.Extensions
         /// <returns>true if type is an ISet implementation.</returns>
         public static bool IsAList(this Type type)
         {
-#if DOTNET_35
-            return false;
-#else
             return type.GetInterfaces().Any(t => t == typeof(IList));
-#endif
         }
 
         /// <summary>

@@ -225,25 +225,7 @@ namespace NFluent.Extensibility
             this.expectedBlock = MessageBlock.Build(this, givenValue, this.expectedLabel, index ?? EnumerableExtensions.NullIndex);
             return this.expectedBlock;
         }
- 
-        /// <summary>
-        /// Adds a message block to describe the given value (usually used as an 
-        /// alternative to the Expected block).
-        /// </summary>
-        /// <param name="givenValue">The given value.</param>
-        /// <param name="index">
-        /// The index to highlight.
-        /// </param>
-        /// <returns>The created MessageBlock.</returns>
-        public MessageBlock WithGivenValues<T>(T givenValue, long index)
-        {
-            this.expectedNamingLogic.SetPlural();
-            this.expectedNamingLogic.EntityType = null;
-            this.expectedLabel = GenericLabelBlock.BuildGivenBlock(this.expectedNamingLogic);
-            this.expectedBlock = MessageBlock.Build(this, givenValue, this.expectedLabel, index);
-            return this.expectedBlock;
-        }
-
+        
         /// <summary>
         /// Adds a fully custom add on error message (first line).
         /// </summary>

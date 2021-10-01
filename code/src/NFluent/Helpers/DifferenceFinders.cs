@@ -191,14 +191,17 @@ namespace NFluent.Helpers
                 return DifferenceDetails.DoesNotHaveExpectedValue(sutName, sutDictionary, expectedDictionary, refIndex, expectedIndex);
             }
 
+            var sutIndexes = new Dictionary<object, long>(sutDictionary.Count);
+            var sutIndex= 0;
+            foreach (var sutDictionaryKey in sutDictionary.Keys)
+            {
+                sutIndexes[sutDictionaryKey] = sutIndex++;
+            }
+
             foreach (var keyValuePair in expectedDictionary)
             {
                 if (!sutDictionary.ContainsKey(keyValuePair.Key))
                 {
-                    if (options.HasFlag(Option.Fast))
-                    {
-                        return DifferenceDetails.DoesNotHaveExpectedValue(sutName, sutDictionary, expectedDictionary, refIndex, expectedIndex);
-                    }
                     if (unexpectedKeys.Count > 0)
                     {
                         var unexpectedKey = unexpectedKeys[0];
@@ -223,7 +226,7 @@ namespace NFluent.Helpers
                     var itemDiffs = ValueDifference(sutDictionary[keyValuePair.Key],
                         $"{sutName}[{keyValuePair.Key.ToStringProperlyFormatted()}]",
                         keyValuePair.Value,
-                        index, 
+                        sutIndexes[keyValuePair.Key], 
                         index,
                         firstItemsSeen,
                         options);
@@ -399,7 +402,6 @@ namespace NFluent.Helpers
                                 // we found the value at another index
                                 aggregatedEquivalenceErrors.Add(index,
                                     DifferenceDetails.WasFoundElseWhere(firstItemName, actualItem, expectedEntryIndex, index));
-                                CleanUpEntry(aggregatedDifferences, expectedEntryIndex);
                                 aggregatedDifferences.Remove(index);
                             }
 
@@ -421,7 +423,6 @@ namespace NFluent.Helpers
                                 aggregatedEquivalenceErrors.Add(actualIndex, DifferenceDetails.WasFoundElseWhere(
                                     namingCallback(actualIndex),
                                     scanner.Current, index, actualIndex));
-                                CleanUpEntry(aggregatedDifferences, index);
                                 aggregatedDifferences.Remove(actualIndex);
                             }
 
@@ -492,17 +493,6 @@ namespace NFluent.Helpers
             return isEquivalent ? 
                 DifferenceDetails.DoesNotHaveExpectedDetailsButIsEquivalent(firstName, actualEnumerable, expectedEnumerable, sutIndex, expectedIndex, valueDifferences)
                 : DifferenceDetails.DoesNotHaveExpectedDetails(firstName, actualEnumerable, expectedEnumerable, sutIndex, expectedIndex, valueDifferences);
-
-            // removes any equivalence related error. Needed when we find an equivalent entry at a different index.
-            static void CleanUpEntry(IDictionary<long, DifferenceDetails> differenceDetailsMap, long l)
-            {
-                if (!differenceDetailsMap.ContainsKey(l))
-                {
-                    return;
-                }
-
-                differenceDetailsMap[l] = differenceDetailsMap[l].WithoutEquivalenceErrors();
-            }
         }
     }
 }

@@ -16,12 +16,12 @@
 
 namespace NFluent.Tests
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Helpers;
     using System.IO;
+    using System.Linq;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -177,6 +177,27 @@ namespace NFluent.Tests
                     "The checked enumerable is null and thus does not contain exactly the expected value(s).",
                     "The expected value(s):",
                     "\t{\"what da heck!\"} (1 item)");
+        }
+
+
+        // this test verifies that fast equality works properly. As fast mode is an implementation details,
+        // this does not change external behavior
+        [Test]
+        public void ContainsExactlyBenefitsFromFastSearch()
+        {
+            var dicoSut = new ArrayList { new Dictionary<int, int> { [2] = 3 }, null };
+            Check.ThatCode(()=>
+            Check.That(dicoSut).ContainsExactly(new Dictionary<int, int> { [2] = 4 }, null)).IsAFailingCheck();
+            Check.ThatCode(()=>
+            Check.That(dicoSut).ContainsExactly(new Dictionary<int, int> { [3] = 3 }, null)).IsAFailingCheck();
+
+            var listSut = new ArrayList { Enumerable.Range(0, 4), null};
+            Check.ThatCode(()=>
+                Check.That(listSut).ContainsExactly(Enumerable.Range(0, 3), null)).IsAFailingCheck();
+            Check.ThatCode(()=>
+                Check.That(listSut).ContainsExactly(Enumerable.Range(0, 5), null)).IsAFailingCheck();
+            Check.ThatCode(()=>
+                Check.That(listSut).ContainsExactly(Enumerable.Range(1, 4), null)).IsAFailingCheck();
         }
 
         [Test]

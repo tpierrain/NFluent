@@ -113,8 +113,11 @@ namespace NFluent
 
                         resultException = resultException.InnerException;
                     }
-                    test.FailWhen(_ => resultException == null,
-                        "The {0} is not of one of the expected types.", MessageOption.WithType);
+
+                    if (resultException == null)
+                    {
+                        test.Fail("The {0} is not of one of the expected types.", MessageOption.WithType);
+                    }
                 })
                 .DefinePossibleTypes(types, "an instance of any", "")
                 .EndCheck();            

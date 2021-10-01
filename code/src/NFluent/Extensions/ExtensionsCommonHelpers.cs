@@ -81,8 +81,6 @@ namespace NFluent.Extensions
                     return $"'{theObject}'";
                 case string s:
                     return $"\"{TruncateLongString(s)}\"";
-                case Criteria c:
-                    return $"\"{TruncateLongString(c.ToString())}\"";
                 case DateTime time:
                     return string.Format(CultureInfo.InvariantCulture, "{0:o}, Kind = {1}", time, time.Kind);
                 case bool b:

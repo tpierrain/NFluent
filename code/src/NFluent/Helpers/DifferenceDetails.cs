@@ -46,14 +46,7 @@ namespace NFluent.Helpers
 
         public int Count => this.subs?.Length ?? 0;
 
-        public bool StillNeededForEquivalence => this.mode != DifferenceMode.Moved && this.mode !=DifferenceMode.Value;
-
-        public bool StillNeededForEquality => this.mode != DifferenceMode.FoundInsteadOf;
-
-        public bool IsEquivalent()
-        {
-            return this.mode == DifferenceMode.Equivalent;
-        }
+        public bool IsEquivalent() => this.mode == DifferenceMode.Equivalent;
 
         public static DifferenceDetails WasNotExpected(string checkedName, object value, long index)
         {

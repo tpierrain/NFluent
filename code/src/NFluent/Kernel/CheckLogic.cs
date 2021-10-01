@@ -212,7 +212,7 @@ namespace NFluent.Kernel
                         block = this.withGiven ? fluentMessage.WithGivenValue(this.expected) : fluentMessage.Expected(this.expected);
                         break;
                     case ValueKind.Values:
-                        block = this.withGiven ? fluentMessage.WithGivenValues(this.expected, this.indexInExpected.Value) : fluentMessage.ExpectedValues(this.expected, this.indexInExpected);
+                        block = fluentMessage.ExpectedValues(this.expected, this.indexInExpected);
                         if (this.expectedCount>0)
                         {
                             block.WithEnumerableCount(this.expectedCount);

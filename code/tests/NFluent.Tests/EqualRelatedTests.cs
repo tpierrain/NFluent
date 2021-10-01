@@ -37,6 +37,7 @@ namespace NFluent.Tests
             try
             {
                 Check.EqualMode = EqualityMode.Equals;
+                Check.That(test).IsEqualTo(test);
                 Check.ThatCode(() => Check.That(test).IsEqualTo(test2)).IsAFailingCheckWithMessage("",
                     "The checked enumerable is different from the expected one.",
                     "The checked enumerable:",

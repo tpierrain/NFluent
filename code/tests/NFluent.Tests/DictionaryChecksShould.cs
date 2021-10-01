@@ -332,7 +332,7 @@ namespace NFluent.Tests
         {
             // just change the order
             var expected = new Dictionary<string, int> { ["bar"] = 1,  ["foo"] = 0, ["fizz"] = 3};
-            /*Check.ThatCode( () =>
+            Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["foo"] = 1, ["bar"] = 1, ["fizz"] = 3 }).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 
                 "actual[\"foo\"] = 1 instead of 0.", 
@@ -350,13 +350,12 @@ namespace NFluent.Tests
                 "\t{[bar, 1],*[foo, 0]*,[fizz, 3]} (3 items)");
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["bar"] = 1, ["foo!"] = 0, ["fizz"] = 3}).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
-                "The checked dictionary is different from the expected one. 2 differences found!", 
-                "actual's key \"foo!\" should not exist (value 0).",
-                "actual key[1] = \"foo!\" instead of \"foo\".",
+                "The checked dictionary is different from the expected one.", 
+                "[\"foo!\"]= 0 should not exist (found in actual); [\"foo\"]= 0 should be found instead.",
                 "The checked dictionary:",
                 "\t{[bar, 1],*[foo!, 0]*,[fizz, 3]} (3 items)",
                 "The expected dictionary:", 
-                "\t{[bar, 1],[foo, 0],[fizz, 3]} (3 items)");*/
+                "\t{[bar, 1],[foo, 0],[fizz, 3]} (3 items)");
             Check.ThatCode( () =>
             Check.That(new Dictionary<string, int> { ["bar"] = 1, ["fizz"] = 3}).IsEqualTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked dictionary is different from the expected one.", 

@@ -177,7 +177,7 @@ namespace NFluent.Helpers
         internal static bool FluentEquivalent<TS, TE>(TS actual, TE expected)
         {
             var result = FluentEquals(actual, expected, Check.EqualMode, DifferenceFinders.Option.Equivalence);
-            return result == null || result.IsEquivalent();
+            return result == null;
         }
 
         private static void PerformEqualCheckDouble(ICheck<double> check, object val)
@@ -321,7 +321,7 @@ namespace NFluent.Helpers
 
                     var scan = FluentEquals(sut, content, EqualityMode.FluentEquals, DifferenceFinders.Option.Detailed | DifferenceFinders.Option.Equivalence);
 
-                    if ( scan == null || scan.IsEquivalent())
+                    if (scan == null)
                     {
                         return;
                     }
