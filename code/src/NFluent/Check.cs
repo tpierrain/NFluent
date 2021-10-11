@@ -47,6 +47,16 @@ namespace NFluent
         }
 
         /// <summary>
+        /// Set the error reporter and returns an <see cref="IDisposable"/> that restores the previous reporter (when disposed)
+        /// </summary>
+        /// <param name="newReporter">error reporter to use for the following checks</param>
+        /// <returns>An <see cref="IDisposable"/> instance that will restore the previous reporter on dispose.</returns>
+        public static IDisposable ChangeReporterForScope(IErrorReporter newReporter)
+        {
+            return reporter.ScopedCustomization(newReporter);
+        }
+
+        /// <summary>
         /// Gets/Sets the truncation length for long string.
         /// </summary>
         public static int StringTruncationLength

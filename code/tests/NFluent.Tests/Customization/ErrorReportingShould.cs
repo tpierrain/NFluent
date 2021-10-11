@@ -11,15 +11,17 @@
         {
             var reporter = new StringReporting();
             var oldReporter = Check.Reporter;
-            Check.Reporter = reporter;
-            try
+            using (Check.ChangeReporterForScope(reporter))
             {
-                Check.That(12).IsNotEqualTo(12);
+                try
+                {
+                    Check.That(12).IsNotEqualTo(12);
 
-            }
-            finally
-            {
-                Check.Reporter = oldReporter;
+                }
+                finally
+                {
+                    Check.Reporter = oldReporter;
+                }                
             }
 
             Check.That(reporter.Error).AsLines().ContainsExactly("",
