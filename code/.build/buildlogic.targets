@@ -24,6 +24,7 @@
     <MsTestRunner>vstest.console.exe</MsTestRunner>
 
     <NunitOptions>--result="$(SolutionRoot)\TestResult.xml"</NunitOptions>
+    <DotNetTestOptions>--no-build</DotNetTestOptions>
     <TestRunnerPath>$(NuGetToolsPath)\NUnit.ConsoleRunner.$(nunitConsoleVersion)\tools\nunit3-console.exe</TestRunnerPath>
     <xunitOptions />
     <xUnitTestRunnerPath>$(NuGetToolsPath)\XUnit.runner.console.$(xunitConsoleVersion)\tools\net452\xunit.console.exe</xUnitTestRunnerPath>
@@ -50,6 +51,7 @@
         <xunitOptions>-appveyor</xunitOptions>
         <MsTestRunnerPath></MsTestRunnerPath>
         <MsTestOptions>/logger:Appveyor</MsTestOptions>
+        <DotNetTestOptions></DotNetTestOptions>
         <In>$(APPVEYOR_BUILD_VERSION)</In>
         <Pattern>(?&lt;Major&gt;\d+)\.(?&lt;Minor&gt;\d+)\.(?&lt;Patch&gt;[\d]+)\.(?&lt;PreReleaseInfo&gt;[\d]+)?</Pattern>
         <AssemblyVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Major"].Value)</AssemblyVersionMajor>
@@ -236,7 +238,7 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
       </TestRun>
       <TestRun Include="@(TestProjects)" Condition="!$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'!='Self'">
         <Runner>dotnet.exe</Runner>
-        <Args>test %(TestProjects.FullPath) -c $(Configuration) --no-build</Args>
+        <Args>test %(TestProjects.FullPath) -c $(Configuration) $(DotNetTestOptions)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
       <TestRun Include="@(TestProjects)"  Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='xUnit'">
