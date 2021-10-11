@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CheckLogicHelperShould.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ContextualizedSingletonShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomDico.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomEqualTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DictionaryWrapperShould.cs" />

@@ -209,7 +209,7 @@ namespace NFluent.Kernel
                 switch (this.expectedKind)
                 {
                     case ValueKind.Type:
-                        block = this.withGiven ? fluentMessage.WithGivenValue(this.expected) : fluentMessage.Expected(this.expected);
+                        block = fluentMessage.Expected(this.expected);
                         break;
                     case ValueKind.Values:
                         block = fluentMessage.ExpectedValues(this.expected, this.indexInExpected);

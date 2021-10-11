@@ -31,24 +31,61 @@ namespace NFluent
     /// </summary>
     public static class Check
     {
+        private static readonly ContextualizedSingleton<IErrorReporter> reporter = new (){DefaultValue = new ExceptionReporter()};
         /// <summary>
-        ///     Gets/sets how equality comparison are done.
+        ///  Gets/sets how equality comparison are done.
         /// </summary>
         public static EqualityMode EqualMode { get; set; }
 
         /// <summary>
-        ///     Gets or sets the default error report
+        ///  Gets or sets the default error report
         /// </summary>
-        public static IErrorReporter Reporter { get; set; } = new ExceptionReporter();
+        public static IErrorReporter Reporter
+        {
+            get => reporter.Value;
+            set => reporter.DefaultValue = value;
+        }
 
         /// <summary>
-        ///     Gets/Sets the truncation length for long string.
+        /// Gets/Sets the truncation length for long string.
         /// </summary>
         public static int StringTruncationLength
         {
             get => ExtensionsCommonHelpers.StringTruncationLength;
             set => ExtensionsCommonHelpers.StringTruncationLength = value;
         }
+
+        /// <summary>
+        ///     Defines a custom error message on error.
+        /// </summary>
+        /// <param name="message">custom error message.</param>
+        public static NFluentEntryPoint WithCustomMessage(string message)
+        {
+            return new NFluentEntryPoint(message, Reporter);
+        }
+
+        /// <summary>
+        ///     Registers a custom comparer for a given type.
+        /// </summary>
+        /// <typeparam name="T">Type to register comparer for.</typeparam>
+        /// <param name="comparer">Comparer implementation</param>
+        /// <returns>Previous registered comparer, or null.</returns>
+        public static IEqualityComparer RegisterComparer<T>(IEqualityComparer comparer)
+        {
+            return EqualityHelper.RegisterComparer<T>(comparer);
+        }
+
+        /// <summary>
+        ///     Registers a custom comparer for a given type for a local scope, using IDisposable pattern
+        /// </summary>
+        /// <typeparam name="T">Type to register comparer for.</typeparam>
+        /// <param name="comparer">Comparer implementation</param>
+        /// <returns>A disposable object that de-register the comparer when disposed.</returns>
+        public static IDisposable RegisterLocalComparer<T>(IEqualityComparer comparer)
+        {
+            return new LocalRegisterHandler<T>(comparer);
+        }
+
 
         /// <summary>
         ///     Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
@@ -112,38 +149,40 @@ namespace NFluent
             return new FluentCheck<Type>(typeof(T));
         }
 
-        /// <summary>
-        ///     Defines a custom error message on error.
-        /// </summary>
-        /// <param name="message">custom error message.</param>
-        public static NFluentEntryPoint WithCustomMessage(string message)
-        {
-            return new NFluentEntryPoint(message, Reporter);
-        }
-
-        /// <summary>
-        ///     Registers a custom comparer for a given type.
-        /// </summary>
-        /// <typeparam name="T">Type to register comparer for.</typeparam>
-        /// <param name="comparer">Comparer implementation</param>
-        /// <returns>Previous registered comparer, or null.</returns>
-        public static IEqualityComparer RegisterComparer<T>(IEqualityComparer comparer)
-        {
-            return EqualityHelper.RegisterComparer<T>(comparer);
-        }
-
-        /// <summary>
-        ///     Registers a custom comparer for a given type for a local scope, using IDisposable pattern
-        /// </summary>
-        /// <typeparam name="T">Type to register comparer for.</typeparam>
-        /// <param name="comparer">Comparer implementation</param>
-        /// <returns>A disposable object that de-register the comparer when disposed.</returns>
-        public static IDisposable RegisterLocalComparer<T>(IEqualityComparer comparer)
-        {
-            return new LocalRegisterHandler<T>(comparer);
-        }
-
 #if !DOTNET_35
+        /// <summary>
+        ///     Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
+        /// </summary>
+        /// <param name="awaitableFunc">The code to be tested.</param>
+        /// <returns>
+        ///     A <see cref="ICheck{RunTrace}" /> instance to use in order to assert things on the given value.
+        /// </returns>
+        /// <remarks>
+        ///     Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" />
+        ///     when failing.
+        /// </remarks>
+        public static ICheck<RunTrace> ThatCode(Func<Task> awaitableFunc)
+        {
+            return new FluentCheck<RunTrace>(RunTrace.GetTrace(awaitableFunc), Reporter);
+        }
+
+        /// <summary>
+        ///     Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a lambda.
+        /// </summary>
+        /// <typeparam name="TU">Result type of the function.</typeparam>
+        /// <param name="awaitableFunc">The code to be tested.</param>
+        /// <returns>
+        ///     A <see typeref="ICheck{RunTraceResult{TU}}" /> instance to use in order to assert things on the lambda.
+        /// </returns>
+        /// <remarks>
+        ///     Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" />
+        ///     when failing.
+        /// </remarks>
+        public static ICheck<RunTraceResult<TU>> ThatCode<TU>(Func<Task<TU>> awaitableFunc)
+        {
+            return new FluentCheck<RunTraceResult<TU>>(RunTrace.GetAsyncTrace(awaitableFunc), Reporter);
+        }
+
         /// <summary>
         ///     Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given async code
         ///     (returning Task).
@@ -156,9 +195,10 @@ namespace NFluent
         ///     Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" />
         ///     when failing.
         /// </remarks>
+        [Obsolete("Use ThatCode instead.")]
         public static ICheck<RunTrace> ThatAsyncCode(Func<Task> awaitableMethod)
         {
-            return new FluentCheck<RunTrace>(RunTrace.GetAsyncTrace(awaitableMethod), Reporter);
+            return new FluentCheck<RunTrace>(RunTrace.GetTrace(awaitableMethod), Reporter);
         }
 
         /// <summary>
@@ -174,6 +214,7 @@ namespace NFluent
         ///     Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" />
         ///     when failing.
         /// </remarks>
+        [Obsolete("Use ThatCode instead.")]
         public static ICheck<RunTraceResult<TResult>> ThatAsyncCode<TResult>(Func<Task<TResult>> awaitableFunction)
         {
             return new FluentCheck<RunTraceResult<TResult>>(RunTrace.GetAsyncTrace(awaitableFunction), Reporter);

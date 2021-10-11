@@ -27,7 +27,7 @@ namespace NFluent.Tests
     public class AsyncBase
     {
         [AsyncStateMachine(typeof(int))]
-        virtual protected Task PseudoAsyncMethod()
+        protected virtual Task PseudoAsyncMethod()
         {
             return null;
         }
@@ -36,14 +36,9 @@ namespace NFluent.Tests
     [TestFixture]
     public class AsyncCodeChecksShould: AsyncBase
     {
-#region Fields
 
         private bool sideEffectAchieved;
 
-#endregion
-
-#region Public Methods and Operators
-        
         [Test]
         public void ShouldNotUseCheckThatCodeForAsyncMethods()
         {
@@ -65,7 +60,7 @@ namespace NFluent.Tests
 
         // this attribute is here as an attempt to fool the async method detection
         [DebuggerStepThrough]
-        override protected Task PseudoAsyncMethod()
+        protected override Task PseudoAsyncMethod()
         {
             return new Task(() => { });
         }
@@ -74,14 +69,14 @@ namespace NFluent.Tests
         public void CheckThatAsyncCodeOnAsyncFunctionReturnsTheOriginalExceptionType()
         {
             // proper way for async function
-            Check.ThatAsyncCode(DoSomethingBadAfterAWhileAndBeforeAnsweringAsync).Throws<SecurityException>();
+            Check.ThatCode(DoSomethingBadAfterAWhileAndBeforeAnsweringAsync).Throws<SecurityException>();
         }
 
         [Test]
         public void CheckThatAsyncCodeOnAsyncMethodReturnsTheOriginalExceptionType()
         {
             // proper way for async methods
-            Check.ThatAsyncCode(DoSomethingBadAsync).Throws<SecurityException>();
+            Check.ThatCode(DoSomethingBadAsync).Throws<SecurityException>();
         }
 
         [Test]
@@ -89,7 +84,7 @@ namespace NFluent.Tests
         {
             Check.That(this.sideEffectAchieved).IsFalse();
 
-            Check.ThatAsyncCode(this.SideEffectAsync).DoesNotThrow();
+            Check.ThatCode(this.SideEffectAsync).DoesNotThrow();
 
             Check.That(this.sideEffectAchieved).IsTrue();
         }
@@ -97,7 +92,7 @@ namespace NFluent.Tests
         [Test]
         public void CheckThatAsyncCodeWorksAlsoWithAsyncLambda()
         {
-            Check.ThatAsyncCode(async () =>
+            Check.ThatCode(async () =>
             {
                await Task.Run(() => Thread.Sleep(150));
                throw new SecurityException("Freeze motha...");
@@ -107,7 +102,7 @@ namespace NFluent.Tests
         [Test]
         public void CheckThatAsyncCodeWorksAlsoWithSyncLambda()
         {
-            Check.ThatAsyncCode(() =>
+            Check.ThatCode(() =>
             {
                 Task.Run(() => Thread.Sleep(10));
                 throw new SecurityException("Freeze motha...");
@@ -118,22 +113,17 @@ namespace NFluent.Tests
         public void CheckThatAsyncCodeWorksForFunctions()
         {
             // proper way for async function
-            Check.ThatAsyncCode(ReturnTheAnswerAfterAWhileAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
+            Check.ThatCode(ReturnTheAnswerAfterAWhileAsync).DoesNotThrow().And.WhichResult().IsEqualTo(42);
         }
         
         [Test]
         public void CheckThatAsyncCodeWorksWithLestLass()
         {
-            Check.ThatAsyncCode(async () =>
+            Check.ThatCode(async () =>
             {
-                var result = await ReturnTheAnswerAfterAWhileAsync();
+                var _ = await ReturnTheAnswerAfterAWhileAsync();
             }).LastsLessThan(150, TimeUnit.Milliseconds);
         }
-
-#endregion
-
-#region Methods
-
 
         // useless attribute is used to make sure 'async' related attribute is correctly detected when multiple attributes are present
         [Ignore("this is an arbitrary attribute")]
@@ -179,8 +169,6 @@ namespace NFluent.Tests
 
             this.sideEffectAchieved = true;
         }
-
-#endregion
     }
 }
 #endif

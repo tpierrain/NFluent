@@ -114,9 +114,10 @@ namespace NFluent.Tests
                 {
                     var timer = new Stopwatch();
                     timer.Start();
-                    while (timer.ElapsedMilliseconds < 40)
+                    var endTime = Process.GetCurrentProcess().TotalProcessorTime + TimeSpan.FromMilliseconds(6);
+                    while (Process.GetCurrentProcess().TotalProcessorTime < endTime)
                     {
-                        for (var i = 0; i < 100000; i++)
+                        for (var i = 0; i < 1000000; i++)
                         {
                             var unused = i * 2;
                         }

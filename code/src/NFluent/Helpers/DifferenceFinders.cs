@@ -206,7 +206,7 @@ namespace NFluent.Helpers
                     {
                         var unexpectedKey = unexpectedKeys[0];
                         valueDifferences.Add(DifferenceDetails.WasFoundInsteadOf(
-                            $"{sutName}",
+                            sutName,
                             new DictionaryEntry(unexpectedKey, sutDictionary[unexpectedKey]),
                             new DictionaryEntry(keyValuePair.Key, keyValuePair.Value),
                             index));

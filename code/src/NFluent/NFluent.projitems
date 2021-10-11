@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DecimalCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\ICheckLogicBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\MessageOption.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ContextualizedSingleton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeOffsetRangeBlock.cs" />
@@ -28,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExceptionConstructor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExpressionHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocalRegisterHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ThreadStaticStore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\InconclusiveExceptionReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ISelfDescriptiveValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\TypeEnumerationValue.cs" />

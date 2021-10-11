@@ -3,8 +3,8 @@
 
   <!--Configuration informations-->
   <PropertyGroup>
-    <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.7.1204</opencoverVersion>
-    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">4.8.10</reportGeneratorVersion>
+    <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.7.1221</opencoverVersion>
+    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">4.8.13</reportGeneratorVersion>
     <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.12.0</nunitConsoleVersion>
     <xunitConsoleVersion Condition="'$(xunitConsoleVersion)' == ''">2.4.1</xunitConsoleVersion>
 
@@ -236,7 +236,7 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
       </TestRun>
       <TestRun Include="@(TestProjects)" Condition="!$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'!='Self'">
         <Runner>dotnet.exe</Runner>
-        <Args>test %(TestProjects.FullPath) -c $(Configuration)</Args>
+        <Args>test %(TestProjects.FullPath) -c $(Configuration) --no-build</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
       <TestRun Include="@(TestProjects)"  Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='xUnit'">

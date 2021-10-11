@@ -48,58 +48,30 @@ namespace NFluent.Helpers
 
         public bool IsEquivalent() => this.mode == DifferenceMode.Equivalent;
 
-        public static DifferenceDetails WasNotExpected(string checkedName, object value, long index)
-        {
-            return new DifferenceDetails(checkedName, value, null, EnumerableExtensions.NullIndex, index, DifferenceMode.Extra);
-        }
+        public static DifferenceDetails WasNotExpected(string checkedName, object value, long index) => new(checkedName, value, null, EnumerableExtensions.NullIndex, index, DifferenceMode.Extra);
 
-        public static DifferenceDetails DoesNotHaveExpectedValue(string checkedName, object value, object expected, long sutIndex, long expectedIndex)
-        {
-            return new DifferenceDetails(checkedName, value, expected, expectedIndex, sutIndex, DifferenceMode.Value);
-        }
+        public static DifferenceDetails DoesNotHaveExpectedValue(string checkedName, object value, object expected, long sutIndex, long expectedIndex) => new(checkedName, value, expected, expectedIndex, sutIndex, DifferenceMode.Value);
 
-        public static DifferenceDetails IsDifferent(object value, object expected)
-        {
+        public static DifferenceDetails IsDifferent(object value, object expected) =>
             // Stryker disable once String: Mutation does not alter behaviour
-            return new DifferenceDetails(string.Empty, value, expected, EnumerableExtensions.NullIndex, EnumerableExtensions.NullIndex, DifferenceMode.Value);
-        }
+            new(string.Empty, value, expected, EnumerableExtensions.NullIndex, EnumerableExtensions.NullIndex, DifferenceMode.Value);
 
-        public static DifferenceDetails DoesNotHaveExpectedAttribute(string checkedName, object value, object expected, long index = EnumerableExtensions.NullIndex)
-        {
-            return new DifferenceDetails(checkedName, value, expected, index, index, DifferenceMode.Attribute);
-        }
+        public static DifferenceDetails DoesNotHaveExpectedAttribute(string checkedName, object value, object expected, long index = EnumerableExtensions.NullIndex) => new(checkedName, value, expected, index, index, DifferenceMode.Attribute);
 
         public static DifferenceDetails DoesNotHaveExpectedDetails(string checkedName, object value, object expected,
-            long actualIndex, long expectedIndex, ICollection<DifferenceDetails> details)
-        {
-            if (details == null || details.Count == 0)
-            {
-                return null;
-            }
-            return new DifferenceDetails(checkedName, value, expected, expectedIndex, actualIndex,DifferenceMode.Value, details);
-        }
+            long actualIndex, long expectedIndex, ICollection<DifferenceDetails> details) =>
+            details.Count == 0 ? null : new DifferenceDetails(checkedName, value, expected, expectedIndex, actualIndex,DifferenceMode.Value, details);
 
         public static DifferenceDetails DoesNotHaveExpectedDetailsButIsEquivalent(string checkedName, object value,
             object expected,
-            long actualIndex, long expectedIndex, ICollection<DifferenceDetails> details)
-        {
-            return new DifferenceDetails(checkedName, value, expected, expectedIndex, actualIndex, DifferenceMode.Equivalent, details);
-        }
+            long actualIndex, long expectedIndex, ICollection<DifferenceDetails> details) =>
+            new(checkedName, value, expected, expectedIndex, actualIndex, DifferenceMode.Equivalent, details);
 
-        public static DifferenceDetails WasNotFound(string checkedName, object expected, long index)
-        {
-            return new DifferenceDetails(checkedName, null, expected, index, EnumerableExtensions.NullIndex, DifferenceMode.Missing);
-        }
+        public static DifferenceDetails WasNotFound(string checkedName, object expected, long index) => new(checkedName, null, expected, index, EnumerableExtensions.NullIndex, DifferenceMode.Missing);
 
-        public static DifferenceDetails WasFoundElseWhere(string checkedName, object value, long expectedIndex, long actualIndex)
-        {
-            return new DifferenceDetails(checkedName, value, null, expectedIndex, actualIndex, DifferenceMode.Moved);
-        }
+        public static DifferenceDetails WasFoundElseWhere(string checkedName, object value, long expectedIndex, long actualIndex) => new(checkedName, value, null, expectedIndex, actualIndex, DifferenceMode.Moved);
 
-        public static DifferenceDetails WasFoundInsteadOf(string checkedName, object checkedValue, object expectedValue, long checkedIndex = EnumerableExtensions.NullIndex, long expectedIndex = EnumerableExtensions.NullIndex)
-        {
-            return new DifferenceDetails(checkedName, checkedValue, expectedValue, expectedIndex, checkedIndex, DifferenceMode.FoundInsteadOf);
-        }
+        public static DifferenceDetails WasFoundInsteadOf(string checkedName, object checkedValue, object expectedValue, long checkedIndex = EnumerableExtensions.NullIndex, long expectedIndex = EnumerableExtensions.NullIndex) => new DifferenceDetails(checkedName, checkedValue, expectedValue, expectedIndex, checkedIndex, DifferenceMode.FoundInsteadOf);
 
         public static DifferenceDetails FromMatch(MemberMatch match)
         {
@@ -136,8 +108,6 @@ namespace NFluent.Helpers
             actual = firstDetail.ActualIndex;
             expected = firstDetail.Index;
         }
-
-        public DifferenceDetails WithoutEquivalenceErrors() => new(this.FirstName, this.FirstValue, this.SecondValue, this.Index, this.ActualIndex, this.mode, this.Details(false));
 
         private IEnumerable<DifferenceDetails> Details(bool forEquivalence, bool firstLevel = true)
         {

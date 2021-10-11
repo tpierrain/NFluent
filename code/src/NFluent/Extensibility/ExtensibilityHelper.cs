@@ -136,10 +136,7 @@ namespace NFluent.Extensibility
             if (hasItem)
             {
                 chk = new FluentCheck<T>(item);
-                if (!string.IsNullOrEmpty(label))
-                {
-                    chk.Checker.SetSutLabel(label);
-                }
+                chk.Checker.SetSutLabel(label);
             }
 
             return new CheckLinkWhich<ICheck<TU>, ICheck<T>>(check, chk);

@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.9.1014" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.5232" PrivateAssets="all" />
   </ItemGroup>
 
   <PropertyGroup>

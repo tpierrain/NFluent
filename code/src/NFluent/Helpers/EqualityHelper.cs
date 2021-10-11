@@ -90,7 +90,7 @@ namespace NFluent.Helpers
 
         public static bool CustomEquals<T, TU>(T sut, TU expected)
         {
-            var comparer = FindComparer<T>() ?? FindComparer(expected?.GetType()) ?? DefaultComparer;
+            var comparer = FindComparer<T>() ?? FindComparer(expected.GetType()) ?? DefaultComparer;
             return comparer.Equals(expected, sut);
         }
 

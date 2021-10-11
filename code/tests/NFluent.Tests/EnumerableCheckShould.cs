@@ -311,6 +311,23 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void CheckIsEqualFailOnDifferentButEquivalentSet()
+        {
+            var actual = new ArrayList { new List<int> { 1, 2, 3 } };
+            var expected = new ArrayList {new List<int> { 3, 1, 2 }};
+            Check.ThatCode(()=>
+            Check.That(actual).IsEqualTo(expected)).IsAFailingCheckWithMessage("",
+            "The checked enumerable is different from the expected one. 3 differences found! But they are equivalent.",
+            "actual[0][0] value ('1') was found at index 0 instead of 1.",
+            "actual[0][1] value ('2') was found at index 1 instead of 2.",
+            "actual[0][2] value ('3') was found at index 2 instead of 0.",
+            "The checked enumerable:",
+            "\t{{1,2,3}} (1 item)",
+            "The expected enumerable:",
+            "\t{{3,1,2}} (1 item)");
+        }
+
+        [Test]
         public void
             CheckForEquivalencyFailsWithProperMessage()
         {

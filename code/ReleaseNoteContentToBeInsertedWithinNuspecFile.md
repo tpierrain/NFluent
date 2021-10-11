@@ -34,6 +34,9 @@ you need help.
 * #325, #327, #330, #332
 
 ### Obsolete
+#### Marked as obsolet
+* `ThatAsynCode`: you can now use `ThatCode` even for async methods.
+
 Here is the list of methods, classes and other obsolete stuff that have been removed in this version as well
 as workaround advices.
 * Drop support for Net 2.0 and 3.0: keep using NFluent V2.x versions if you support for these.

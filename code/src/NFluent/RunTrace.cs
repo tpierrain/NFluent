@@ -1,17 +1,17 @@
-﻿// // --------------------------------------------------------------------------------------------------------------------
-// // <copyright file="RunTrace.cs" company="">
-// //   Copyright 2014 Cyrille DUPUYDAUBY
-// //   Licensed under the Apache License, Version 2.0 (the "License");
-// //   you may not use this file except in compliance with the License.
-// //   You may obtain a copy of the License at
-// //       http://www.apache.org/licenses/LICENSE-2.0
-// //   Unless required by applicable law or agreed to in writing, software
-// //   distributed under the License is distributed on an "AS IS" BASIS,
-// //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// //   See the License for the specific language governing permissions and
-// //   limitations under the License.
-// // </copyright>
-// // --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RunTrace.cs" company="">
+//   Copyright 2014 Cyrille DUPUYDAUBY
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 namespace NFluent
 {
     using System;
@@ -86,7 +86,7 @@ namespace NFluent
             {
                 result.Result = function();
 #if !DOTNET_35
-                if (!(result.Result is Task ta))
+                if (result.Result is not Task ta)
                 {
                     return;
                 }
@@ -113,11 +113,7 @@ namespace NFluent
 #if !DOTNET_35
         private static bool FunctionIsAsync<TU>(Func<TU> function)
         {
-#if NETSTANDARD1_3
-            return function.GetMethodInfo().GetCustomAttributes(typeof(AsyncStateMachineAttribute), false).Any();
-#else
             return Attribute.GetCustomAttributes(function.GetMethodInfo(), typeof(AsyncStateMachineAttribute)).Any();
-#endif
         }
 #endif
 
@@ -143,26 +139,6 @@ namespace NFluent
         }
 
 #if !DOTNET_35
-        internal static RunTrace GetAsyncTrace(Func<Task> awaitableMethod)
-        {
-            var result = new RunTrace();
-            CaptureTrace(
-                () =>
-                {
-                    try
-                    {
-                        // starts and waits the completion of the awaitable method
-                        awaitableMethod().Wait();
-                    }
-                    catch (AggregateException exception)
-                    {
-                        result.RaisedException = exception.InnerException;
-                    }
-                },
-                result);
-            return result;
-        }
-
         /// <summary>
         /// Execute the function to capture the run.
         /// </summary>
@@ -184,9 +160,9 @@ namespace NFluent
                             // starts and waits the completion of the awaitable method
                             result.Result = waitableFunction().Result;
                         }
-                        catch (AggregateException agex)
+                        catch (AggregateException aggregateException)
                         {
-                            result.RaisedException = agex.InnerException;
+                            result.RaisedException = aggregateException.InnerException;
                         }
                     },
                 result);
