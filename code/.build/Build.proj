@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <Project ToolsVersion="15.0" DefaultTargets="RunAll" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- note from Thomas PIERRAIN: I really hate MsBuild and its amazingly unintuitive syntax. Unbelievable... -->
   <!-- updated by Cyrille Dupuydauby -->
@@ -22,8 +23,8 @@
     <ReleaseNoteFile>$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.md</ReleaseNoteFile>
     <AppVeyorFile>$(SolutionRoot)\..\appveyor.yml</AppVeyorFile>
   </PropertyGroup>
-  
-  <Import Project="buildlogic.targets"/>
+
+  <Import Project="buildlogic.targets" />
 
   <ItemGroup>
     <ProjectFolder Include="$(SourcePath)NFluent.Standard.20">
@@ -51,78 +52,84 @@
     <ProjectFolder Include="$(SourcePath)\NFluent.46">
       <Package>net46</Package>
     </ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)\NFluent.46.Tests.Meta"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.46.Tests.Meta" />
     <ProjectFolder Include="$(SourcePath)\NFluent.35">
       <Package>net35</Package>
     </ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests"/>
-    <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests.Extensions"/>
-    <ProjectFolder Include="$(TestsPath)\Nugget"/>
-    <ProjectFolder Include="$(TestsPath)\NFluent.Tests.SelfHosted"/>
-    <ProjectFolder Include="$(TestsPath)\NFluent.Tests.Core.xUnit"/>
-    <ProjectFolder Include="$(SourcePath)\NFluent.T4"/>
+    <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests" />
+    <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests.Extensions" />
+    <ProjectFolder Include="$(TestsPath)\Nugget" />
+    <ProjectFolder Include="$(TestsPath)\NFluent.Tests.SelfHosted" />
+    <ProjectFolder Include="$(TestsPath)\NFluent.Tests.Core.xUnit" />
+    <ProjectFolder Include="$(SourcePath)\NFluent.T4" />
   </ItemGroup>
-  
-   <ItemGroup>
-      <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll' Condition="'$(APPVEYOR)'!='True'">
-        <Framework>net-3.5</Framework>
-        <DontReport>true</DontReport>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.35.Tests\bin\$(Configuration)\NFluent.Tests.dll' Condition="'$(APPVEYOR)'!='True'">
-        <Framework>net-3.5</Framework>
-        <DontReport>true</DontReport>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll' Condition="'$(APPVEYOR)'!='True'">
-        <Framework>net-3.5</Framework>
-        <DontReport>true</DontReport>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.46.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
-        <Framework>net-4.6</Framework>
+
+  <ItemGroup>
+    <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'
+                  Condition="'$(APPVEYOR)'!='True'">
+      <Framework>net-3.5</Framework>
+      <DontReport>true</DontReport>
+    </TestProjects>
+    <TestProjects Include='$(TestsPath)\NFluent.35.Tests\bin\$(Configuration)\NFluent.Tests.dll'
+                  Condition="'$(APPVEYOR)'!='True'">
+      <Framework>net-3.5</Framework>
+      <DontReport>true</DontReport>
+    </TestProjects>
+    <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll'
+                  Condition="'$(APPVEYOR)'!='True'">
+      <Framework>net-3.5</Framework>
+      <DontReport>true</DontReport>
+    </TestProjects>
+    <TestProjects Include='$(TestsPath)\NFluent.46.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
+      <Framework>net-4.6</Framework>
       <Coverage>false</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.46.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
-        <Framework>net-4.6</Framework>
+    </TestProjects>
+    <TestProjects Include='$(TestsPath)\NFluent.46.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
+      <Framework>net-4.6</Framework>
       <Coverage>false</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.46.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll'>
-        <Framework>net-4.6</Framework>
-        <Coverage>false</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Tests.MsTest\NFluent.Tests.MsTest.csproj'>
-        <Framework>netstandard2.0</Framework>
-        <Runner>MsTest</Runner>
-        <Coverage>true</Coverage>
-      </TestProjects>
-     <TestProjects Include='$(TestsPath)\NFluent.Tests.xUnit\NFluent.Tests.xUnit.csproj'>
-       <Framework>netstandard2.0</Framework>
-       <Runner>xUnit</Runner>
-       <Coverage>true</Coverage>
-     </TestProjects>      
-     <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests\NFluent.NetStandard.20.Tests.csproj'>
-       <Framework>netstandard2.0</Framework>
-       <Coverage>true</Coverage>
-     </TestProjects>
-     <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests.Internals\NFluent.NetStandard.20.Tests.Internals.csproj'>
-       <Framework>netstandard2.0</Framework>
-       <Coverage>true</Coverage>
-     </TestProjects>
-     <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests.Extensions\NFluent.NetStandard.20.Tests.Extensions.csproj'>
-       <Framework>netstandard2.0</Framework>
-       <Coverage>true</Coverage>
-     </TestProjects>
-     <TestProjects Include='$(TestsPath)\NFluent.Tests.Core.xUnit\NFluent.Tests.Core.xUnit.csproj'>
-       <Framework>netstandard1.3</Framework>
-       <Coverage>false</Coverage>
-     </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\netcoreapp2.1\NFluent.Tests.SelfHosted.dll'>
-        <Framework>netcoreapp2.1</Framework>
-        <Runner>Self</Runner>
-        <Coverage>true</Coverage>
-      </TestProjects>
-      <TestProjects Include='$(TestsPath)\NFluent.46.Tests.Meta\bin\$(Configuration)\NFluent.Tests.Meta.dll'>
-        <Framework>net-4.6</Framework>
-        <Coverage>false</Coverage>
-        <DontReport>true</DontReport>
-      </TestProjects>
-    </ItemGroup>
+    </TestProjects>
+    <TestProjects Include='$(TestsPath)\NFluent.46.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll'>
+      <Framework>net-4.6</Framework>
+      <Coverage>false</Coverage>
+    </TestProjects>
+    <TestProjects Include='$(TestsPath)\NFluent.Tests.MsTest\NFluent.Tests.MsTest.csproj'>
+      <Framework>netstandard2.0</Framework>
+      <Runner>MsTest</Runner>
+      <Coverage>true</Coverage>
+    </TestProjects>
+    <TestProjects Include='$(TestsPath)\NFluent.Tests.xUnit\NFluent.Tests.xUnit.csproj'>
+      <Framework>netstandard2.0</Framework>
+      <Runner>xUnit</Runner>
+      <Coverage>true</Coverage>
+    </TestProjects>
+    <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests\NFluent.NetStandard.20.Tests.csproj'>
+      <Framework>netstandard2.0</Framework>
+      <Coverage>true</Coverage>
+    </TestProjects>
+    <TestProjects
+      Include='$(TestsPath)\NFluent.NetStandard.20.Tests.Internals\NFluent.NetStandard.20.Tests.Internals.csproj'>
+      <Framework>netstandard2.0</Framework>
+      <Coverage>true</Coverage>
+    </TestProjects>
+    <TestProjects
+      Include='$(TestsPath)\NFluent.NetStandard.20.Tests.Extensions\NFluent.NetStandard.20.Tests.Extensions.csproj'>
+      <Framework>netstandard2.0</Framework>
+      <Coverage>true</Coverage>
+    </TestProjects>
+    <TestProjects Include='$(TestsPath)\NFluent.Tests.Core.xUnit\NFluent.Tests.Core.xUnit.csproj'>
+      <Framework>netstandard1.3</Framework>
+      <Coverage>false</Coverage>
+    </TestProjects>
+    <TestProjects
+      Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\netcoreapp2.1\NFluent.Tests.SelfHosted.dll'>
+      <Framework>netcoreapp2.1</Framework>
+      <Runner>Self</Runner>
+      <Coverage>true</Coverage>
+    </TestProjects>
+    <TestProjects Include='$(TestsPath)\NFluent.46.Tests.Meta\bin\$(Configuration)\NFluent.Tests.Meta.dll'>
+      <Framework>net-4.6</Framework>
+      <Coverage>false</Coverage>
+      <DontReport>true</DontReport>
+    </TestProjects>
+  </ItemGroup>
 </Project>

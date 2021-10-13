@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RunTrace.cs" company="">
-//   Copyright 2014 Cyrille DUPUYDAUBY
+//  <copyright file="RunTrace.cs" company="NFluent">
+//   Copyright 2021 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -12,6 +12,7 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace NFluent
 {
     using System;
@@ -24,42 +25,42 @@ namespace NFluent
 #endif
 
     /// <summary>
-    /// This class stores trace information for a code evaluation.
+    ///     This class stores trace information for a code evaluation.
     /// </summary>
     public class RunTrace
     {
         /// <summary>
-        /// Gets or sets the execution time of the checked code.
+        ///     Gets or sets the execution time of the checked code.
         /// </summary>
         /// <value>
-        /// The execution time.
+        ///     The execution time.
         /// </value>
         public TimeSpan ExecutionTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the raised exception.
+        ///     Gets or sets the raised exception.
         /// </summary>
         /// <value>
-        /// The raised exception.
+        ///     The raised exception.
         /// </value>
         public Exception RaisedException { get; set; }
 
         /// <summary>
-        /// Gets or sets the total processor time.
+        ///     Gets or sets the total processor time.
         /// </summary>
         /// <value>
-        /// The total processor time.
+        ///     The total processor time.
         /// </value>
         public TimeSpan TotalProcessorTime { get; set; }
 
         /// <summary>
-        /// Execute the action to capture the run.
+        ///     Execute the action to capture the run.
         /// </summary>
         /// <param name="action">
-        /// <see cref="Action"/> to be analyzed.
+        ///     <see cref="Action" /> to be analyzed.
         /// </param>
         /// <returns>
-        /// Return <see cref="RunTrace"/> describing the execution.
+        ///     Return <see cref="RunTrace" /> describing the execution.
         /// </returns>
         internal static RunTrace GetTrace(Action action)
         {
@@ -69,14 +70,14 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Execute the function to capture the run.
+        ///     Execute the function to capture the run.
         /// </summary>
         /// <typeparam name="TU">Result type of the function.</typeparam>
         /// <param name="function">
-        /// <see cref="Action"/> to be analyzed.
+        ///     <see cref="Action" /> to be analyzed.
         /// </param>
         /// <returns>
-        /// Return <see cref="RunTrace"/> describing the execution.
+        ///     Return <see cref="RunTrace" /> describing the execution.
         /// </returns>
         internal static RunTraceResult<TU> GetTrace<TU>(Func<TU> function)
         {

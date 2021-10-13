@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 //  <copyright file="Check.cs" company="NFluent">
-//   Copyright 2020 Thomas PIERRAIN & Cyrille DUPUYDAUBY
+//   Copyright 2021 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -31,33 +31,36 @@ namespace NFluent
     /// </summary>
     public static class Check
     {
-        private static readonly ContextualizedSingleton<IErrorReporter> reporter = new (){DefaultValue = new ExceptionReporter()};
+        internal static readonly ContextualizedSingleton<IErrorReporter> ReporterStore = new()
+            { DefaultValue = new ExceptionReporter() };
+
         /// <summary>
-        ///  Gets/sets how equality comparison are done.
+        ///     Gets/sets how equality comparison are done.
         /// </summary>
         public static EqualityMode EqualMode { get; set; }
 
         /// <summary>
-        ///  Gets or sets the default error report
+        ///     Gets or sets the default error report
         /// </summary>
         public static IErrorReporter Reporter
         {
-            get => reporter.Value;
-            set => reporter.DefaultValue = value;
+            get => ReporterStore.Value;
+            set => ReporterStore.DefaultValue = value;
         }
 
         /// <summary>
-        /// Set the error reporter and returns an <see cref="IDisposable"/> that restores the previous reporter (when disposed)
+        ///     Set the error reporter and returns an <see cref="IDisposable" /> that restores the previous reporter (when
+        ///     disposed)
         /// </summary>
         /// <param name="newReporter">error reporter to use for the following checks</param>
-        /// <returns>An <see cref="IDisposable"/> instance that will restore the previous reporter on dispose.</returns>
+        /// <returns>An <see cref="IDisposable" /> instance that will restore the previous reporter on dispose.</returns>
         public static IDisposable ChangeReporterForScope(IErrorReporter newReporter)
         {
-            return reporter.ScopedCustomization(newReporter);
+            return ReporterStore.ScopedCustomization(newReporter);
         }
 
         /// <summary>
-        /// Gets/Sets the truncation length for long string.
+        ///     Gets/Sets the truncation length for long string.
         /// </summary>
         public static int StringTruncationLength
         {
@@ -95,7 +98,6 @@ namespace NFluent
         {
             return new LocalRegisterHandler<T>(comparer);
         }
-
 
         /// <summary>
         ///     Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
@@ -239,9 +241,16 @@ namespace NFluent
         /// </returns>
         public static FluentDynamicCheck ThatDynamic(dynamic value)
         {
-            //return null;
             return new FluentDynamicCheck(value, Reporter);
         }
 #endif
+        /// <summary>
+        /// Starts a batch of checks.
+        /// </summary>
+        /// <returns>an <see cref="IDisposable"/> object. Check result will be reported when it is disposed.</returns>
+        public static IDisposable StartBatch()
+        {
+            return new BatchOfChecks();
+        }
     }
 }

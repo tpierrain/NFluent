@@ -1,10 +1,18 @@
 # V 3.0.0
 ## Major changes
+* You can execute multiple check as a single batch and get every failures, instead of the first one. This can be achieved using:
+	* `Check.StartBatch`: stores the result of each subsequent check(s) and notifies all the errors when the returned object is disposed. Such as
+		`using(Check.StartBatch())
+		{
+			Check.That(sut).....
+			Check.That(sut)....
+		}`
+		Note that any actual exception thrown during the check phase will prevent any subsequent check from behind executed (1) and may not be reported as it may be replaced by an assertion failure exception.
+		This comes from C# exeption handling logic.
 * You can provide anonymous types and tuples when using IsEqualTo against any type. The check will be made against all
 _sut_'s propertie.
-* Dropped support for Net Framework 2.0, 3.0, and 4.0. NFluent supports Net 3.5 SP1, Net. 4.5.2 +, Net Standard 1.3+ and Net Standard 2.0+.
+* NFluent supports Net 3.5 SP1, Net. 4.5.2 +, Net Standard 2.0+. Dropped support for Net Framework 2.0, 3.0, and 4.0, as well Net Standard<2.0. 
  If you can't upgrade your framework version to a supported one, please use NFluent 2.7.1.
-* `Check.ThatEnum`has been removed. You must use `Check.That` instead.
 
 ## New Checks
 * `Is`: Checks if _sut == expected_. This is a strongly typed equivalent to `IsEqualTo`.
@@ -40,6 +48,7 @@ you need help.
 Here is the list of methods, classes and other obsolete stuff that have been removed in this version as well
 as workaround advices.
 * Drop support for Net 2.0 and 3.0: keep using NFluent V2.x versions if you support for these.
+* `Check.ThatEnum`has been removed. You must use `Check.That` instead.
 * `ILambdaCheck`: the definition was kept to prevent breaking build, but it was no longer used. If this is a
 problem for you, open an issue
 * `IsPositive` (available for numbers): please use `IsStrictlyPositive` instead.

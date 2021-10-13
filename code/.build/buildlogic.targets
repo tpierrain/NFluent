@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <Project ToolsVersion="15.0" DefaultTargets="" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <!--Configuration informations-->
@@ -10,7 +11,7 @@
 
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
     <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
-    
+
     <OpenCoverFilter>+[*]* -[*.Tests*]* -[nunit*]* -[NUnit*]* -[xunit*]* -[Newtonsoft*]*</OpenCoverFilter>
     <CoverageDataFile>$(SolutionRoot)\$(SolutionName)-coverage.xml</CoverageDataFile>
 
@@ -18,7 +19,7 @@
     <ArtifactsPath>$(SolutionRoot)\Artifacts</ArtifactsPath>
     <BinariesPath>$(ArtifactsPath)\Binaries</BinariesPath>
     <PackagesPath>$(ArtifactsPath)\Packages</PackagesPath>
-    
+
     <NuGetToolsPath>$(SolutionRoot)\Packages</NuGetToolsPath>
     <NuGetExePath>nuget.exe</NuGetExePath>
     <MsTestRunner>vstest.console.exe</MsTestRunner>
@@ -38,7 +39,7 @@
     <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Preview\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Preview\</VsPath>
 
     <MsTestRunnerPath>$(VsPath)\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
-    <MsTestOptions/>
+    <MsTestOptions />
   </PropertyGroup>
 
   <!-- Specifics for appveyor: use env provided nunit runner for result publication-->
@@ -70,7 +71,7 @@
         <AssemblyVersionPreRelease>0</AssemblyVersionPreRelease>
       </PropertyGroup>
     </When>
-    <Otherwise>    
+    <Otherwise>
       <PropertyGroup>
         <In>$([System.IO.File]::ReadAllText('$(AttributeVersionFile)'))</In>
         <Pattern>\[assembly: AssemblyFileVersion\("(?&lt;Major&gt;\d+)\.(?&lt;Minor&gt;\d+)\.(?&lt;Patch&gt;[\d]+)\.(?&lt;PreReleaseInfo&gt;[0-9A-Za-z-.]+)?</Pattern>
@@ -84,13 +85,13 @@
 
   <Target Name="RunAll" DependsOnTargets="Build; RunTests; CoverageReport; Package" />
   <Target Name="CI" DependsOnTargets="Build; RunTests; CoverageReport; Package;" />
-  <Target Name="Push" DependsOnTargets="RunAll; Publish"/>
+  <Target Name="Push" DependsOnTargets="RunAll; Publish" />
   <Target Name="Beta" DependsOnTargets="SetBeta; Push" />
-  <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll"/>
-  <Target Name="Alpha" DependsOnTargets="SetAlpha; Push"/>
-  <Target Name="RC" DependsOnTargets="SetRC; RunAll; Push"/>
-  <Target Name="Release" DependsOnTargets="SetRelease; Push"/>
-  <Target Name="DebugBuild" DependsOnTargets="Package"/>
+  <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll" />
+  <Target Name="Alpha" DependsOnTargets="SetAlpha; Push" />
+  <Target Name="RC" DependsOnTargets="SetRC; RunAll; Push" />
+  <Target Name="Release" DependsOnTargets="SetRelease; Push" />
+  <Target Name="DebugBuild" DependsOnTargets="Package" />
 
   <!--Targets-->
   <Target Name="Start">
@@ -134,7 +135,7 @@
     </ItemGroup>
     <XmlPeek Query="//TargetFramework" XmlInputPath="%(FullProjectDescription.CSProjFullName)" Result="%(Framework)">
     </XmlPeek>
-    <Message Importance="high" Text="detected: %(Framework) in %(FullProjectDescription.CSProjFullName)"/>
+    <Message Importance="high" Text="detected: %(Framework) in %(FullProjectDescription.CSProjFullName)" />
   </Target>
 
   <!-- 0- Align version numners -->
@@ -145,14 +146,14 @@
       <NumericalVersion>$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)</NumericalVersion>
       <APIVersion Condition="$(APIVersion)==''">$(AssemblyVersionMajor).$(AssemblyVersionMinor).0.0</APIVersion>
     </PropertyGroup>
-    <VersionBuilding version ="$(NumericalVersion)" stream="$(PackageStream)">
+    <VersionBuilding version="$(NumericalVersion)" stream="$(PackageStream)">
       <Output PropertyName="PrettyVersion" TaskParameter="fullVersion" />
     </VersionBuilding>
 
-    <Message Importance="high" Text="--------- VERSION NUMBER SYNCHRO  -------------------------------------"/>
-    <Message Importance="high" Text="APIVersion       : $(APIVersion)"/>
-    <Message Importance="high" Text="Version          : $(NumericalVersion)"/>
-    <Message Importance="high" Text="Informal Version : $(PrettyVersion)"/>
+    <Message Importance="high" Text="--------- VERSION NUMBER SYNCHRO  -------------------------------------" />
+    <Message Importance="high" Text="APIVersion       : $(APIVersion)" />
+    <Message Importance="high" Text="Version          : $(NumericalVersion)" />
+    <Message Importance="high" Text="Informal Version : $(PrettyVersion)" />
     <ItemGroup>
       <RegexTransform Include="$(AttributeVersionFile)">
         <Find>AssemblyFileVersion\("(?&lt;major&gt;\d+)\.(?&lt;minor&gt;\d+)\.\d+\.(?&lt;revision&gt;\d+)</Find>
@@ -174,142 +175,160 @@
         <FullName>%(ProjectFolder.FullPath)\%(ProjectFolder.CsProj)</FullName>
       </CSProjToPatch>
     </ItemGroup>
-    <Message Importance="high" Text="Patching versions in %(CSProjToPatch.FullName) to $(PrettyVersion)"/>
+    <Message Importance="high" Text="Patching versions in %(CSProjToPatch.FullName) to $(PrettyVersion)" />
     <XmlPoke
       XmlInputPath="%(CSProjToPatch.FullName)"
-      Query="//AssemblyVersion" 
+      Query="//AssemblyVersion"
       Value="$(APIVersion)" />
     <XmlPoke
       XmlInputPath="%(CSProjToPatch.FullName)"
-      Query="//FileVersion" 
+      Query="//FileVersion"
       Value="$(NumericalVersion)" />
     <XmlPoke
       XmlInputPath="%(CSProjToPatch.FullName)"
-      Query="//Version" 
+      Query="//Version"
       Value="$(PrettyVersion)" />
     <XmlPoke
       XmlInputPath="%(CSProjToPatch.FullName)"
-      Query="//InformationalVersion" 
+      Query="//InformationalVersion"
       Value="$(PrettyVersion)" />
-    <Message Importance="high" Text="--------- end of VERSION NUMBER SYNCHRO  ------------------------------"/>
+    <Message Importance="high" Text="--------- end of VERSION NUMBER SYNCHRO  ------------------------------" />
   </Target>
 
   <!-- 1- Restore dependencies -->
   <Target Name="NugetRestore" DependsOnTargets="SynchroVersion">
-    
-    <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------"/>
-    <Exec Command='"$(NuGetExePath)" sources remove -Name extraSource' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>
-    <Exec Command='"$(NuGetExePath)" sources add -Name extraSource -Source $(NugetSource)' Condition="'$(NugetSource)'!=''" IgnoreExitCode="true"/>
-    <Message Importance="high" Text="Restoring projects"/>
+
+    <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------" />
+    <Exec Command='"$(NuGetExePath)" sources remove -Name extraSource' Condition="'$(NugetSource)'!=''"
+          IgnoreExitCode="true" />
+    <Exec Command='"$(NuGetExePath)" sources add -Name extraSource -Source $(NugetSource)'
+          Condition="'$(NugetSource)'!=''" IgnoreExitCode="true" />
+    <Message Importance="high" Text="Restoring projects" />
     <!--MSBuild Projects="%(ProjectFolder.FullPath)" 
              Targets="restore" 
              Properties="Configuration=$(Configuration)"/-->
-    <Exec Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages" -verbosity quiet'/>
-    <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------"/>
+    <Exec
+      Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages" -verbosity quiet' />
+    <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------" />
   </Target>
-  
+
   <!-- 2- Do the BUILD -->
   <Target Name="Build" DependsOnTargets="NugetRestore">
-    <Message Importance="high" Text="--------- BUILD  -------------------------------------------"/>
-    <Message Importance="high" Text="
+    <Message Importance="high" Text="--------- BUILD  -------------------------------------------" />
+    <Message Importance="high"
+             Text="
 ---------------------------------------------------------------
 BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
 ---------------------------------------------------------------
-      "  />
+      " />
 
-    <Message Importance="normal" Text="--------- will run: $(SolutionRoot)\$(SolutionName).sln"/>
-    <MSBuild Projects="$(SolutionRoot)\$(SolutionName).sln" 
-             Targets="Build" 
-             BuildInParallel ="true"
-             Properties="Configuration=$(Configuration)"/>
+    <Message Importance="normal" Text="--------- will run: $(SolutionRoot)\$(SolutionName).sln" />
+    <MSBuild Projects="$(SolutionRoot)\$(SolutionName).sln"
+             Targets="Build"
+             BuildInParallel="true"
+             Properties="Configuration=$(Configuration)" />
 
-    <Message Importance="high" Text="--------- end of BUILD  -------------------------------------"/>
+    <Message Importance="high" Text="--------- end of BUILD  -------------------------------------" />
   </Target>
-    
+
 
   <!-- 3- Run the TESTS -->
   <Target Name="ListTestProjects">
     <ItemGroup>
-      <TestRun Include="@(TestProjects)" Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'==''">
+      <TestRun Include="@(TestProjects)"
+               Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'==''">
         <Runner>"$(TestRunnerPath)"</Runner>
         <Args Condition="'%(TestProjects.DontReport)'!='true'">%(TestProjects.FullPath) $(NunitOptions) /framework:%(TestProjects.Framework)</Args>
         <Args Condition="'%(TestProjects.DontReport)'=='true'">%(TestProjects.FullPath) /framework:%(TestProjects.Framework)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="!$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'!='Self'">
+      <TestRun Include="@(TestProjects)"
+               Condition="!$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'!='Self'">
         <Runner>dotnet.exe</Runner>
         <Args>test %(TestProjects.FullPath) -c $(Configuration) $(DotNetTestOptions)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)"  Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='xUnit'">
+      <TestRun Include="@(TestProjects)"
+               Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='xUnit'">
         <Runner>"$(xUnitTestRunnerPath)"</Runner>
         <Args Condition="'%(TestProjects.DontReport)'!='true'">"%(TestProjects.FullPath)" $(xunitOptions)</Args>
         <Args Condition="'%(TestProjects.DontReport)'=='true'">"%(TestProjects.FullPath)"</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='MsTest'">
+      <TestRun Include="@(TestProjects)"
+               Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='MsTest'">
         <Runner>"$(MsTestRunnerPath)$(MsTestRunner)"</Runner>
         <Args>$(MsTestOptions) %(TestProjects.Identity)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='Self'">
+      <TestRun Include="@(TestProjects)"
+               Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='Self'">
         <Runner>"%(TestProjects.Identity)"</Runner>
         <Args></Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      <TestRun Include="@(TestProjects)" Condition="!$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='Self'">
+      <TestRun Include="@(TestProjects)"
+               Condition="!$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'=='Self'">
         <Runner>dotnet.exe</Runner>
         <Args>"%(TestProjects.Identity)"</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
       </TestRun>
-      </ItemGroup>
+    </ItemGroup>
   </Target>
 
   <Target Name="RunTests" DependsOnTargets="Build; ListTestProjects">
 
-    <Message Importance="high" Text="
+    <Message Importance="high"
+             Text="
 ---------------------------------------------------------------
 RUN ALL UNIT TESTS
 ---------------------------------------------------------------
-          "  />
-    <Exec Command='"$(NuGetExePath)" install nunit.console -o "$(NuGetToolsPath)" -version $(nunitConsoleVersion)' Condition='!Exists($(TestRunnerPath))'/>
+          " />
+    <Exec Command='"$(NuGetExePath)" install nunit.console -o "$(NuGetToolsPath)" -version $(nunitConsoleVersion)'
+          Condition='!Exists($(TestRunnerPath))' />
 
-    <Exec Command='"$(NuGetExePath)" install XUnit.runner.console -o "$(NuGetToolsPath)" -version $(xunitConsoleVersion)' Condition='!Exists($(xUnitTestRunnerPath))'/>
+    <Exec
+      Command='"$(NuGetExePath)" install XUnit.runner.console -o "$(NuGetToolsPath)" -version $(xunitConsoleVersion)'
+      Condition='!Exists($(xUnitTestRunnerPath))' />
 
-    <Message Importance="high" Text="--------- RUN TESTS ---------"/>
-    <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="$(SolutionRoot)"/>
-    <Message Importance="high" Text="--------- end of RUN TESTS ---------"/>
+    <Message Importance="high" Text="--------- RUN TESTS ---------" />
+    <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="$(SolutionRoot)" />
+    <Message Importance="high" Text="--------- end of RUN TESTS ---------" />
   </Target>
 
   <!-- 4- Tests coverage -->
   <Target Name="Coverage" DependsOnTargets="ListTestProjects">
-    <Message Importance="high" Text="--------- Coverage ---------"/>
-    <Delete Files="$(CoverageDataFile)"/>
+    <Message Importance="high" Text="--------- Coverage ---------" />
+    <Delete Files="$(CoverageDataFile)" />
     <PropertyGroup>
       <CoverToolPath>$(NuGetToolsPath)\OpenCover.$(opencoverVersion)\tools</CoverToolPath>
     </PropertyGroup>
-    <Exec Command='"$(NuGetExePath)" install opencover -o "$(NuGetToolsPath)" -version $(opencoverVersion)'/>
+    <Exec Command='"$(NuGetExePath)" install opencover -o "$(NuGetToolsPath)" -version $(opencoverVersion)' />
 
-    <Message Importance="normal" Text="Cover for %(TestRun.Identity) : $(CoverageDataFile) -mergeoutput " Condition="'%(TestRun.Coverage)'=='true'"/>
-    <Exec Command='"$(CoverToolPath)\OpenCover.Console" -oldstyle -target:%(TestRun.Runner) -searchdirs:%(TestRun.RelativeDir) -register:user -filter:"$(OpenCoverFilter)" -excludebyattribute:*.ExcludeFromCodeCoverage*  -output:"$(CoverageDataFile)" -mergeoutput -mergebyhash -"targetargs:%(TestRun.Args)"'
-          Condition="'%(TestRun.Coverage)'=='true'"/>
-    <Message Importance="high" Text="--------- end of Coverage ---------"/>
+    <Message Importance="normal" Text="Cover for %(TestRun.Identity) : $(CoverageDataFile) -mergeoutput "
+             Condition="'%(TestRun.Coverage)'=='true'" />
+    <Exec
+      Command='"$(CoverToolPath)\OpenCover.Console" -oldstyle -target:%(TestRun.Runner) -searchdirs:%(TestRun.RelativeDir) -register:user -filter:"$(OpenCoverFilter)" -excludebyattribute:*.ExcludeFromCodeCoverage*  -output:"$(CoverageDataFile)" -mergeoutput -mergebyhash -"targetargs:%(TestRun.Args)"'
+      Condition="'%(TestRun.Coverage)'=='true'" />
+    <Message Importance="high" Text="--------- end of Coverage ---------" />
   </Target>
-  
+
   <!-- 5- Tests coverage report-->
   <Target Name="CheckCoverage" DependsOnTargets="Coverage">
     <!--Scan result for partial coverage-->
     <XmlPeek XmlInputPath='$(CoverageDataFile)'
-             Query="//Class[Summary/@sequenceCoverage&lt;100 and Summary/@numSequencePoints>0]/FullName/text()" Condition="Exists($(CoverageDataFile))">
+             Query="//Class[Summary/@sequenceCoverage&lt;100 and Summary/@numSequencePoints>0]/FullName/text()"
+             Condition="Exists($(CoverageDataFile))">
       <Output TaskParameter="Result" ItemName="Peeked" />
     </XmlPeek>
     <XmlPeek XmlInputPath='$(CoverageDataFile)'
-             Query="//Class[Summary/@branchCoverage&lt;100 and Summary/@numBranchPoints>0]/FullName/text()" Condition="Exists($(CoverageDataFile))">
+             Query="//Class[Summary/@branchCoverage&lt;100 and Summary/@numBranchPoints>0]/FullName/text()"
+             Condition="Exists($(CoverageDataFile))">
       <Output TaskParameter="Result" ItemName="BranchPeeked" />
     </XmlPeek>
-    <Warning Text="Insufficient line coverage on @(Peeked)" Condition="'@(Peeked)'!=''"/>
-    <Warning Text="Insufficient branch coverage on @(BranchPeeked)" Condition="'@(BranchPeeked)'!=''"/>
-    <Warning Text="No coverage data generated" Condition="!Exists($(CoverageDataFile))"/>
+    <Warning Text="Insufficient line coverage on @(Peeked)" Condition="'@(Peeked)'!=''" />
+    <Warning Text="Insufficient branch coverage on @(BranchPeeked)" Condition="'@(BranchPeeked)'!=''" />
+    <Warning Text="No coverage data generated" Condition="!Exists($(CoverageDataFile))" />
   </Target>
 
   <Target Name="CoverageReport" DependsOnTargets="Coverage;CheckCoverage">
@@ -318,77 +337,84 @@ RUN ALL UNIT TESTS
     </PropertyGroup>
     <Exec Command='"$(NuGetExePath)" install reportgenerator -o "$(NuGetToolsPath)" -version $(reportGeneratorVersion)' />
 
-    <Message Importance="high" Text="--------- Publish Coverage ---------"/>
-    <Message Importance="high" Text="Get Tools"/>
+    <Message Importance="high" Text="--------- Publish Coverage ---------" />
+    <Message Importance="high" Text="Get Tools" />
 
-    <Exec Command ='dotnet exec "$(CoverReportToolPath)\netcoreapp2.0\ReportGenerator.dll" -reports:$(CoverageDataFile) -targetdir:"$(SolutionRoot)\CoverageReport"' Condition="('$(APPVEYOR)'!='True') and (Exists($(CoverageDataFile)))"/>
+    <Exec
+      Command='dotnet exec "$(CoverReportToolPath)\netcoreapp2.0\ReportGenerator.dll" -reports:$(CoverageDataFile) -targetdir:"$(SolutionRoot)\CoverageReport"'
+      Condition="('$(APPVEYOR)'!='True') and (Exists($(CoverageDataFile)))" />
 
-    <Exec Command="python -m pip install codecov --user"/>
-    <Exec WorkingDirectory="$(SolutionRoot)" Command='python -m codecov -f "$(CoverageDataFile)" -t $(CodeCovKey) -X gcov -n $(SolutionName)'
-           Condition="('$(CodeCovKey)'!='') AND ('$(APPVEYOR)'=='True')"/>
-   <Message Importance="high" Text="--------- end of Publish Coverage ---------"/>
+    <Exec Command="python -m pip install codecov --user" />
+    <Exec WorkingDirectory="$(SolutionRoot)"
+          Command='python -m codecov -f "$(CoverageDataFile)" -t $(CodeCovKey) -X gcov -n $(SolutionName)'
+          Condition="('$(CodeCovKey)'!='') AND ('$(APPVEYOR)'=='True')" />
+    <Message Importance="high" Text="--------- end of Publish Coverage ---------" />
   </Target>
 
- <!-- 5- Then PACKAGE -->
+  <!-- 5- Then PACKAGE -->
   <Target Name="Package" DependsOnTargets="SynchroVersion">
-    <Message Importance="high" Text="---------- PACKAGE ---------"/>
+    <Message Importance="high" Text="---------- PACKAGE ---------" />
     <ItemGroup>
-      <FilesForNuget Include="@(ProjectFolder)" Condition="'%(ProjectFolder.Package)'!='' AND '%(ProjectFolder.Fwk)'!='core'">
+      <FilesForNuget Include="@(ProjectFolder)"
+                     Condition="'%(ProjectFolder.Package)'!='' AND '%(ProjectFolder.Fwk)'!='core'">
         <TargetFwk>%(ProjectFolder.Package)</TargetFwk>
         <SourceDir>%(ProjectFolder.FullPath)\bin\$(Configuration)\*.*</SourceDir>
       </FilesForNuget>
-      <FilesForNuget Include="@(ProjectFolder)" Condition="'%(ProjectFolder.Package)'!='' AND '%(ProjectFolder.Fwk)'=='core'">
+      <FilesForNuget Include="@(ProjectFolder)"
+                     Condition="'%(ProjectFolder.Package)'!='' AND '%(ProjectFolder.Fwk)'=='core'">
         <TargetFwk>%(ProjectFolder.Package)</TargetFwk>
         <SourceDir>%(ProjectFolder.FullPath)\bin\$(Configuration)\%(ProjectFolder.Package)\*.*</SourceDir>
       </FilesForNuget>
     </ItemGroup>
-      <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
-      <Message Text="xcopy %(FilesForNuget.SourceDir) $(BinariesPath)\%(FilesForNuget.TargetFwk)\ /E /Y" />
-      <Exec Command='xcopy "%(FilesForNuget.SourceDir)" "$(BinariesPath)\%(FilesForNuget.TargetFwk)\" /E /Y /Q' />
-    
-      <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
-      <Message Importance="high" Text="[Print] PackageVersion: '$(NumericalVersion)'" />
-      <Message Importance="high" Text="[Print] NuspecFilePath: '$(NuspecFilePath)'" />
+    <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
+    <Message Text="xcopy %(FilesForNuget.SourceDir) $(BinariesPath)\%(FilesForNuget.TargetFwk)\ /E /Y" />
+    <Exec Command='xcopy "%(FilesForNuget.SourceDir)" "$(BinariesPath)\%(FilesForNuget.TargetFwk)\" /E /Y /Q' />
 
-     <!-- insert the version number into the nuspec file -->
-      <XmlPoke 
-        XmlInputPath="$(NuspecFilePath)"
-          Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
-        Query="x:package/x:metadata/x:version" 
-        Value="$(PrettyVersion)" />
+    <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
+    <Message Importance="high" Text="[Print] PackageVersion: '$(NumericalVersion)'" />
+    <Message Importance="high" Text="[Print] NuspecFilePath: '$(NuspecFilePath)'" />
 
-      <!-- Gets the release note content from the proper file -->
-      <ReadLinesFromFile File="$(ReleaseNoteFile)">
-        <Output TaskParameter="Lines" ItemName="FileContents" />
-      </ReadLinesFromFile>
-      
-      <!-- Sets its content into a variable with n/a as the default value -->
-      <PropertyGroup>
-        <ReleaseNoteContent>n/a</ReleaseNoteContent>
-      </PropertyGroup>
+    <!-- insert the version number into the nuspec file -->
+    <XmlPoke
+      XmlInputPath="$(NuspecFilePath)"
+      Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
+      Query="x:package/x:metadata/x:version"
+      Value="$(PrettyVersion)" />
 
-      <PropertyGroup Condition=" '@(FileContents,'%0a%0d')' != '' ">
-        <ReleaseNoteContent>@(FileContents,'%0a%0d')</ReleaseNoteContent>
-      </PropertyGroup>
+    <!-- Gets the release note content from the proper file -->
+    <ReadLinesFromFile File="$(ReleaseNoteFile)">
+      <Output TaskParameter="Lines" ItemName="FileContents" />
+    </ReadLinesFromFile>
 
-      <!-- Updates the nuspec file with this variable content -->
-      <XmlPoke
-        XmlInputPath="$(NuspecFilePath)"
-          Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
-        Query="x:package/x:metadata/x:releaseNotes"
-        Value="$(ReleaseNoteContent.Replace('&amp;', '&amp;&amp;').Replace('&lt;', '&amp;lt;').Replace('&gt;', '&amp;gt;'))" />
+    <!-- Sets its content into a variable with n/a as the default value -->
+    <PropertyGroup>
+      <ReleaseNoteContent>n/a</ReleaseNoteContent>
+    </PropertyGroup>
 
-      <Message Importance="high" Text="
+    <PropertyGroup Condition=" '@(FileContents,'%0a%0d')' != '' ">
+      <ReleaseNoteContent>@(FileContents,'%0a%0d')</ReleaseNoteContent>
+    </PropertyGroup>
+
+    <!-- Updates the nuspec file with this variable content -->
+    <XmlPoke
+      XmlInputPath="$(NuspecFilePath)"
+      Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
+      Query="x:package/x:metadata/x:releaseNotes"
+      Value="$(ReleaseNoteContent.Replace('&amp;', '&amp;&amp;').Replace('&lt;', '&amp;lt;').Replace('&gt;', '&amp;gt;'))" />
+
+    <Message Importance="high"
+             Text="
 ---------------------------------------------------------------
 CREATING NUGET PACKAGE IN:
     - $(PackagesPath)
 ---------------------------------------------------------------
-            "  />
-      <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
-      <Delete Files="$(PackagesPath)\*.*"/>
-      <Exec Command='"$(NuGetExePath)" pack "$(NuspecFilePath)" -OutputDirectory "$(PackagesPath)"' LogStandardErrorAsError="true" />
+            " />
+    <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
+    <Delete Files="$(PackagesPath)\*.*" />
+    <Exec Command='"$(NuGetExePath)" pack "$(NuspecFilePath)" -OutputDirectory "$(PackagesPath)"'
+          LogStandardErrorAsError="true" />
 
-        <Message Importance="high" Text="--------- End of PACKAGE ---------"/>
+    <Message Importance="high" Text="--------- End of PACKAGE ---------" />
   </Target>
 
   <!-- 6- Then Publish (but not for PR)-->
@@ -397,19 +423,22 @@ CREATING NUGET PACKAGE IN:
       <PackageFileName>$(PackagesPath)\$(SolutionName).$(PrettyVersion).nupkg</PackageFileName>
     </PropertyGroup>
     <!--= Publish the package on Nuget-->
-    <Message Importance="high" Text="--------- NUGET PUBLISH  -------------------------------------------"/>
+    <Message Importance="high" Text="--------- NUGET PUBLISH  -------------------------------------------" />
 
-    <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source $(NugetFeed) -verbosity quiet' EchoOff='true' Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''"/>
-    <Exec Command='"$(NuGetExePath)" push "$(PackageFileName)" -Source $(NugetFeed)' Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''"/>
+    <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source $(NugetFeed) -verbosity quiet' EchoOff='true'
+          Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''" />
+    <Exec Command='"$(NuGetExePath)" push "$(PackageFileName)" -Source $(NugetFeed)'
+          Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''" />
 
-    <Message Importance="high" Text="--------- end of NUGET PUBLISH  -------------------------------------"/>
+    <Message Importance="high" Text="--------- end of NUGET PUBLISH  -------------------------------------" />
   </Target>
-  
-  <UsingTask TaskName="VersionBuilding" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+
+  <UsingTask TaskName="VersionBuilding" TaskFactory="CodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
     <ParameterGroup>
-      <version ParameterType="System.String" Required="true"/>
-      <stream ParameterType="System.String" Required="false"/>
-      <fullVersion ParameterType="System.String" Output="true"/>
+      <version ParameterType="System.String" Required="true" />
+      <stream ParameterType="System.String" Required="false" />
+      <fullVersion ParameterType="System.String" Output="true" />
     </ParameterGroup>
     <Task>
       <Using Namespace="System.Text" />
@@ -440,7 +469,8 @@ CREATING NUGET PACKAGE IN:
     </Task>
   </UsingTask>
 
-  <UsingTask TaskName="RegexTransform" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+  <UsingTask TaskName="RegexTransform" TaskFactory="CodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
     <ParameterGroup>
       <Items ParameterType="Microsoft.Build.Framework.ITaskItem[]" />
     </ParameterGroup>
@@ -473,5 +503,4 @@ CREATING NUGET PACKAGE IN:
     </Task>
   </UsingTask>
 
-  </Project>
-                                                                                             
+</Project>

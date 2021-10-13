@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 //  <copyright file="ReflectionWrapperChecks.cs" company="NFluent">
-//   Copyright 2018 Thomas PIERRAIN & Cyrille DUPUYDAUBY
+//   Copyright 2021 Thomas PIERRAIN & Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -21,7 +21,7 @@ namespace NFluent
     using Kernel;
 
     /// <summary>
-    /// Hosts reflection-based checks <see cref="ObjectFieldsCheckExtensions.Considering{T}" />
+    ///     Hosts reflection-based checks <see cref="ObjectFieldsCheckExtensions.Considering{T}" />
     /// </summary>
     public static class ReflectionWrapperChecks
     {
@@ -42,7 +42,8 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .Analyze((sut, test) =>
                 {
-                    foreach (var match in sut.MemberMatches(expectedValue).Where(match => match.DoValuesMatches != mustMatch))
+                    foreach (var match in sut.MemberMatches(expectedValue)
+                        .Where(match => match.DoValuesMatches != mustMatch))
                     {
                         match.Check(test);
                     }
@@ -51,44 +52,46 @@ namespace NFluent
         }
 
         /// <summary>
-        /// Checks that the actual value is equal to another expected value using operator==.
+        ///     Checks that the actual value is equal to another expected value using operator==.
         /// </summary>
         /// <typeparam name="TU">Type of the expected value</typeparam>
         /// <param name="check">
-        /// The fluent check to be extended.
+        ///     The fluent check to be extended.
         /// </param>
         /// <param name="expected">
-        /// The expected value.
+        ///     The expected value.
         /// </param>
         /// <returns>
-        /// A check link.
+        ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
-        /// The actual value is not equal to the expected value.
+        ///     The actual value is not equal to the expected value.
         /// </exception>
-        public static ICheckLink<ICheck<ReflectionWrapper>> HasSameValueAs<TU>(this ICheck<ReflectionWrapper> check, TU expected)
+        public static ICheckLink<ICheck<ReflectionWrapper>> HasSameValueAs<TU>(this ICheck<ReflectionWrapper> check,
+            TU expected)
         {
             FieldEqualTest(check, expected, true);
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
         /// <summary>
-        /// Checks that the actual value is different from another expected value using operator!=.
+        ///     Checks that the actual value is different from another expected value using operator!=.
         /// </summary>
         /// <typeparam name="TU">Type of the expected value.</typeparam>
         /// <param name="check">
-        /// The fluent check to be extended.
+        ///     The fluent check to be extended.
         /// </param>
         /// <param name="expected">
-        /// The expected value.
+        ///     The expected value.
         /// </param>
         /// <returns>
-        /// A check link.   
+        ///     A check link.
         /// </returns>
         /// <exception cref="FluentCheckException">
-        /// The actual value is equal to the expected value.
+        ///     The actual value is equal to the expected value.
         /// </exception>
-        public static ICheckLink<ICheck<ReflectionWrapper>> HasDifferentValueThan<TU>(this ICheck<ReflectionWrapper> check, TU expected)
+        public static ICheckLink<ICheck<ReflectionWrapper>> HasDifferentValueThan<TU>(
+            this ICheck<ReflectionWrapper> check, TU expected)
         {
             FieldEqualTest(check, expected, false);
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -190,6 +193,7 @@ namespace NFluent
                                 .Fail("The {0} is absent from the {1}.");
                             break;
                         }
+
                         if (!ReferenceEquals(match.Actual.Value, match.Expected.Value))
                         {
                             test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
@@ -231,7 +235,7 @@ namespace NFluent
                         var isSameRef = ReferenceEquals(match.Actual.Value, match.Expected.Value);
 
                         test.CheckSutAttributes(_ => match.Actual.Value, match.Actual.MemberLabel)
-                            .FailWhen( subSut => isSameRef, "The {0} does reference the {1}, whereas it should not.",
+                            .FailWhen(subSut => isSameRef, "The {0} does reference the {1}, whereas it should not.",
                                 MessageOption.NoCheckedBlock)
                             .ComparingTo(match.Expected.Value, "different instance than");
                         if (test.Failed)
@@ -241,7 +245,7 @@ namespace NFluent
                     }
                 })
                 .OnNegate("The {0} does not contain the same reference than the {1}, whereas it should.")
-                .DefineExpectedValue(expected, negatedComparison:"same as")
+                .DefineExpectedValue(expected, negatedComparison: "same as")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(check);
         }

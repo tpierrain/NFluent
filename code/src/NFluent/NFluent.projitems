@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ApiChecks\ExceptionChecks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Assuming.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BatchOfChecks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\CheckMember.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\ExceptionChecks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\MemberCheckExtensions.cs" />
