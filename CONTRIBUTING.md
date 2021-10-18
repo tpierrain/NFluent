@@ -37,7 +37,7 @@ When you ask that we had a new assertion logic, please provide an example or a u
 1. Configure the upstream repo (`git remote add upstream git://github.com/tpierrain/NFluent`)
 1. Create a local branch (`git checkout -b myBranch`)
 1. Work on your feature, following the __[NFluent Definition of Done (DoD) for Development](./docs/DevDoD.md)__.
-2. Run a local build to verify everything is ok. Use the [CI](./CI.cmd) file; this laucnh a CI cycle. If you have test errors, you need to fix them. Reach for us if
+2. Run a local build to verify everything is ok. Use the [CI](./CI.cmd) file; this lau,ch a CI cycle. If you have test errors, you need to fix them. Reach for us if
 you encounter issues (documentation may not be up to date, or the build script may have unwanted dependencies).
 4. Rebase if required (see below)
 5. Push the branch up to GitHub (`git push origin myBranch`)
