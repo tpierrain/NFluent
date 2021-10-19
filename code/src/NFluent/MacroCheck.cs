@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="CheckLogic.cs" company="NFluent">
-//   Copyright 2018 Thomas PIERRAIN & Cyrille DUPUYDAUBY
+//  <copyright file="IMacroCheck.cs" company="NFluent">
+//   Copyright 2021 Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -13,17 +13,22 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NFluent.Extensibility
+namespace NFluent
 {
+    using System;
+
     /// <summary>
-    /// Interface implemented by error reporting mechanism
     /// </summary>
-    public interface IErrorReporter
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    public class MacroCheck<T, T1, T2>
     {
-        /// <summary>
-        /// Reports an error message.
-        /// </summary>
-        /// <param name="message">error message.</param>
-        void ReportError(string message);
+        internal Action<T, T1, T2> evaluator;
+
+        internal MacroCheck(Action<T, T1, T2> evaluator)
+        {
+            this.evaluator = evaluator;
+        }
     }
 }

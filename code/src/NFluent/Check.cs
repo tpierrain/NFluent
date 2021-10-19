@@ -252,5 +252,18 @@ namespace NFluent
         {
             return new BatchOfChecks();
         }
+
+        /// <summary>
+        /// Declare a macro
+        /// </summary>
+        /// <typeparam name="T">Type to use this macro with.</typeparam>
+        /// <typeparam name="T1">Type of first param</typeparam>
+        /// <typeparam name="T2">Type of second param.</typeparam>
+        /// <param name="func">Function that implements the desired checks.</param>
+        /// <returns>An <see cref="MacroCheck{T, T1, T2}"/> instance.</returns>
+        public static MacroCheck<T, T1, T2> DeclareMacro<T, T1, T2>(Action<T, T1, T2> func)
+        {
+            return new MacroCheck<T, T1, T2>(func);
+        }
     }
 }

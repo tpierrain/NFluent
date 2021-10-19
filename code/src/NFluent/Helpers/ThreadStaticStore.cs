@@ -27,10 +27,10 @@ namespace NFluent.Helpers
         [ThreadStatic] private static Dictionary<object, T> stacksMap;
 
         /// <summary>
-        ///     Get the thread
+        /// Get the thread static value associated with <paramref name="identifier"></paramref>
         /// </summary>
-        /// <param name="identifier"></param>
-        /// <returns></returns>
+        /// <param name="identifier">the identifier for the instance.</param>
+        /// <returns>The thread specific value</returns>
         public static T GetStack(object identifier)
         {
             stacksMap ??= new Dictionary<object, T>();
@@ -42,6 +42,7 @@ namespace NFluent.Helpers
 
             return stacksMap[identifier];
         }
+
 
         public static bool Exists(object identifier)
         {

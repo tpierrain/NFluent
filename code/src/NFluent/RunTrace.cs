@@ -144,13 +144,13 @@ namespace NFluent
         /// Execute the function to capture the run.
         /// </summary>
         /// <typeparam name="TResult">Result type of the awaitable function.</typeparam>
-        /// <param name="waitableFunction">
+        /// <param name="awaitableFunction">
         /// <see cref="Action"/> to be analyzed.
         /// </param>
         /// <returns>
         /// Return <see cref="RunTrace"/> describing the execution.
         /// </returns>
-        internal static RunTraceResult<TResult> GetAsyncTrace<TResult>(Func<Task<TResult>> waitableFunction)
+        internal static RunTraceResult<TResult> GetAsyncTrace<TResult>(Func<Task<TResult>> awaitableFunction)
         {
             var result = new RunTraceResult<TResult>();
             CaptureTrace(
@@ -159,7 +159,7 @@ namespace NFluent
                         try
                         {
                             // starts and waits the completion of the awaitable method
-                            result.Result = waitableFunction().Result;
+                            result.Result = awaitableFunction().Result;
                         }
                         catch (AggregateException aggregateException)
                         {

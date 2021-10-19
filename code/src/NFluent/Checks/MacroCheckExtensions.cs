@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="BatchOfChecks.cs" company="NFluent">
-//   Copyright 2021 Thomas PIERRAIN & Cyrille DUPUYDAUBY
+//  <copyright file="MacroCheckExtensions.cs" company="NFluent">
+//   Copyright 2021 Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -13,35 +13,25 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NFluent.Kernel
+namespace NFluent
 {
-    using System;
-    using System.Text;
-    using Extensibility;
-
-    internal class BatchOfChecks : IDisposable, IErrorReporter
+    /// <summary>
+    /// Ho
+    /// </summary>
+    public static class MacroCheckExtensions
     {
-        private readonly StringBuilder errors  = new();
-
-        public BatchOfChecks()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sut"></param>
+        /// <param name="macro"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <returns></returns>
+        public static MacroContext<T, T1, T2> VerifiesMacro<T, T1, T2>(this ICheck<T> sut, MacroCheck<T, T1, T2> macro)
         {
-            Check.ReporterStore.Push(this);
+            return new MacroContext<T, T1, T2>(sut, macro);
         }
-
-        public void Dispose()
-        {
-            Check.ReporterStore.Pop();
-            Check.Reporter.ReportError(this.errors.ToString());
-        }
-
-        public void ReportError(string message)
-        {
-            if (this.errors.Length > 0)
-            {
-                this.errors.AppendLine();
-                this.errors.Append("** And **");
-            }
-            this.errors.Append(message);
-        }
-    }    
+    }
 }

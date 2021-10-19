@@ -12,11 +12,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)ApiChecks\ExceptionChecks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Assuming.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BatchOfChecks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\BatchOfChecks.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\CheckMember.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\ExceptionChecks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\MacroCheckExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\MacroContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checks\MemberCheckExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DecimalCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checks\DecimalCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\ICheckLogicBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\MessageOption.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ContextualizedSingleton.cs" />
@@ -31,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExpressionHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocalRegisterHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ThreadStaticStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MacroCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\InconclusiveExceptionReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ISelfDescriptiveValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\TypeEnumerationValue.cs" />
