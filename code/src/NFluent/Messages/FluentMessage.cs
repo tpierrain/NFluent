@@ -42,8 +42,8 @@ namespace NFluent.Extensibility
         private MessageBlock checkedBlock;
         private Type checkedType;
         private string customAddOn;
-        private readonly bool dontRepeatExpected;
-        private readonly bool dontRepeatChecked;
+        private readonly bool doNotRepeatExpected;
+        private readonly bool doNotRepeatChecked;
 
         private static readonly Regex NormalOrder = new Regex(".*\\{0\\}.*\\{1\\}.*", RegexOptions.Compiled);
         private static readonly Regex ReverseOrder = new Regex(".*\\{1\\}.*\\{0\\}.*", RegexOptions.Compiled);
@@ -54,24 +54,26 @@ namespace NFluent.Extensibility
         /// <param name="message">
         /// The main message.
         /// </param>
+        /// <param name="withGiven"></param>
         /// <remarks>
         /// You can use {x} as place holders for standard wordings:
-        /// - {0}. 
+        /// - {0}. will be replaced by 'checked'
+        /// - {1}. will be replaced by 'expected' or 'given' according to how the auxiliary value(s) are declared. 
         /// </remarks>
-        private FluentMessage(string message)
+        private FluentMessage(string message, bool withGiven)
         {
             var format = message;
             format = format.Replace("{checked}", "{0}");
             format = format.Replace("{expected}", "{1}");
             format = format.Replace("{given}", "{1}");
             this.message = format;
-            this.dontRepeatExpected = NormalOrder.IsMatch(format);
-            this.dontRepeatChecked = ReverseOrder.IsMatch(format);
+            this.doNotRepeatExpected = NormalOrder.IsMatch(format);
+            this.doNotRepeatChecked = ReverseOrder.IsMatch(format);
 
             this.checkedNamingLogic = new EntityNamingLogic();
             this.expectedNamingLogic = new EntityNamingLogic();
             this.checkedLabel = GenericLabelBlock.BuildCheckedBlock(this.checkedNamingLogic);
-            this.expectedLabel = GenericLabelBlock.BuildExpectedBlock(this.expectedNamingLogic);
+            this.expectedLabel = withGiven ? GenericLabelBlock.BuildGivenBlock(this.expectedNamingLogic) : GenericLabelBlock.BuildExpectedBlock(this.expectedNamingLogic);
         }
 
         /// <summary>
@@ -79,16 +81,36 @@ namespace NFluent.Extensibility
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>A fluent message builder.</returns>
+        /// <remarks>
+        /// You can use {x} as place holders for standard wordings:
+        /// - {0}. will be replaced by 'checked'
+        /// - {1}. will be replaced by 'expected' or 'given' according to how the auxiliary value(s) are declared. 
+        /// </remarks>
         public static FluentMessage BuildMessage(string message)
         {
-            return new FluentMessage(message);
+            return new FluentMessage(message, false);
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Builds the message but refer to auxiliary value(s) as given (instead of 'expected')
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>A fluent message builder.</returns>
+        /// <remarks>
+        /// You can use {x} as place holders for standard wordings:
+        /// - {0}. will be replaced by 'checked'
+        /// - {1}. will be replaced by 'expected' or 'given' according to how the auxiliary value(s) are declared. 
+        /// </remarks>
+        public static FluentMessage BuildMessageWithGiven(string message)
+        {
+            return new FluentMessage(message, true);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
+        /// A <see cref="String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -96,8 +118,8 @@ namespace NFluent.Extensibility
             builder.Append(EndOfLine);
 
             var same = this.expectedLabel.EntityName() == this.checkedLabel.EntityName();
-            var localLabel = (same && this.dontRepeatChecked) ? this.checkedLabel.CustomMessage("{0} one") : this.checkedLabel.ToString();
-            var givenOrExpectedLabel = (same && this.dontRepeatExpected) ? this.expectedLabel.CustomMessage("{0} one") : this.expectedLabel.ToString();
+            var localLabel = (same && this.doNotRepeatChecked) ? this.checkedLabel.CustomMessage("{0} one") : this.checkedLabel.ToString();
+            var givenOrExpectedLabel = (same && this.doNotRepeatExpected) ? this.expectedLabel.CustomMessage("{0} one") : this.expectedLabel.ToString();
 
             builder.AppendFormat(this.message, localLabel, givenOrExpectedLabel);
 

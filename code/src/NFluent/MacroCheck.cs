@@ -18,17 +18,37 @@ namespace NFluent
     using System;
 
     /// <summary>
+    /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="T1"></typeparam>
     /// <typeparam name="T2"></typeparam>
     public class MacroCheck<T, T1, T2>
     {
-        internal Action<T, T1, T2> evaluator;
+        internal readonly Action<T, T1, T2> evaluator;
+        internal readonly string errorMessage;
 
-        internal MacroCheck(Action<T, T1, T2> evaluator)
+        internal MacroCheck(Action<T, T1, T2> evaluator, string errorMessage)
         {
             this.evaluator = evaluator;
+            this.errorMessage = errorMessage;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T1"></typeparam>
+    public class MacroCheck<T, T1>
+    {
+        internal readonly Action<T, T1> evaluator;
+        internal readonly string errorMessage;
+
+        internal MacroCheck(Action<T, T1> evaluator, string errorMessage)
+        {
+            this.evaluator = evaluator;
+            this.errorMessage = errorMessage;
         }
     }
 }

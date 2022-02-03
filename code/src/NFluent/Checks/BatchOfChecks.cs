@@ -21,10 +21,12 @@ namespace NFluent.Kernel
 
     internal class BatchOfChecks : IDisposable, IErrorReporter
     {
+        private readonly string message;
         private readonly StringBuilder errors  = new();
 
-        public BatchOfChecks()
+        public BatchOfChecks(string message)
         {
+            this.message = message;
             Check.ReporterStore.Push(this);
         }
 
@@ -33,7 +35,12 @@ namespace NFluent.Kernel
             Check.ReporterStore.Pop();
             if (this.errors.Length > 0)
             {
-                Check.Reporter.ReportError(this.errors.ToString());
+                var errorMessage = this.errors;
+                if (!string.IsNullOrEmpty(this.message))
+                {
+                    errorMessage = errorMessage.Insert(0, FluentMessage.BuildMessageWithGiven(this.message).ToString());
+                }
+                Check.Reporter.ReportError(errorMessage.ToString());
             }
         }
 

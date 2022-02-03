@@ -247,10 +247,11 @@ namespace NFluent
         /// <summary>
         /// Starts a batch of checks.
         /// </summary>
+        /// <paramref name="message">Error message</paramref>/>
         /// <returns>an <see cref="IDisposable"/> object. Check result will be reported when it is disposed.</returns>
-        public static IDisposable StartBatch()
+        public static IDisposable StartBatch(string message = null)
         {
-            return new BatchOfChecks();
+            return new BatchOfChecks(message);
         }
 
         /// <summary>
@@ -259,11 +260,19 @@ namespace NFluent
         /// <typeparam name="T">Type to use this macro with.</typeparam>
         /// <typeparam name="T1">Type of first param</typeparam>
         /// <typeparam name="T2">Type of second param.</typeparam>
-        /// <param name="func">Function that implements the desired checks.</param>
+        /// <param name="function">Function that implements the desired checks.</param>
+        /// <param name="errorMessage">Error message</param>
         /// <returns>An <see cref="MacroCheck{T, T1, T2}"/> instance.</returns>
-        public static MacroCheck<T, T1, T2> DeclareMacro<T, T1, T2>(Action<T, T1, T2> func)
-        {
-            return new MacroCheck<T, T1, T2>(func);
-        }
+        public static MacroCheck<T, T1, T2> DeclareMacro<T, T1, T2>(Action<T, T1, T2> function, string errorMessage) => new(function, errorMessage);
+        
+        /// <summary>
+        /// Declare a macro
+        /// </summary>
+        /// <typeparam name="T">Type to use this macro with.</typeparam>
+        /// <typeparam name="T1">Type of first param</typeparam>
+        /// <param name="function">Function that implements the desired checks.</param>
+        /// <param name="errorMessage">Error message</param>
+        /// <returns>An <see cref="MacroCheck{T, T1, T2}"/> instance.</returns>
+        public static MacroCheck<T, T1> DeclareMacro<T, T1>(Action<T, T1> function, string errorMessage) => new(function, errorMessage);
     }
 }

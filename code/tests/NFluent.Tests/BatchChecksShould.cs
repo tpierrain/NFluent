@@ -95,12 +95,35 @@ namespace NFluent.Tests
 
         [Test]
         public void
-            CanDeclareMacros()
+            CanDeclareMacros2Parameters()
         {
             var sut = Check.DeclareMacro<int, int, int>((x, y, z) =>
-                Check.That(x).IsStrictlyGreaterThan(y).And.IsStrictlyLessThan(z));
+                Check.That(x).IsStrictlyGreaterThan(y).And.IsStrictlyLessThan(z), "The {0} is not in the {1}-{2} range.");
 
             Check.That(2).VerifiesMacro(sut).With(1, 3);
+        }
+
+        [Test]
+        public void
+            CanDeclareMacrosSingleParameter()
+        {
+            var sut = Check.DeclareMacro<int, int>((x, y) =>
+                Check.That(x).IsStrictlyGreaterThan(y), "The {0} is less than {1}.");
+
+            Check.That(2).VerifiesMacro(sut).With(1);
+        }
+
+        [Test]
+        public void
+            RaiseProperErrorMessage()
+        {
+            var sut = Check.DeclareMacro<int, int>((x, y) =>
+                Check.That(x).IsStrictlyGreaterThan(y), "The {0} is less than {1}.");
+
+            Check.ThatCode( () =>
+
+            Check.That(2).VerifiesMacro(sut).With(5)).IsAFailingCheckWithMessage("");
+
         }
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       

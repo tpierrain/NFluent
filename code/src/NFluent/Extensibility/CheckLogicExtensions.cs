@@ -31,7 +31,9 @@ namespace NFluent.Extensibility
         /// <param name="newOptions"></param>
         /// <returns>Continuation object.</returns>
         public static ICheckLogic<T> FailWhen<T>(this ICheckLogic<T> logic, Func<T, bool> predicate, string error, MessageOption newOptions = MessageOption.None)
+            // Stryker test apart
         {
+            // Stryker test normal 
             return logic.Analyze((sut2, test) =>
             {
                 if (predicate(sut2))
