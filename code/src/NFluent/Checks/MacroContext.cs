@@ -16,7 +16,6 @@
 namespace NFluent
 {
     using System;
-    using Kernel;
 
     /// <summary>
     /// 

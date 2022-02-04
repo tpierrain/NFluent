@@ -114,7 +114,6 @@ namespace NFluent
             return ExtensibilityHelper.BuildCheckLink(check);
         }
 
-
         private static bool IsALetter(char checkedChar)
         {
             return char.IsLetter(checkedChar);

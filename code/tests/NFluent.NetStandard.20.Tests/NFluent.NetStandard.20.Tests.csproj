@@ -30,10 +30,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="NUnit" Version="3.13.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
   </ItemGroup>
 
   <Target Name="PrintReferences" DependsOnTargets="ResolveProjectReferences;ResolveAssemblyReferences">

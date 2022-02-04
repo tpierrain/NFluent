@@ -20,6 +20,9 @@ namespace NFluent.Extensions
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
+#if !DOTNET_20 && !DOTNET_30
+    using System.Linq;
+#endif
     using System.Reflection;
     using System.Text;
 
@@ -77,8 +80,8 @@ namespace NFluent.Extensions
             {
                 case null:
                     return NullText;
-                case char _:
-                    return $"'{theObject}'";
+                case char c:
+                    return $"'{c}'";
                 case string s:
                     return $"\"{TruncateLongString(s)}\"";
                 case DateTime time:
@@ -217,6 +220,7 @@ namespace NFluent.Extensions
         /// <returns><c>true</c> is the specified type implements Equals.</returns>
         public static bool ImplementsEquals(this Type type)
         {
+#if DOTNET_20 || DOTNET_30
             MethodInfo info;
             try
             {
@@ -228,6 +232,10 @@ namespace NFluent.Extensions
             }
             
             return info.DeclaringType == type;
+#else
+            return type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .Any(m => m.Name == "Equals" && m.DeclaringType == type);
+#endif
         }
 
         /// <summary>

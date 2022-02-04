@@ -26,7 +26,6 @@ namespace NFluent.Helpers
         private readonly DifferenceMode mode;
         private readonly DifferenceDetails[] subs;
         private readonly long expectedIndex;
-        private readonly long actualIndex;
 
         private DifferenceDetails(string firstName, object firstValue, object secondValue, long expectedIndex, long actualIndex, DifferenceMode mode, IEnumerable<DifferenceDetails> subs = null)
         {
@@ -35,7 +34,7 @@ namespace NFluent.Helpers
             this.FirstValue = firstValue;
             this.SecondValue = secondValue;
             this.expectedIndex = expectedIndex;
-            this.actualIndex = actualIndex;
+            this.ActualIndex = actualIndex;
             if (subs != null)
             {
                 this.subs = subs.ToArray();
@@ -92,30 +91,30 @@ namespace NFluent.Helpers
 
         public long Index => this.expectedIndex;
 
-        public long ActualIndex => this.actualIndex;
+        public long ActualIndex { get; }
 
         public void GetFirstDifferenceIndexes(out long actual, out long expected)
         {
             if (this.subs == null || this.subs.Length == 0)
             {
-                actual = this.actualIndex;
+                actual = this.ActualIndex;
                 expected = this.expectedIndex;
                 return;
             }
 
-            var firstDetail = this.subs.FirstOrDefault();
+            var firstDetail = this.subs.First();
 
             actual = firstDetail.ActualIndex;
             expected = firstDetail.Index;
         }
 
-        private IEnumerable<DifferenceDetails> Details(bool forEquivalence, bool firstLevel = true)
+        private IEnumerable<DifferenceDetails> Details(bool firstLevel = true)
         {
             if (this.subs is {Length: > 0})
             {
                 return this.subs.
                     //Where(d => (forEquivalence && (d.StillNeededForEquivalence || d.IsEquivalent()) ) || (!forEquivalence && d.StillNeededForEquality)).
-                    SelectMany(s => s.Details(forEquivalence, false));
+                    SelectMany(s => s.Details(false));
             }
 
             if (firstLevel && this.mode == DifferenceMode.Value)
@@ -128,7 +127,7 @@ namespace NFluent.Helpers
         public string GetMessage(bool forEquivalence)
         {
             var messageText = new StringBuilder(forEquivalence ? "The {0} is not equivalent to the {1}." : "The {0} is different from the {1}.");
-            var details = this.Details(forEquivalence).ToArray();
+            var details = this.Details().ToArray();
             if (details.Length>1)
             {
                 messageText.Append($" {details.Length} differences found!");
@@ -179,7 +178,7 @@ namespace NFluent.Helpers
                     ? $"{this.SecondValue.ToStringProperlyFormatted()} should be present but was not found."
                     : $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.",
                 DifferenceMode.Moved =>
-                $"{this.FirstName} value ('{this.FirstValue}') was found at index {this.actualIndex} instead of {this.Index}.",
+                $"{this.FirstName} value ('{this.FirstValue}') was found at index {this.ActualIndex} instead of {this.Index}.",
                 DifferenceMode.Attribute =>
                 $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.",
                 DifferenceMode.FoundInsteadOf =>

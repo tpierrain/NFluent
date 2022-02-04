@@ -19,7 +19,10 @@ namespace NFluent.Tests.FromIssues
     using System.Linq;
 #if DOTNET_45
     using System.Threading.Tasks;
+    using System.Collections.ObjectModel;
 #endif
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using NFluent.Helpers;
     using NUnit.Framework;
     using SutClasses;
@@ -33,6 +36,45 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        [Test]
+        public void IsEqualToIssue()
+        {
+            var json = JsonConvert.SerializeObject(new { data = "testData" });
+            
+            var obj = JObject.Parse(json);
+
+            Check.That(obj["data"]).Not.IsEqualTo( "Why did it pass?");
+            //Check.That(obj["data"]).IsEqualTo(new JObject());
+        }
+        
+        [Test]
+        // GH #334
+        public void IssueWithDictionaryIsEquivalent()
+        {
+            var si1 = new Dictionary<string, int> { { "a", 0 }, { "b", 1 }, { "c", 2 } };
+            var si2 = new Dictionary<string, int> { { "c", 2 }, { "a", 0 }, { "b", 1 } };
+            Check.That(si1).IsEquivalentTo(si2);
+
+            var letterA = "a";
+            var letterAnotherWay = new string("a".ToCharArray()); // forces unique instance
+            var sinotinterned1 = new Dictionary<string, int> { { letterA, 0 }, { "b", 1 }, { "c", 2 } };
+            var sinotinterned2 = new Dictionary<string, int> { { "c", 2 }, { letterAnotherWay, 0 }, { "b", 1 } };
+            Check.That(sinotinterned1).IsEquivalentTo(sinotinterned2);
+
+            var is1 = new Dictionary<int, string> { { 1, "va" }, { 2, "vb" }, { 0, "vc" } };
+            var is2 = new Dictionary<int, string> { { 0, "vc" }, { 1, "va" }, { 2, "vb" } };
+            Check.That(is1).IsEquivalentTo(is2);
+        }
+
+        [Test]
+        // GH #333
+        public void PrecisionIssueWithDouble()
+        {
+            Check.ThatCode( ()=>
+            Check.That(1E-29).IsZero()).IsAFailingCheckWithMessage("", "The checked value is different from zero.", "The checked value:", "	[1E-29]"); // should not succeed! (but does in v2.7.1)
+            Check.That(1E-29).IsNotZero(); // should not fail! (but does in v2.7.1)
+        }
+
         [Test]
         // GH #320
         public void IssueWithDoubleAndInt()

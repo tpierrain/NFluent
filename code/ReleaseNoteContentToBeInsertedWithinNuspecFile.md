@@ -14,6 +14,7 @@ _sut_'s propertie.
 * NFluent supports Net 3.5 SP1, Net. 4.5.2 +, Net Standard 2.0+. Dropped support for Net Framework 2.0, 3.0, and 4.0, as well Net Standard<2.0. 
  If you can't upgrade your framework version to a supported one, please use NFluent 2.7.1.
 
+
 ## New Checks
 * `Is`: Checks if _sut == expected_. This is a strongly typed equivalent to `IsEqualTo`.
 * `IsGreaterOrEqualThan`: Checks if _sut_ >= _expected_. 
@@ -64,7 +65,26 @@ problem for you, open an issue
 * `Checker.BuildLinkWhich` (used for custom extension): please use `ExtensibilityHelper.BuildCheckLinkWhich` instead.
 * `Checker.ExecuteCheckAndProvideSubItem` (used for custom extension): please 'ExtensibilityHelper' static class methods instead.
 
-# V 2.7.1
+# V 2.8.0
+# Breaking changes
+* Removed typed overload for IsEqualTo. This may degrade autocompletion somewhat;
+* Equality comparison logic has been slightly revised to take failing `Equals` result when the expected type provides a specific implementation (only success was used so far).
+
+# GitHub Issue
+* #335
+
+
+# V 2.7.2
+
+## Fixes
+* HasFieldWithSameValues resulted in false positive when string fields had the same value.
+* IsZero failed for very small double (<1E-28) in previous versions.
+* IsEquivalentTo was not permissive enougth for dictionaries.
+
+# GitHub Issues
+* #331, #333# 
+
+V 2.7.1
 # Fixes
 * HasFieldsWithSameValues failed to properly compare when the expected value contained duplicate string. 
 More generally, instances where only checked once for equality; any subsequent check was assumed to be succesful. 

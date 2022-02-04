@@ -70,11 +70,11 @@ namespace NFluent
         /// <exception cref="FluentCheckException">
         /// The actual value is not equal to the expected value.
         /// </exception>
-        public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, T expected)
+        public static ICheckLink<ICheck<T>> IsEqualTo<T>(this ICheck<T> check, object expected)
         {
             return EqualityHelper.PerformEqualCheck(check, expected);
         }
-         
+        
         /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>

@@ -102,26 +102,31 @@
     <PropertyGroup>
       <PackageStream>nightly</PackageStream>
     </PropertyGroup>
+    <Message Importance="high" Text="Starting nightly build"/>
   </Target>
   <Target Name="SetRC">
     <PropertyGroup>
       <PackageStream>RC</PackageStream>
     </PropertyGroup>
+    <Message Importance="high" Text="Starting Release Candidate build"/>
   </Target>
   <Target Name="SetRelease">
     <PropertyGroup>
       <PackageStream></PackageStream>
     </PropertyGroup>
+    <Message Importance="high" Text="Starting Release build"/>
   </Target>
   <Target Name="SetAlpha">
     <PropertyGroup>
       <PackageStream>alpha</PackageStream>
     </PropertyGroup>
+    <Message Importance="high" Text="Starting Alpha build"/>
   </Target>
   <Target Name="SetBeta">
     <PropertyGroup>
       <PackageStream>beta</PackageStream>
     </PropertyGroup>
+    <Message Importance="high" Text="Starting Beta build"/>
   </Target>
 
   <!--Scan framework in csproj files-->
