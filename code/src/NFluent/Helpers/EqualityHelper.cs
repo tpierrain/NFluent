@@ -18,8 +18,7 @@ namespace NFluent.Helpers
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Runtime.CompilerServices;
-    using System.Runtime.InteropServices;
+    using System.Reflection;
 #if !DOTNET_20 && !DOTNET_30
     using System.Linq;
 #endif
@@ -338,6 +337,8 @@ namespace NFluent.Helpers
                 return result;
             }
 
+            var implementEquals = expected.GetTypeWithoutThrowingException().ImplementsEquals();
+
             if (actual != null)
             {
                 var commonType = actual.GetType().FindCommonNumericalType(expected.GetType());
@@ -362,7 +363,9 @@ namespace NFluent.Helpers
 
                 if (actual.IsAnEnumeration(false) && expected.IsAnEnumeration(false))
                 {
-                    return ValueDifferenceEnumerable(actual as IEnumerable, firstName, expected as IEnumerable, firstSeen);
+                    var scan = ValueDifferenceEnumerable(actual as IEnumerable, firstName, expected as IEnumerable, firstSeen);
+                    if (scan.IsDifferent || !implementEquals)
+                        return scan;
                 }
             }
 

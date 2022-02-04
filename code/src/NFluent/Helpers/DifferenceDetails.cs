@@ -15,7 +15,7 @@
 
 namespace NFluent.Helpers
 {
-    using NFluent.Extensions;
+    using Extensions;
     internal class DifferenceDetails
     {
         private DifferenceMode Mode {get;}

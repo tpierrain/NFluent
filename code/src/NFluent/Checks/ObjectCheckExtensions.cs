@@ -55,7 +55,7 @@ namespace NFluent
             return EqualityHelper.PerformEqualCheck(check, expected, customComparer);
         }
          
-        /// <summary>
+/*        /// <summary>
         /// Checks that the actual value is equal to another expected value.
         /// </summary>
         /// <typeparam name="T">
@@ -77,7 +77,7 @@ namespace NFluent
         {
             return EqualityHelper.PerformEqualCheck(check, expected);
         }
-
+        */
         /// <summary>
         /// Check if sut is the default value.
         /// </summary>

@@ -16,12 +16,14 @@ namespace NFluent.Tests.FromIssues
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
 #if DOTNET_45
     using System.Threading.Tasks;
+    using System.Collections.ObjectModel;
 #endif
     using Helpers;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using NFluent.Helpers;
     using NUnit.Framework;
     using SutClasses;
@@ -36,6 +38,17 @@ namespace NFluent.Tests.FromIssues
     public class UserReportedIssues2
     {
         [Test]
+        public void IsEqualToIssue()
+        {
+            var json = JsonConvert.SerializeObject(new { data = "testData" });
+            
+            var obj = JObject.Parse(json);
+
+            Check.That(obj["data"]).Not.IsEqualTo( "Why did it pass?");
+            //Check.That(obj["data"]).IsEqualTo(new JObject());
+        }
+        
+        [Test]
         // GH #334
         public void IssueWithDictionaryIsEquivalent()
         {
@@ -44,9 +57,9 @@ namespace NFluent.Tests.FromIssues
             Check.That(si1).IsEquivalentTo(si2);
 
             var letterA = "a";
-            var letterAanotherWay = new string("a".ToCharArray()); // forces unique instance
+            var letterAnotherWay = new string("a".ToCharArray()); // forces unique instance
             var sinotinterned1 = new Dictionary<string, int> { { letterA, 0 }, { "b", 1 }, { "c", 2 } };
-            var sinotinterned2 = new Dictionary<string, int> { { "c", 2 }, { letterAanotherWay, 0 }, { "b", 1 } };
+            var sinotinterned2 = new Dictionary<string, int> { { "c", 2 }, { letterAnotherWay, 0 }, { "b", 1 } };
             Check.That(sinotinterned1).IsEquivalentTo(sinotinterned2);
 
             var is1 = new Dictionary<int, string> { { 1, "va" }, { 2, "vb" }, { 0, "vc" } };

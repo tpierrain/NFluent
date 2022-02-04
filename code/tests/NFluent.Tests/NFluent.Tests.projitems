@@ -80,9 +80,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)FromIssues\UserReportedIssuesTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)CheckedFile.xml">
+    <None Include="$(MSBuildThisFileDirectory)CheckedFile.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="$(MSBuildThisFileDirectory)ExpectedFile.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

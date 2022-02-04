@@ -1,3 +1,9 @@
+# V 2.8.0
+# Breaking changes
+* Removed typed overload for IsEqualTo. This may degrade autocompletion somewhat;
+* Equality comparison logic has been slightly revised to take failing `Equals` result when the expected type provides a specific implementation (only success was used so far).
+
+
 # V 2.7.2
 
 ## Fixes
