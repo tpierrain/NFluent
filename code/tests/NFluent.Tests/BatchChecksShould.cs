@@ -122,7 +122,8 @@ namespace NFluent.Tests
 
             Check.ThatCode( () =>
 
-            Check.That(2).VerifiesMacro(sut).With(5)).IsAFailingCheckWithMessage("");
+            Check.That(2).VerifiesMacro(sut).With(5)).IsAFailingCheckWithMessage("",
+"The checked value is less than given one.",  "The checked value is less than the given one.", "The checked value:", "\t[2]", "The expected value: strictly greater than", "\t[5]");
 
         }
     }
