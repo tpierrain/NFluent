@@ -6,7 +6,7 @@
   <PropertyGroup>
     <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.7.1221</opencoverVersion>
     <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">4.8.13</reportGeneratorVersion>
-    <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.12.0</nunitConsoleVersion>
+    <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.15.0</nunitConsoleVersion>
     <xunitConsoleVersion Condition="'$(xunitConsoleVersion)' == ''">2.4.1</xunitConsoleVersion>
 
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
