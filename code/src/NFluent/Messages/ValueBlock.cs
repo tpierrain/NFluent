@@ -75,7 +75,7 @@ namespace NFluent.Messages
         [ExcludeFromCodeCoverage]
         public void WithEnumerableCount(long itemsCount)
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException();
         }
 
         /// <summary>

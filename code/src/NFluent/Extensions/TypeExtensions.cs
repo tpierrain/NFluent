@@ -71,22 +71,6 @@ namespace NFluent.Extensions
         /// <returns>true if <see paramref="type" /> should treated as an enumeration.</returns>
         public static bool IsAnEnumeration(this Type type, bool evenWellKnown) => type.GetInterfaces().Contains(typeof(IEnumerable)) && (evenWellKnown || type != typeof(string));
         
-
-        /// <summary>
-        /// Type is an ISet implementation.
-        /// </summary>
-        /// <param name="type">type to assess</param>
-        /// <returns>true if type is an ISet implementation.</returns>
-        // TODO: not used yet, contemplate removal
-        public static bool IsASet(this Type type)
-        {
-#if DOTNET_35
-            return type.IsGenericType && type.Name == typeof(HashSet<>).Name;
-#else
-            return type.GetInterfaces().Any(t => t.IsConstructedGenericType && t.GetGenericTypeDefinition() == typeof(ISet<>));
-#endif
-        }
-
         /// <summary>
         /// Type is an ISet implementation.
         /// </summary>

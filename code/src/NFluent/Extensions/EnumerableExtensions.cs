@@ -292,7 +292,7 @@ namespace NFluent
                 [ExcludeFromCodeCoverage]
                 public void Reset()
                 {
-                    throw new NotImplementedException();
+                    this.wrapped.Reset();
                 }
 
                 public T Current => (T) this.wrapped.Current;

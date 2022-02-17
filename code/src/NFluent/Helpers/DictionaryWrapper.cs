@@ -128,7 +128,7 @@ namespace NFluent.Helpers
             [ExcludeFromCodeCoverage]
             public void Reset()
             {
-                throw new NotImplementedException();
+                this.keyEnumerator.Reset();
             }
 
             public KeyValuePair<TK, TV> Current => new KeyValuePair<TK, TV>((TK)this.keyEnumerator.Key, (TV)this.keyEnumerator.Value);

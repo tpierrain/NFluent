@@ -93,6 +93,20 @@ namespace NFluent.Tests
                 "\t[2]");
         }
 
+
+        [Test]
+        public void
+            DoesNotCatchUnexpectedExceptions()
+        {
+            Check.ThatCode(() =>
+            {
+                using (Check.StartBatch())
+                {
+                    throw new ApplicationException("Random exception");
+                }
+            }).Throws<ApplicationException>().WithMessage("Random exception");
+        }
+
         [Test]
         public void
             CanDeclareMacros2Parameters()
@@ -123,8 +137,12 @@ namespace NFluent.Tests
             Check.ThatCode( () =>
 
             Check.That(2).VerifiesMacro(sut).With(5)).IsAFailingCheckWithMessage("",
-"The checked value is less than given one.",  "The checked value is less than the given one.", "The checked value:", "\t[2]", "The expected value: strictly greater than", "\t[5]");
-
+"The checked value is less than given one.",  
+"The checked value is less than the given one.", 
+"The checked value:", 
+"\t[2]", 
+"The expected value: strictly greater than", 
+"\t[5]");
         }
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       

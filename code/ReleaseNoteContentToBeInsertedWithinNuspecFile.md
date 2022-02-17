@@ -44,7 +44,7 @@ you need help.
 
 ### Obsolete
 #### Marked as obsolet
-* `ThatAsynCode`: you can now use `ThatCode` even for async methods.
+* `ThatAsyncCode`: you can now use `ThatCode` even for async methods.
 
 Here is the list of methods, classes and other obsolete stuff that have been removed in this version as well
 as workaround advices.

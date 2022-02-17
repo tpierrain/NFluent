@@ -39,17 +39,6 @@
         }
 
         [Test]
-        public void IsEqualToIssue()
-        {
-            var input = new { data = "testData" };
-            var json = JsonConvert.SerializeObject(input);
-            
-            var obj = JObject.Parse(json);
-
-            Check.That(obj["data"]).IsEqualTo("Why did it pass?");
-        }
-
-        [Test]
         public void IsEqualToIssue_WithToString()
         {
             var input = new { data = "testData" };
