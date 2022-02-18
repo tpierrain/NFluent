@@ -209,11 +209,8 @@
     <Exec Command='"$(NuGetExePath)" sources add -Name extraSource -Source $(NugetSource)'
           Condition="'$(NugetSource)'!=''" IgnoreExitCode="true" />
     <Message Importance="high" Text="Restoring projects" />
-    <!--MSBuild Projects="%(ProjectFolder.FullPath)" 
-             Targets="restore" 
-             Properties="Configuration=$(Configuration)"/-->
     <Exec
-      Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages" -verbosity quiet' />
+      Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages"' />
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------" />
   </Target>
 

@@ -40,7 +40,7 @@ namespace NFluent.Tests
 
             Assert.AreEqual("[{\"a\",\"b\",\"c\"}]", blk.GetMessage());
 
-            Assert.Throws<NotImplementedException>(() => blk.WithEnumerableCount(list.GetLength(0)));
+            Assert.Throws<InvalidOperationException>(() => blk.WithEnumerableCount(list.GetLength(0)));
         }
 
         [Test]
