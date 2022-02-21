@@ -210,7 +210,7 @@
           Condition="'$(NugetSource)'!=''" IgnoreExitCode="true" />
     <Message Importance="high" Text="Restoring projects" />
     <Exec
-      Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages"' />
+      Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages" -verbosity quiet' />
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------" />
   </Target>
 

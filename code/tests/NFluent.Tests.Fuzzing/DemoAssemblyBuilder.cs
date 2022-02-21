@@ -13,10 +13,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-/// <summary>
-/// This is a derivative from code posted on Stack Overflow
-/// https://stackoverflow.com/questions/41784393/how-to-emit-a-type-in-net-core
-/// </summary>
 namespace NFluent.Tests.Fuzzing
 {
     using System;
@@ -26,6 +22,10 @@ namespace NFluent.Tests.Fuzzing
 
     public class FieldDescriptor
     {
+        /// <summary>
+        /// This is a derivative from code posted on Stack Overflow
+        /// https://stackoverflow.com/questions/41784393/how-to-emit-a-type-in-net-core
+        /// </summary>
         public FieldDescriptor(string fieldName, Type fieldType)
         {
             this.FieldName = fieldName;

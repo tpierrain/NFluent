@@ -3,7 +3,7 @@
   <metadata>
     <id>NFluent</id>
     <title>NFluent, smooth your .NET TDD experience!</title>
-    <version>3.0.0-0000.alpha</version>
+    <version>3.0.0.0000-beta</version>
     <authors>Thomas PIERRAIN, Cyrille DUPUYDAUBY, Rui CARVALHO, Marc-Antoine LATOUR</authors>
     <owners>Thomas PIERRAIN</owners>
     <license type="expression">Apache-2.0</license>
@@ -47,7 +47,7 @@
 * HasFieldWithSameValues resulted in false positive when string fields had the same value.
 * IsNotEqualTo now properly preserves expected type
 * Improved rerporting of differences for enumerations and dictionaries to make them more consistent and fixed some inaccuracies.
-# GitHub Issues
+## GitHub Issues
 * #325, #327, #330, #332
 ### Obsolete
 #### Marked as obsolet
@@ -71,19 +71,21 @@
 * `Checker.BuildLinkWhich` (used for custom extension): please use `ExtensibilityHelper.BuildCheckLinkWhich` instead.
 * `Checker.ExecuteCheckAndProvideSubItem` (used for custom extension): please 'ExtensibilityHelper' static class methods instead.
 # V 2.8.0
-# Breaking changes
+## Breaking changes
 * Removed typed overload for IsEqualTo. This may degrade autocompletion somewhat;
 * Equality comparison logic has been slightly revised to take failing `Equals` result when the expected type provides a specific implementation (only success was used so far).
-# GitHub Issue
+## New check
+* Is : replaces the typed overload for IsEqualTo
+## GitHub Issue
 * #335
 # V 2.7.2
 ## Fixes
 * HasFieldWithSameValues resulted in false positive when string fields had the same value.
 * IsZero failed for very small double (&lt;1E-28) in previous versions.
 * IsEquivalentTo was not permissive enougth for dictionaries.
-# GitHub Issues
+## GitHub Issues
 * #331, #333#
-V 2.7.1
+# V 2.7.1
 # Fixes
 * HasFieldsWithSameValues failed to properly compare when the expected value contained duplicate string.
 More generally, instances where only checked once for equality; any subsequent check was assumed to be succesful.
