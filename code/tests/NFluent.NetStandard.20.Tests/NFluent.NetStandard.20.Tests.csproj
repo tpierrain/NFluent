@@ -14,7 +14,6 @@
   </PropertyGroup>
 
   <Import Project="..\NFluent.Tests\NFluent.Tests.projitems" Label="Shared" />
-
   <Import Project="..\NFluent.Tests.Generated\NFluent.Tests.Generated.projitems" Label="Shared" />
 
   <ItemGroup>
