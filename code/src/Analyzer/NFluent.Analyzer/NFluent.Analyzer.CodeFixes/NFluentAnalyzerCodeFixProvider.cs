@@ -42,9 +42,19 @@ namespace NFluent.Analyzer
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+            if (root == null)
+            {
+                return;
+            }
+
             foreach (var contextDiagnostic in context.Diagnostics)
             {
-                var invocationExpression = root.FindToken(contextDiagnostic.Location.SourceSpan.Start).Parent
+                var referenceToken = root.FindToken(contextDiagnostic.Location.SourceSpan.Start);
+                if (referenceToken.Parent == null)
+                {
+                    continue;
+                }
+                var invocationExpression = referenceToken.Parent
                     .AncestorsAndSelf()
                     .OfType<ExpressionStatementSyntax>().First();
                 var thatNode =
@@ -80,20 +90,19 @@ namespace NFluent.Analyzer
         {
             var sut = thatNode.ArgumentList.Arguments[0].Expression;
             var actualCheck = NFluentAnalyzer.FindActualCheck(thatNode);
-            if (sut is MemberAccessExpressionSyntax memberAccess && memberAccess.HasName("Count"))
+            if (!(sut is MemberAccessExpressionSyntax memberAccess) || !memberAccess.HasName("Count") ||
+                !actualCheck.HasName("IsEqualTo"))
             {
-                if (actualCheck.HasName("IsEqualTo"))
-                {
-                    // replace Check.That(sut.Count).IsEqualTo(10) by Check.That(sut).CountIs(10)
-                    var fixedThat = thatNode.Update(thatNode.Expression,
-                        RoslynHelper.BuildArgumentList(memberAccess.Expression));
-                    var fixedCheck = actualCheck.Update(actualCheck.Expression.ReplaceNode(thatNode, fixedThat), 
-                        actualCheck.OperatorToken, SyntaxFactory.IdentifierName("CountIs"));
-                    var root = await contextDocument.GetSyntaxRootAsync(cancellationToken);
-                    return contextDocument.WithSyntaxRoot(root.ReplaceNode(actualCheck, fixedCheck));
-                }
+                return contextDocument;
             }
-            return contextDocument;
+
+            // replace Check.That(sut.Count).IsEqualTo(10) by Check.That(sut).CountIs(10)
+            var fixedThat = thatNode.Update(thatNode.Expression,
+                RoslynHelper.BuildArgumentList(memberAccess.Expression));
+            var fixedCheck = actualCheck.Update(actualCheck.Expression.ReplaceNode(thatNode, fixedThat), 
+                actualCheck.OperatorToken, SyntaxFactory.IdentifierName("CountIs"));
+            var root = await contextDocument.GetSyntaxRootAsync(cancellationToken);
+            return root == null ? contextDocument : contextDocument.WithSyntaxRoot(root.ReplaceNode(actualCheck, fixedCheck));
         }
 
         private static async Task<Document> ConvertExpressionSut(Document contextDocument,
@@ -130,11 +139,18 @@ namespace NFluent.Analyzer
                         updatedCheckThat.OperatorToken, 
                         SyntaxFactory.IdentifierName(checkName));
                     // inject the parameter
-                    var newFix = ((InvocationExpressionSyntax)actualCheck.Parent).Update(altCheckNaMme, RoslynHelper.BuildArgumentList(refValue));
-
+                    var newFix = ((InvocationExpressionSyntax)actualCheck.Parent)?.Update(altCheckNaMme, RoslynHelper.BuildArgumentList(refValue));
+                    if (newFix == null)
+                    {
+                        // fix generation failed
+                        return contextDocument;
+                    }
                     // inject the fixed check
                     var root = await contextDocument.GetSyntaxRootAsync(cancellationToken);
-                    return contextDocument.WithSyntaxRoot(root.ReplaceNode(actualCheck.Parent, newFix));
+                    if (root != null)
+                    {
+                        return contextDocument.WithSyntaxRoot(root.ReplaceNode(actualCheck.Parent, newFix));
+                    }
                 }
             }
 
@@ -167,7 +183,7 @@ namespace NFluent.Analyzer
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
             var info = semanticModel.GetSymbolInfo(invocationExpression);
-            var sutType = ((IMethodSymbol) info.Symbol).Parameters[0].Type;
+            var sutType = ((IMethodSymbol) info.Symbol)?.Parameters[0].Type;
             var replacementNode = BuildCorrectCheckThatExpression(invocationExpression, sutType);
 
             if (replacementNode == null)
@@ -176,7 +192,7 @@ namespace NFluent.Analyzer
             }
 
             var root = await document.GetSyntaxRootAsync(cancellationToken);
-            return document.WithSyntaxRoot(root.ReplaceNode(invocationExpression, replacementNode));
+            return root == null ? document : document.WithSyntaxRoot(root.ReplaceNode(invocationExpression, replacementNode));
         }
 
         private static InvocationExpressionSyntax BuildCorrectCheckThatExpression(
@@ -227,7 +243,7 @@ namespace NFluent.Analyzer
                     }
 
                     if (sutType.IsReferenceType ||
-                        sutType.OriginalDefinition?.SpecialType == SpecialType.System_Nullable_T)
+                        sutType.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
                     {
                         checkName = "IsNotNull";
                     }

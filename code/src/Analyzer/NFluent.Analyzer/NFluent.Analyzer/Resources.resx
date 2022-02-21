@@ -126,12 +126,21 @@
   <data name="CCTitle" xml:space="preserve">
     <value>Improves check on enumeration</value>
   </data>
+  <data name="CDDescription" xml:space="preserve">
+    <value>IsEqualTo(default) does not provide expected result.</value>
+  </data>
+  <data name="CDMessageFormat" xml:space="preserve">
+    <value>Use 'Is(default)' instead of 'IsEqualTo(default)'</value>
+  </data>
+  <data name="CDTitle" xml:space="preserve">
+    <value>Verify usage of 'IsEqualTo'</value>
+  </data>
   <data name="MCDescription" xml:space="preserve">
     <value>Check should always have a condition</value>
     <comment>Check.That(x); has no effect. One need to have an actual check expressed.</comment>
   </data>
   <data name="MCMessageFormat" xml:space="preserve">
-    <value>Sut '{0}' should be actualy checked</value>
+    <value>Sut '{0}' should be actually checked</value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
   <data name="MCTitle" xml:space="preserve">

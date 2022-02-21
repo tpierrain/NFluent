@@ -39,7 +39,7 @@ you need help.
 * IsNotEqualTo now properly preserves expected type
 * Improved rerporting of differences for enumerations and dictionaries to make them more consistent and fixed some inaccuracies.
 
-# GitHub Issues
+## GitHub Issues
 * #325, #327, #330, #332
 
 ### Obsolete
@@ -66,25 +66,27 @@ problem for you, open an issue
 * `Checker.ExecuteCheckAndProvideSubItem` (used for custom extension): please 'ExtensibilityHelper' static class methods instead.
 
 # V 2.8.0
-# Breaking changes
+## Breaking changes
 * Removed typed overload for IsEqualTo. This may degrade autocompletion somewhat;
 * Equality comparison logic has been slightly revised to take failing `Equals` result when the expected type provides a specific implementation (only success was used so far).
 
-# GitHub Issue
+## New check
+* Is : replaces the typed overload for IsEqualTo
+
+## GitHub Issue
 * #335
 
 
 # V 2.7.2
-
 ## Fixes
 * HasFieldWithSameValues resulted in false positive when string fields had the same value.
 * IsZero failed for very small double (<1E-28) in previous versions.
 * IsEquivalentTo was not permissive enougth for dictionaries.
 
-# GitHub Issues
+## GitHub Issues
 * #331, #333# 
 
-V 2.7.1
+# V 2.7.1
 # Fixes
 * HasFieldsWithSameValues failed to properly compare when the expected value contained duplicate string. 
 More generally, instances where only checked once for equality; any subsequent check was assumed to be succesful. 

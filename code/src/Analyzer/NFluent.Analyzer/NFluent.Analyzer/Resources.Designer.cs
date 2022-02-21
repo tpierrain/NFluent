@@ -19,7 +19,7 @@ namespace NFluent.Analyzer {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -88,6 +88,33 @@ namespace NFluent.Analyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsEqualTo(default) does not provide expected result..
+        /// </summary>
+        internal static string CDDescription {
+            get {
+                return ResourceManager.GetString("CDDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use &apos;Is(default)&apos; instead of &apos;IsEqualTo(default)&apos;.
+        /// </summary>
+        internal static string CDMessageFormat {
+            get {
+                return ResourceManager.GetString("CDMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify usage of &apos;IsEqualTo&apos;.
+        /// </summary>
+        internal static string CDTitle {
+            get {
+                return ResourceManager.GetString("CDTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check should always have a condition.
         /// </summary>
         internal static string MCDescription {
@@ -97,7 +124,7 @@ namespace NFluent.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sut &apos;{0}&apos; should be actualy checked.
+        ///   Looks up a localized string similar to Sut &apos;{0}&apos; should be actually checked.
         /// </summary>
         internal static string MCMessageFormat {
             get {

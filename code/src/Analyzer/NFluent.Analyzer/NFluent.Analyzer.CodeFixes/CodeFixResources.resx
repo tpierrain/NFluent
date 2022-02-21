@@ -127,4 +127,7 @@
   <data name="SwitchToEnumerableCheck" xml:space="preserve">
     <value>Use Enumerable specific check</value>
   </data>
+  <data name="SwitchToIs" xml:space="preserve">
+    <value>Use 'Is' instead of 'IsEqualTo'</value>
+  </data>
 </root>

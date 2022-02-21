@@ -28,6 +28,7 @@ namespace NFluent.Analyzer
         public const string MissingCheckId = "NA0001";
         public const string SutIsTheCheckId = "NA0002";
         public const string EnumerationCheckId = "NA0003";
+        public const string PreferIsId = "NA0101";
 
         // You can change these strings in the Resources.resx file. If you do not want your analyzer to be localize-able, you can use regular strings for Title and MessageFormat.
         // See https://github.com/dotnet/roslyn/blob/master/docs/analyzers/Localizing%20Analyzers.md for more on localization
@@ -42,8 +43,11 @@ namespace NFluent.Analyzer
         private static readonly DiagnosticDescriptor EnumerationCheck = BuildRule(EnumerationCheckId,
             nameof(Resources.CCTitle), nameof(Resources.CCMessageFormat), nameof(Resources.CCDescription));
 
+        private static readonly DiagnosticDescriptor IsEqualToDefaultRule = BuildRule(PreferIsId,
+            nameof(Resources.CDTitle), nameof(Resources.CDMessageFormat), nameof(Resources.CDDescription));
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(MissingCheckRule, SutIsTheCheckRule, EnumerationCheck);
+            ImmutableArray.Create(MissingCheckRule, SutIsTheCheckRule, EnumerationCheck, IsEqualToDefaultRule);
 
         private static DiagnosticDescriptor BuildRule(string id, string localizableTitle, string localizableFormat,
             string localizableDescription, DiagnosticSeverity severity = DiagnosticSeverity.Warning,
@@ -66,7 +70,7 @@ namespace NFluent.Analyzer
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
         }
-
+        // C:\Users\cyrilledupuydauby\.nuget\packages\nfluent.analyzer\0.1.0\analyzers\dotnet\cs\NFluent.Analyzer.dll
         private static void AnalyzeExpressionStatement(SyntaxNodeAnalysisContext context)
         {
             var statement = (ExpressionStatementSyntax) context.Node;
@@ -82,6 +86,10 @@ namespace NFluent.Analyzer
             if (thatNode.Parent is MemberAccessExpressionSyntax memberAccess && memberAccess.HasName("As"))
             {
                 thatNode = memberAccess.Parent as InvocationExpressionSyntax;
+                if (thatNode == null)
+                {
+                    return;
+                }
             }
 
             var actualCheck = FindActualCheck(thatNode);
@@ -96,37 +104,54 @@ namespace NFluent.Analyzer
             else
             {
                 var sut = invocationExpression.ArgumentList.Arguments[0].Expression;
-                if (sut is BinaryExpressionSyntax binaryExpressionSyntax &&
-                    (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse")))
+                switch (sut)
                 {
-                    // we have a Check.That(sut == expected).IsTrue() ==> Check.That(sut).IsEqual(expected);
-                    var checkName = BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut, out _);
-
-                    if (!string.IsNullOrEmpty(checkName))
+                    case BinaryExpressionSyntax binaryExpressionSyntax when (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse")):
                     {
-                        var diagnostic = Diagnostic.Create(SutIsTheCheckRule, context.Node.GetLocation(),
-                            realSut.ToString(), checkName);
-                        context.ReportDiagnostic(diagnostic);
-                    }
-                }
+                        // we have a Check.That(sut == expected).IsTrue() ==> Check.That(sut).IsEqual(expected);
+                        var checkName = BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut, out _);
 
-                if (sut is MemberAccessExpressionSyntax member && member.HasName("Count") && actualCheck.HasName("IsEqualTo"))
-                {
-                    // we have a Check.That(sut.Count).IsEqualTo(expected)
-                    var sutSymbol = context.SemanticModel.GetSymbolInfo(member.Expression);
-                    if (sutSymbol.Symbol != null)
-                    {
-                        switch (sutSymbol.Symbol)
+                        if (!string.IsNullOrEmpty(checkName))
                         {
-                            case IFieldSymbol fieldSymbol:
-                                if (fieldSymbol.Type.Interfaces.Any(i => i.SpecialType == SpecialType.System_Collections_IEnumerable))
-                                {
-                                    context.ReportDiagnostic(Diagnostic.Create(EnumerationCheck, 
-                                        context.Node.GetLocation(), 
-                                        member.Expression.ToString(), "CountIs"));
-                                }
-                                break;
+                            var diagnostic = Diagnostic.Create(SutIsTheCheckRule, context.Node.GetLocation(),
+                                realSut.ToString(), checkName);
+                            context.ReportDiagnostic(diagnostic);
                         }
+
+                        break;
+                    }
+                    case MemberAccessExpressionSyntax member when actualCheck.HasName("IsEqualTo"):
+                    {
+                        if (member.HasName("Count"))
+                        {
+                            // we have a Check.That(sut.Count).IsEqualTo(expected)
+                            var sutSymbol = context.SemanticModel.GetSymbolInfo(member.Expression);
+                            if (sutSymbol.Symbol != null)
+                            {
+                                switch (sutSymbol.Symbol)
+                                {
+                                    case IFieldSymbol fieldSymbol:
+                                        if (fieldSymbol.Type.Interfaces.Any(i =>
+                                                i.SpecialType == SpecialType.System_Collections_IEnumerable))
+                                        {
+                                            context.ReportDiagnostic(Diagnostic.Create(EnumerationCheck,
+                                                context.Node.GetLocation(),
+                                                member.Expression.ToString(), "CountIs"));
+                                        }
+
+                                        break;
+                                }
+                            }
+                        }
+                        else if (thatNode.ArgumentList.Arguments.Count == 1
+                                 && thatNode.ArgumentList.Arguments[0].Expression is LiteralExpressionSyntax lit
+                                 && lit.Kind() == SyntaxKind.DefaultLiteralExpression)
+                        {
+                            // we have a check.that().IsEqualTo(default)
+                            context.ReportDiagnostic(Diagnostic.Create(IsEqualToDefaultRule,
+                                context.Node.GetLocation()));
+                        }
+                        break;
                     }
                 }
             }
@@ -196,12 +221,12 @@ namespace NFluent.Analyzer
 
         public static MemberAccessExpressionSyntax FindActualCheck(InvocationExpressionSyntax thatNode)
         {
-            var actualCheck = thatNode.Parent as MemberAccessExpressionSyntax;
-            if (actualCheck == null)
+            if (!(thatNode.Parent is MemberAccessExpressionSyntax actualCheck))
             {
                 return null;
             }   
-            // deal for when we have the 'As' variation
+
+            // deal for when we have the 'As' and/or 'Not' variation
             if (actualCheck.HasName("Not"))
             {
                 actualCheck = actualCheck.Parent as MemberAccessExpressionSyntax;
@@ -210,9 +235,10 @@ namespace NFluent.Analyzer
                     return null;
                 }
             }
+
             if (actualCheck.HasName("As"))
             {
-                actualCheck = actualCheck.Parent.Parent as MemberAccessExpressionSyntax;
+                actualCheck = actualCheck.Parent?.Parent as MemberAccessExpressionSyntax;
             }
 
             return actualCheck;

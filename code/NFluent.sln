@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28714.193
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{CCA550FA-833A-4F2E-9C81-78EE585A49CC}"
 	ProjectSection(SolutionItems) = preProject
@@ -127,7 +127,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.46", "src\NFluent.4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.46.Tests", "tests\NFluent.46.Tests\NFluent.46.Tests.csproj", "{0014C223-A481-4B87-A480-3D4792A9B276}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.T4", "src\NFluent.T4\NFluent.T4.csproj", "{39BB956F-2EEB-4A43-B9A5-6CC1B457A7BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.T4", "src\NFluent.T4\NFluent.T4.csproj", "{B6302A3A-55D6-41B7-BD2F-9C821228C98A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Analyzer.Test", "Analyzer1\Analyzer1.Test\NFluent.Analyzer.Test.csproj", "{772589C9-4DC8-40BC-BF8D-0C467045D64A}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -262,10 +264,14 @@ Global
 		{0014C223-A481-4B87-A480-3D4792A9B276}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0014C223-A481-4B87-A480-3D4792A9B276}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0014C223-A481-4B87-A480-3D4792A9B276}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39BB956F-2EEB-4A43-B9A5-6CC1B457A7BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39BB956F-2EEB-4A43-B9A5-6CC1B457A7BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39BB956F-2EEB-4A43-B9A5-6CC1B457A7BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39BB956F-2EEB-4A43-B9A5-6CC1B457A7BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6302A3A-55D6-41B7-BD2F-9C821228C98A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{772589C9-4DC8-40BC-BF8D-0C467045D64A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{772589C9-4DC8-40BC-BF8D-0C467045D64A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{772589C9-4DC8-40BC-BF8D-0C467045D64A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{772589C9-4DC8-40BC-BF8D-0C467045D64A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -307,7 +313,8 @@ Global
 		{C2EEC8DD-F390-4ECB-A169-25930896E1C1} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
 		{CF1D857F-658F-4E1F-8487-CD751F189E6A} = {6A12E9B8-849A-4421-AEB3-B768E78EDC8A}
 		{0014C223-A481-4B87-A480-3D4792A9B276} = {261B1CE2-51CF-4F30-B689-3E78C3916F3E}
-		{39BB956F-2EEB-4A43-B9A5-6CC1B457A7BB} = {64EFC15A-C599-41B6-BD22-144F8468A439}
+		{B6302A3A-55D6-41B7-BD2F-9C821228C98A} = {64EFC15A-C599-41B6-BD22-144F8468A439}
+		{772589C9-4DC8-40BC-BF8D-0C467045D64A} = {F301E834-1488-4307-B94A-092B9655EEE7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9A6ED20-537A-4D69-82C7-53AF50CEAEE8}

@@ -1,11 +1,11 @@
-# V 2.7.1
-# Fixes
+## V 2.7.1
+### Fixes
 * HasFieldsWithSameValues failed to properly compare when the expected value contained duplicate string. 
 More generally, instances where only checked once for equality; any subsequent check was assumed to be succesful. 
 This could lead to false positive (i.e. checks succeeded when it should have failed). 
 This regression was introduced by V 2.2.0 in 02/2018. Sorry about that.
 
-# GitHub Issues
+### GitHub Issues
 * #331
 
 ## V 2.7.0
