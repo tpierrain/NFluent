@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Analyzer\NFluent.Analyzer\NFluent.Analyzer.CodeFixes\NFluent.Analyzer.CodeFixes.csproj" />
-    <ProjectReference Include="..\..\src\Analyzer\NFluent.Analyzer\NFluent.Analyzer\NFluent.Analyzer.csproj" />
+    <ProjectReference Include="..\NFluent.Analyzer.CodeFixes\NFluent.Analyzer.CodeFixes.csproj" />
+    <ProjectReference Include="..\NFluent.Analyzer\NFluent.Analyzer.csproj" />
   </ItemGroup>
 
 </Project>
