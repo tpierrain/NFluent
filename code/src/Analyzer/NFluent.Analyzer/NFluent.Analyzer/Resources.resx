@@ -130,7 +130,7 @@
     <value>IsEqualTo(default) does not provide expected result.</value>
   </data>
   <data name="CDMessageFormat" xml:space="preserve">
-    <value>Use 'Is(default)' instead of 'IsEqualTo(default)'</value>
+    <value>Use 'IsDefault' instead of 'IsEqualTo(default)'</value>
   </data>
   <data name="CDTitle" xml:space="preserve">
     <value>Verify usage of 'IsEqualTo'</value>

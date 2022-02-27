@@ -39,14 +39,14 @@
         }
 
         [Test]
-        public void IsEqualToIssue_WithToString()
+        public void IsEqualWorksWithNewtonsoft()
         {
-            var input = new { data = "testData" };
+            var input = new { data = 2 };
             var json = JsonConvert.SerializeObject(input);
 
             var obj = JObject.Parse(json);
 
-            Check.That(obj["data"].ToString()).IsEqualTo("testData");
+            Check.That(obj["data"]).IsEqualTo(new JValue(2));
         }
 
     }

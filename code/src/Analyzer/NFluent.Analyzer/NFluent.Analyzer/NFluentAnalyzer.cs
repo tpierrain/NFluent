@@ -15,6 +15,7 @@
 
 namespace NFluent.Analyzer
 {
+    using System;
     using System.Collections.Immutable;
     using System.Linq;
     using Microsoft.CodeAnalysis;
@@ -70,11 +71,11 @@ namespace NFluent.Analyzer
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
         }
-        // C:\Users\cyrilledupuydauby\.nuget\packages\nfluent.analyzer\0.1.0\analyzers\dotnet\cs\NFluent.Analyzer.dll
+
         private static void AnalyzeExpressionStatement(SyntaxNodeAnalysisContext context)
         {
             var statement = (ExpressionStatementSyntax) context.Node;
-            var thatNode = FindInvocationOfThat(context.SemanticModel, statement.Expression);
+            var thatNode = FindInvocationOfThat(context.SemanticModel, statement.Expression).thatExpression;
             var invocationExpression = thatNode;
 
             if (thatNode == null)
@@ -114,7 +115,7 @@ namespace NFluent.Analyzer
                         if (!string.IsNullOrEmpty(checkName))
                         {
                             var diagnostic = Diagnostic.Create(SutIsTheCheckRule, context.Node.GetLocation(),
-                                realSut.ToString(), checkName);
+                                realSut.ToString(), checkName);                 
                             context.ReportDiagnostic(diagnostic);
                         }
 
@@ -126,33 +127,27 @@ namespace NFluent.Analyzer
                         {
                             // we have a Check.That(sut.Count).IsEqualTo(expected)
                             var sutSymbol = context.SemanticModel.GetSymbolInfo(member.Expression);
-                            if (sutSymbol.Symbol != null)
+                            if (sutSymbol.Symbol.IsCollection())
                             {
-                                switch (sutSymbol.Symbol)
-                                {
-                                    case IFieldSymbol fieldSymbol:
-                                        if (fieldSymbol.Type.Interfaces.Any(i =>
-                                                i.SpecialType == SpecialType.System_Collections_IEnumerable))
-                                        {
-                                            context.ReportDiagnostic(Diagnostic.Create(EnumerationCheck,
-                                                context.Node.GetLocation(),
-                                                member.Expression.ToString(), "CountIs"));
-                                        }
-
-                                        break;
-                                }
+                                context.ReportDiagnostic(Diagnostic.Create(EnumerationCheck,
+                                    context.Node.GetLocation(),
+                                    member.Expression.ToString(), "CountIs"));
                             }
                         }
-                        else if (thatNode.ArgumentList.Arguments.Count == 1
-                                 && thatNode.ArgumentList.Arguments[0].Expression is LiteralExpressionSyntax lit
-                                 && lit.Kind() == SyntaxKind.DefaultLiteralExpression)
+                        break;
+                    }
+
+                    default:
+                        if (actualCheck.Parent is InvocationExpressionSyntax fullCheck 
+                            && fullCheck.ArgumentList.Arguments.Count == 1
+                            && fullCheck.ArgumentList.Arguments[0].Expression is LiteralExpressionSyntax lit
+                            && lit.Kind() == SyntaxKind.DefaultLiteralExpression)
                         {
                             // we have a check.that().IsEqualTo(default)
                             context.ReportDiagnostic(Diagnostic.Create(IsEqualToDefaultRule,
                                 context.Node.GetLocation()));
                         }
                         break;
-                    }
                 }
             }
         }
@@ -174,7 +169,7 @@ namespace NFluent.Analyzer
                 direct = false;
             }
 
-            var checkName = string.Empty;
+            string checkName;
             switch (binaryExpressionSyntax.OperatorToken.Kind())
             {
                 case SyntaxKind.EqualsEqualsToken:
@@ -195,28 +190,35 @@ namespace NFluent.Analyzer
                 case SyntaxKind.GreaterThanEqualsToken:
                     checkName = direct ? "IsAfter" : "IsBefore";
                     break;
+                default:
+                    checkName = string.Empty;
+                    break;
             }
 
             return checkName;
         }
 
-        public static InvocationExpressionSyntax FindInvocationOfThat(SemanticModel model,
+        public static (InvocationExpressionSyntax thatExpression, Version nfluentVersion) FindInvocationOfThat(SemanticModel model,
             SyntaxNode memberAccess)
         {
             foreach (var mAccess in memberAccess.DescendantNodesAndSelf()
                 .Where(cn => cn.IsKind(SyntaxKind.SimpleMemberAccessExpression)).Cast<MemberAccessExpressionSyntax>())
             {
-                if (mAccess.HasName("That") 
-                    && model.GetSymbolInfo(mAccess).Symbol?.ContainingNamespace.Name == "NFluent" 
-                    && mAccess.Parent is InvocationExpressionSyntax invocation 
-                    && invocation.ArgumentList.Arguments.Count == 1)
+                if (!mAccess.HasName("That") || 
+                    !(mAccess.Parent is InvocationExpressionSyntax invocation) ||
+                    invocation.ArgumentList.Arguments.Count != 1 ||
+                    model.GetSymbolInfo(mAccess).Symbol?.ContainingNamespace.Name != "NFluent")
                 {
-                    // we found check.That, let's  find the sut
-                    return invocation;
+                    continue;
                 }
+
+                var symbolNamespace = model.GetSymbolInfo(mAccess).Symbol?.ContainingAssembly;
+                var version = symbolNamespace?.Identity.Version ?? new Version(2, 0);
+                // we found check.That, let's  find the sut
+                return (invocation, version);
             }
 
-            return null;
+            return (null, null);
         }
 
         public static MemberAccessExpressionSyntax FindActualCheck(InvocationExpressionSyntax thatNode)

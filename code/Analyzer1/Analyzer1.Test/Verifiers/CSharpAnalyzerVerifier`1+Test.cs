@@ -7,14 +7,14 @@ namespace NFluent.Analyzer.Test
     public static partial class CSharpAnalyzerVerifier<TAnalyzer>
         where TAnalyzer : DiagnosticAnalyzer, new()
     {
-        public class Test : CSharpAnalyzerTest<TAnalyzer, MSTestVerifier>
+        public class Test : CSharpAnalyzerTest<TAnalyzer, NUnitVerifier>
         {
             public Test()
             {
                 SolutionTransforms.Add((solution, projectId) =>
                 {
-                    var compilationOptions = solution.GetProject(projectId).CompilationOptions;
-                    compilationOptions = compilationOptions.WithSpecificDiagnosticOptions(
+                    var compilationOptions = solution!.GetProject(projectId)!.CompilationOptions;
+                    compilationOptions = compilationOptions!.WithSpecificDiagnosticOptions(
                         compilationOptions.SpecificDiagnosticOptions.SetItems(CSharpVerifierHelper.NullableWarnings));
                     solution = solution.WithProjectCompilationOptions(projectId, compilationOptions);
 

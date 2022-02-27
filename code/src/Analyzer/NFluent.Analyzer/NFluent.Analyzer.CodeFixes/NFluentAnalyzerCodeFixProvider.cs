@@ -31,7 +31,10 @@ namespace NFluent.Analyzer
     public class NFluentAnalyzerCodeFixProvider : CodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds =>
-            ImmutableArray.Create(NFluentAnalyzer.MissingCheckId, NFluentAnalyzer.SutIsTheCheckId, NFluentAnalyzer.EnumerationCheckId);
+            ImmutableArray.Create(NFluentAnalyzer.MissingCheckId
+                , NFluentAnalyzer.SutIsTheCheckId
+                , NFluentAnalyzer.EnumerationCheckId
+                , NFluentAnalyzer.PreferIsId);
 
         public sealed override FixAllProvider GetFixAllProvider()
         {
@@ -57,7 +60,7 @@ namespace NFluent.Analyzer
                 var invocationExpression = referenceToken.Parent
                     .AncestorsAndSelf()
                     .OfType<ExpressionStatementSyntax>().First();
-                var thatNode =
+                var (thatNode, version) =
                     NFluentAnalyzer.FindInvocationOfThat(await context.Document.GetSemanticModelAsync(context.CancellationToken),
                         invocationExpression);
                 if (thatNode == null)
@@ -82,8 +85,31 @@ namespace NFluent.Analyzer
                                 nameof(CodeFixResources.SwitchToEnumerableCheck)), 
                             contextDiagnostic);
                         break;
+                    case NFluentAnalyzer.PreferIsId:
+                        context.RegisterCodeFix(CodeAction.Create(CodeFixResources.SwitchToIs, 
+                            c => ConvertToIsDefaultValue(context.Document, thatNode, c), 
+                            nameof(CodeFixResources.SwitchToIs)), 
+                            contextDiagnostic);
+                        break;
                 }
             }
+        }
+
+        private static async Task<Document> ConvertToIsDefaultValue(Document contextDocument, InvocationExpressionSyntax thatNode, CancellationToken cancellationToken)
+        {
+            var sut = thatNode.ArgumentList.Arguments[0].Expression;
+            var actualCheck = NFluentAnalyzer.FindActualCheck(thatNode);
+            if (!actualCheck.HasName("IsEqualTo") 
+                || !(actualCheck.Parent is InvocationExpressionSyntax fullCheck))
+            {
+                return contextDocument;
+            }
+            // replace Check.That(sut.Count).IsEqualTo(10) by Check.That(sut).CountIs(10)
+            var fixedCheck =  
+                fullCheck.WithExpression(actualCheck.WithName(SyntaxFactory.IdentifierName("IsDefaultValue"))).
+                    WithArgumentList(RoslynHelper.BuildArgumentList());
+            var root = await contextDocument.GetSyntaxRootAsync(cancellationToken);
+            return root == null ? contextDocument : contextDocument.WithSyntaxRoot(root.ReplaceNode(fullCheck, fixedCheck));
         }
 
         private static async Task<Document> ConvertEnumerableCheck(Document contextDocument, InvocationExpressionSyntax thatNode, CancellationToken cancellationToken)
@@ -112,49 +138,48 @@ namespace NFluent.Analyzer
             
             var actualCheck = NFluentAnalyzer.FindActualCheck(thatNode);
 
-            if (sut is BinaryExpressionSyntax binaryExpressionSyntax &&
-                (actualCheck.HasName("IsTrue") || actualCheck.HasName("IsFalse")))
+            if (!(sut is BinaryExpressionSyntax binaryExpressionSyntax) ||
+                (!actualCheck.HasName("IsTrue") && !actualCheck.HasName("IsFalse")))
             {
-                var checkName =
-                    NFluentAnalyzer.BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut,
-                        out var refValue);
-
-                // can we fix this ?
-                if (!string.IsNullOrEmpty(checkName))
-                {
-                    // use the 'sut' as 'That's argument
-                    ExpressionSyntax altThat = thatNode.Update(thatNode.Expression, RoslynHelper.BuildArgumentList(realSut));
-
-                    if (actualCheck.HasName("IsFalse"))
-                    {
-                        // inject 'Not'
-                        altThat = SyntaxFactory.MemberAccessExpression(
-                            SyntaxKind.SimpleMemberAccessExpression, altThat,
-                            SyntaxFactory.IdentifierName("Not"));
-                    }
-                    // inject the fixed 'That'
-                    var updatedCheckThat = actualCheck.ReplaceNode(thatNode, altThat);
-                    // inject the proper check name
-                    var altCheckNaMme = updatedCheckThat.Update(updatedCheckThat.Expression, 
-                        updatedCheckThat.OperatorToken, 
-                        SyntaxFactory.IdentifierName(checkName));
-                    // inject the parameter
-                    var newFix = ((InvocationExpressionSyntax)actualCheck.Parent)?.Update(altCheckNaMme, RoslynHelper.BuildArgumentList(refValue));
-                    if (newFix == null)
-                    {
-                        // fix generation failed
-                        return contextDocument;
-                    }
-                    // inject the fixed check
-                    var root = await contextDocument.GetSyntaxRootAsync(cancellationToken);
-                    if (root != null)
-                    {
-                        return contextDocument.WithSyntaxRoot(root.ReplaceNode(actualCheck.Parent, newFix));
-                    }
-                }
+                return contextDocument;
             }
 
-            return contextDocument;
+            var checkName =
+                NFluentAnalyzer.BinaryExpressionSutParser(binaryExpressionSyntax, out var realSut,
+                    out var refValue);
+
+            // can we fix this ?
+            if (string.IsNullOrEmpty(checkName))
+            {
+                return contextDocument;
+            }
+
+            // use the 'sut' as 'That's argument
+            ExpressionSyntax altThat = thatNode.Update(thatNode.Expression, RoslynHelper.BuildArgumentList(realSut));
+
+            if (actualCheck.HasName("IsFalse"))
+            {
+                // inject 'Not'
+                altThat = SyntaxFactory.MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression, altThat,
+                    SyntaxFactory.IdentifierName("Not"));
+            }
+            // inject the fixed 'That'
+            var updatedCheckThat = actualCheck.ReplaceNode(thatNode, altThat);
+            // inject the proper check name
+            var altCheckNaMme = updatedCheckThat.Update(updatedCheckThat.Expression, 
+                updatedCheckThat.OperatorToken, 
+                SyntaxFactory.IdentifierName(checkName));
+            // inject the parameter
+            var newFix = ((InvocationExpressionSyntax)actualCheck.Parent)?.Update(altCheckNaMme, RoslynHelper.BuildArgumentList(refValue));
+            if (newFix == null)
+            {
+                // fix generation failed
+                return contextDocument;
+            }
+            // inject the fixed check
+            var root = await contextDocument.GetSyntaxRootAsync(cancellationToken);
+            return root != null ? contextDocument.WithSyntaxRoot(root.ReplaceNode(actualCheck.Parent, newFix)) : contextDocument;
         }
 
         private static void FixMissingCheck(CodeFixContext context, InvocationExpressionSyntax thatNode,
@@ -184,6 +209,28 @@ namespace NFluent.Analyzer
 
             var info = semanticModel.GetSymbolInfo(invocationExpression);
             var sutType = ((IMethodSymbol) info.Symbol)?.Parameters[0].Type;
+
+            // deal with Not construct
+            if (invocationExpression.Parent is MemberAccessExpressionSyntax notAccess &&
+                notAccess.Name.Identifier.Text == "Not")
+            {
+                invocationExpression = notAccess;
+            }
+
+            // deal with As construct
+            if (invocationExpression.Parent is MemberAccessExpressionSyntax memberAccess &&
+                (memberAccess.Name.Identifier.Text == "As" || memberAccess.Name.Identifier.Text=="Not"))
+            {
+                if (memberAccess.Parent is InvocationExpressionSyntax syntax)
+                {
+                    invocationExpression = syntax;
+                }
+                else
+                {
+                    // the expression is ill formed
+                    return document;
+                }
+            }
             var replacementNode = BuildCorrectCheckThatExpression(invocationExpression, sutType);
 
             if (replacementNode == null)
@@ -210,8 +257,6 @@ namespace NFluent.Analyzer
                 case SpecialType.System_String:
                     checkName = "IsNotEmpty";
                     break;
-                case SpecialType.System_Enum:
-                    break;
                 case SpecialType.System_SByte:
                 case SpecialType.System_Byte:
                 case SpecialType.System_Int16:
@@ -225,10 +270,9 @@ namespace NFluent.Analyzer
                 case SpecialType.System_Double:
                     checkName = "IsNotZero";
                     break;
+                case SpecialType.System_Enum:
                 case SpecialType.System_DateTime:
-                    break;
                 case SpecialType.System_IAsyncResult:
-                    break;
                 case SpecialType.System_AsyncCallback:
                     break;
                 default:

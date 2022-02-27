@@ -16,6 +16,7 @@
 namespace NFluent.Analyzer
 {
     using System.Linq;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -30,6 +31,30 @@ namespace NFluent.Analyzer
         {
             return SyntaxFactory.ArgumentList(
                 SyntaxFactory.SeparatedList(parameterExpressions.Select(SyntaxFactory.Argument)));
+        }
+
+        public static ITypeSymbol GetTypeSymbol(this ISymbol symbol)
+        {
+            switch (symbol)
+            {
+                case IFieldSymbol field:
+                    return field.Type;
+                case IPropertySymbol property:
+                    return property.Type;
+                case ILocalSymbol local:
+                    return local.Type;
+                case IParameterSymbol parameter:
+                    return parameter.Type;
+                default:
+                    return null;
+            }
+        }
+
+        public static bool IsCollection(this ISymbol symbol)
+        {
+            var namedTypeSymbols = symbol.GetTypeSymbol().AllInterfaces;
+            return namedTypeSymbols.Any(i =>
+                i.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_ICollection_T);
         }
     }
 }

@@ -97,7 +97,7 @@ namespace NFluent.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use &apos;Is(default)&apos; instead of &apos;IsEqualTo(default)&apos;.
+        ///   Looks up a localized string similar to Use &apos;IsDefault&apos; instead of &apos;IsEqualTo(default)&apos;.
         /// </summary>
         internal static string CDMessageFormat {
             get {
