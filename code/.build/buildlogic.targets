@@ -21,7 +21,6 @@
     <PackagesPath>$(ArtifactsPath)\Packages</PackagesPath>
 
     <NuGetToolsPath>$(SolutionRoot)\Packages</NuGetToolsPath>
-    <NuGetExePath>nuget.exe</NuGetExePath>
     <MsTestRunner>vstest.console.exe</MsTestRunner>
 
     <NunitOptions>--result="$(SolutionRoot)\TestResult.xml"</NunitOptions>
@@ -37,6 +36,7 @@
     <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Professional\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Professional\</VsPath>
     <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Enterprise\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2017\Enterprise\</VsPath>
     <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Preview\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Preview\</VsPath>
+    <VsPath Condition="Exists('$(ProgramFiles)\Microsoft Visual Studio\2022\Community\')">$(ProgramFiles)\Microsoft Visual Studio\2022\Community\</VsPath>
 
     <MsTestRunnerPath>$(VsPath)\Common7\IDE\CommonExtensions\Microsoft\TestWindow\</MsTestRunnerPath>
     <MsTestOptions />
@@ -83,15 +83,15 @@
     </Otherwise>
   </Choose>
 
-  <Target Name="RunAll" DependsOnTargets="Build; RunTests; CoverageReport; Package" />
-  <Target Name="CI" DependsOnTargets="Build; RunTests; CoverageReport; Package;" />
+  <Target Name="RunAll" DependsOnTargets="Build; RunTests; CoverageReport; PackageTarget" />
+  <Target Name="CI" DependsOnTargets="Build; RunTests; CoverageReport; PackageTarget;" />
   <Target Name="Push" DependsOnTargets="RunAll; Publish" />
   <Target Name="Beta" DependsOnTargets="SetBeta; Push" />
   <Target Name="Nightly" DependsOnTargets="SetNightly; RunAll" />
   <Target Name="Alpha" DependsOnTargets="SetAlpha; Push" />
   <Target Name="RC" DependsOnTargets="SetRC; RunAll; Push" />
   <Target Name="Release" DependsOnTargets="SetRelease; Push" />
-  <Target Name="DebugBuild" DependsOnTargets="Package" />
+  <Target Name="DebugBuild" DependsOnTargets="PackageTarget" />
 
   <!--Targets-->
   <Target Name="Start">
@@ -204,13 +204,13 @@
   <Target Name="NugetRestore" DependsOnTargets="SynchroVersion">
 
     <Message Importance="high" Text="--------- NUGET RESTORE  -------------------------------------------" />
-    <Exec Command='"$(NuGetExePath)" sources remove -Name extraSource' Condition="'$(NugetSource)'!=''"
+    <Exec Command='dotnet nuget remove source extraSource' Condition="'$(NugetSource)'!=''"
           IgnoreExitCode="true" />
-    <Exec Command='"$(NuGetExePath)" sources add -Name extraSource -Source $(NugetSource)'
+    <Exec Command='dotnet nuget add source -n extraSource $(NugetSource)'
           Condition="'$(NugetSource)'!=''" IgnoreExitCode="true" />
     <Message Importance="high" Text="Restoring projects" />
     <Exec
-      Command='"$(NuGetExePath)" restore $(SolutionRoot)\$(SolutionName).sln -o "$(SolutionRoot)\packages" -verbosity quiet' />
+      Command='dotnet restore $(SolutionRoot)\$(SolutionName).sln --packages "$(SolutionRoot)\packages" -v quiet' />
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------" />
   </Target>
 
@@ -286,11 +286,11 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
 RUN ALL UNIT TESTS
 ---------------------------------------------------------------
           " />
-    <Exec Command='"$(NuGetExePath)" install nunit.console -o "$(NuGetToolsPath)" -version $(nunitConsoleVersion)'
+    <Exec Command='dotnet add package nunit.console -o "$(NuGetToolsPath)" -v $(nunitConsoleVersion)'
           Condition='!Exists($(TestRunnerPath))' />
 
     <Exec
-      Command='"$(NuGetExePath)" install XUnit.runner.console -o "$(NuGetToolsPath)" -version $(xunitConsoleVersion)'
+      Command='dotnet add package XUnit.runner.console --package-directory "$(NuGetToolsPath)" -v $(xunitConsoleVersion)'
       Condition='!Exists($(xUnitTestRunnerPath))' />
 
     <Message Importance="high" Text="--------- RUN TESTS ---------" />
@@ -305,8 +305,10 @@ RUN ALL UNIT TESTS
     <PropertyGroup>
       <CoverToolPath>$(NuGetToolsPath)\OpenCover.$(opencoverVersion)\tools</CoverToolPath>
     </PropertyGroup>
-    <Exec Command='"$(NuGetExePath)" install opencover -o "$(NuGetToolsPath)" -version $(opencoverVersion)' />
-
+    <!-- OpenCover must be added as an explicit dependency for one project as I do not know how to install a package outside a project 
+     with dotnet nuget
+    <Exec Command='dotnet add package opencover -package-directory "$(NuGetToolsPath)" -v $(opencoverVersion)' />
+    -->
     <Message Importance="normal" Text="Cover for %(TestRun.Identity) : $(CoverageDataFile) -mergeoutput "
              Condition="'%(TestRun.Coverage)'=='true'" />
     <Exec
@@ -337,8 +339,10 @@ RUN ALL UNIT TESTS
     <PropertyGroup>
       <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator.$(reportGeneratorVersion)\tools</CoverReportToolPath>
     </PropertyGroup>
-    <Exec Command='"$(NuGetExePath)" install reportgenerator -o "$(NuGetToolsPath)" -version $(reportGeneratorVersion)' />
-
+    <!-- ReportGenerator must be added as an explicit dependency for one project as I do not know how to install a package outside a project 
+ with dotnet nuget
+    <Exec Command='dotnet add package reportgenerator -package-directory "$(NuGetToolsPath)" -v $(reportGeneratorVersion)' />
+    -->
     <Message Importance="high" Text="--------- Publish Coverage ---------" />
     <Message Importance="high" Text="Get Tools" />
 
@@ -354,18 +358,18 @@ RUN ALL UNIT TESTS
   </Target>
 
   <!-- 5- Then PACKAGE -->
-  <Target Name="Package" DependsOnTargets="SynchroVersion">
+  <Target Name="PackageTarget" DependsOnTargets="SynchroVersion">
     <Message Importance="high" Text="---------- PACKAGE ---------" />
     <ItemGroup>
       <FilesForNuget Include="@(ProjectFolder)"
-                     Condition="'%(ProjectFolder.Package)'!='' AND '%(ProjectFolder.Fwk)'!='core'">
-        <TargetFwk>%(ProjectFolder.Package)</TargetFwk>
+                     Condition="'%(ProjectFolder.PackageTarget)'!='' AND '%(ProjectFolder.Fwk)'!='core'">
+        <TargetFwk>%(ProjectFolder.PackageTarget)</TargetFwk>
         <SourceDir>%(ProjectFolder.FullPath)\bin\$(Configuration)\*.*</SourceDir>
       </FilesForNuget>
       <FilesForNuget Include="@(ProjectFolder)"
-                     Condition="'%(ProjectFolder.Package)'!='' AND '%(ProjectFolder.Fwk)'=='core'">
-        <TargetFwk>%(ProjectFolder.Package)</TargetFwk>
-        <SourceDir>%(ProjectFolder.FullPath)\bin\$(Configuration)\%(ProjectFolder.Package)\*.*</SourceDir>
+                     Condition="'%(ProjectFolder.PackageTarget)'!='' AND '%(ProjectFolder.Fwk)'=='core'">
+        <TargetFwk>%(ProjectFolder.PackageTarget)</TargetFwk>
+        <SourceDir>%(ProjectFolder.FullPath)\bin\$(Configuration)\%(ProjectFolder.PackageTarget)\*.*</SourceDir>
       </FilesForNuget>
     </ItemGroup>
     <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
@@ -413,23 +417,21 @@ CREATING NUGET PACKAGE IN:
             " />
     <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
     <Delete Files="$(PackagesPath)\*.*" />
-    <Exec Command='"$(NuGetExePath)" pack "$(NuspecFilePath)" -OutputDirectory "$(PackagesPath)"'
+    <Exec Command='dotnet pack -p:NuspecFile="$(NuspecFilePath)" --no-build -o "$(PackagesPath)"'
           LogStandardErrorAsError="true" />
 
     <Message Importance="high" Text="--------- End of PACKAGE ---------" />
   </Target>
 
   <!-- 6- Then Publish (but not for PR)-->
-  <Target Name="Publish" DependsOnTargets="Package">
+  <Target Name="Publish" DependsOnTargets="PackageTarget">
     <PropertyGroup>
       <PackageFileName>$(PackagesPath)\$(SolutionName).$(PrettyVersion).nupkg</PackageFileName>
     </PropertyGroup>
     <!--= Publish the package on Nuget-->
     <Message Importance="high" Text="--------- NUGET PUBLISH  -------------------------------------------" />
 
-    <Exec Command='"$(NuGetExePath)" setApiKey $(NugetKey) -source $(NugetFeed) -verbosity quiet' EchoOff='true'
-          Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''" />
-    <Exec Command='"$(NuGetExePath)" push "$(PackageFileName)" -Source $(NugetFeed)'
+    <Exec Command='dotnet nuget push "$(PackageFileName)" -k $(NugetKey) -s $(NugetFeed)'
           Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''" />
 
     <Message Importance="high" Text="--------- end of NUGET PUBLISH  -------------------------------------" />

@@ -29,7 +29,8 @@
   <ItemGroup>
     <ProjectFolder Include="$(SourcePath)NFluent.Standard.20">
       <CSproj>NFluent.Standard.20.csproj</CSproj>
-      <Package>netstandard2.0</Package> 
+      <PackThis/>
+      <PackageTarget>netstandard2.0</PackageTarget>
       <Fwk>core</Fwk>
     </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)NFluent.NetStandard.20.Tests">
@@ -50,11 +51,11 @@
     </ProjectFolder>
 
     <ProjectFolder Include="$(SourcePath)\NFluent.46">
-      <Package>net46</Package>
+      <PackageTarget>net46</PackageTarget>
     </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)\NFluent.46.Tests.Meta" />
     <ProjectFolder Include="$(SourcePath)\NFluent.35">
-      <Package>net35</Package>
+      <PackageTarget>net35</PackageTarget>
     </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests" />
     <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests.Extensions" />
@@ -62,6 +63,8 @@
     <ProjectFolder Include="$(TestsPath)\NFluent.Tests.SelfHosted" />
     <ProjectFolder Include="$(TestsPath)\NFluent.Tests.Core.xUnit" />
     <ProjectFolder Include="$(SourcePath)\NFluent.T4" />
+    <ProjectFolder Include="$(SourcePath)\Analyzer\NFluent.Analyzer\NFluent.Analyzer" />
+    <ProjectFolder Include="$(SourcePath)\Analyzer\NFluent.Analyzer\.CodeFixes\NFluent.Analyzer" />
   </ItemGroup>
 
   <ItemGroup>
