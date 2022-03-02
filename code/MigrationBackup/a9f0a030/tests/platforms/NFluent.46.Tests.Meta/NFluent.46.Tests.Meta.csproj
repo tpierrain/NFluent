@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\NUnit.3.13.2\build\NUnit.props" Condition="Exists('..\..\packages\NUnit.3.13.2\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{308A72A3-462B-4C4E-ABAE-9D9D49D251E7}</ProjectGuid>
+    <ProjectGuid>{C2EEC8DD-F390-4ECB-A169-25930896E1C1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NFluent.Tests.Extensions</RootNamespace>
-    <AssemblyName>NFluent.Tests.Extensions</AssemblyName>
+    <RootNamespace>NFluent.Tests.Meta</RootNamespace>
+    <AssemblyName>NFluent.Tests.Meta</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <RuntimeIdentifiers>win;win-x86;win-x64</RuntimeIdentifiers>
     <FileAlignment>512</FileAlignment>
@@ -33,8 +34,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\.build\NFluent.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NUnit" />
+    <Reference Include="nunit.framework, Version=3.13.2.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.13.2\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,6 +54,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\NFluent.46\NFluent.46.csproj">
+      <Project>{cf1d857f-658f-4e1f-8487-cd751f189e6a}</Project>
+      <Name>NFluent.46</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NFluent.46.Tests\NFluent.46.Tests.csproj">
+      <Project>{0014c223-a481-4b87-a480-3d4792a9b276}</Project>
+      <Name>NFluent.46.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\.build\NFluent.snk">
+      <Link>NFluent.snk</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
@@ -52,17 +77,12 @@
       <Link>Properties\Version.cs</Link>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\NFluent.46\NFluent.46.csproj">
-      <Project>{cf1d857f-658f-4e1f-8487-cd751f189e6a}</Project>
-      <Name>NFluent.46</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="NUnit">
-      <Version>3.13.2</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="..\NFluent.Tests.Extensions\NFluent.Tests.Extensions.projitems" Label="Shared" />
+  <Import Project="..\NFluent.Tests.Meta\NFluent.Tests.Meta.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\NUnit.3.13.2\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NUnit.3.13.2\build\NUnit.props'))" />
+  </Target>
 </Project>

@@ -5,7 +5,7 @@
   <!--Configuration informations-->
   <PropertyGroup>
     <opencoverVersion Condition="'$(opencoverVersion)' == ''">4.7.1221</opencoverVersion>
-    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">4.8.13</reportGeneratorVersion>
+    <reportGeneratorVersion Condition="'$(reportGeneratorVersion)' == ''">5.0.4</reportGeneratorVersion>
     <nunitConsoleVersion Condition="'$(nunitConsoleVersion)' == ''">3.15.0</nunitConsoleVersion>
     <xunitConsoleVersion Condition="'$(xunitConsoleVersion)' == ''">2.4.1</xunitConsoleVersion>
 
@@ -25,9 +25,11 @@
 
     <NunitOptions>--result="$(SolutionRoot)\TestResult.xml"</NunitOptions>
     <DotNetTestOptions>--no-build</DotNetTestOptions>
-    <TestRunnerPath>$(NuGetToolsPath)\NUnit.ConsoleRunner.$(nunitConsoleVersion)\tools\nunit3-console.exe</TestRunnerPath>
+    <nUnitTestRunnerPath>$(NuGetToolsPath)\NUnit.ConsoleRunner\$(nunitConsoleVersion)\tools\nunit3-console.exe</nUnitTestRunnerPath>
     <xunitOptions />
-    <xUnitTestRunnerPath>$(NuGetToolsPath)\XUnit.runner.console.$(xunitConsoleVersion)\tools\net452\xunit.console.exe</xUnitTestRunnerPath>
+    <xUnitTestRunnerPath>$(NuGetToolsPath)\XUnit.runner.console\$(xunitConsoleVersion)\tools\net472\xunit.console.exe</xUnitTestRunnerPath>
+    <CoverToolPath>$(NuGetToolsPath)\OpenCover\$(opencoverVersion)\tools</CoverToolPath>
+    <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator\$(reportGeneratorVersion)\tools</CoverReportToolPath>
 
     <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Community\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Community\</VsPath>
     <VsPath Condition="Exists('$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Professional\')">$(MSBuildProgramFiles32)\Microsoft Visual Studio\2019\Professional\</VsPath>
@@ -47,7 +49,7 @@
     <When Condition="'$(APPVEYOR)'=='True'">
       <PropertyGroup>
         <NunitOptions>--result="$(SolutionRoot)\TestResult.xml";format=AppVeyor</NunitOptions>
-        <TestRunnerPath>nunit3-console.exe</TestRunnerPath>
+        <nUnitTestRunnerPath>nunit3-console.exe</nUnitTestRunnerPath>
         <xUnitTestRunnerPath>$(xunit20)\xunit.console.x86.exe</xUnitTestRunnerPath>
         <xunitOptions>-appveyor</xunitOptions>
         <MsTestRunnerPath></MsTestRunnerPath>
@@ -210,7 +212,7 @@
           Condition="'$(NugetSource)'!=''" IgnoreExitCode="true" />
     <Message Importance="high" Text="Restoring projects" />
     <Exec
-      Command='dotnet restore $(SolutionRoot)\$(SolutionName).sln --packages "$(SolutionRoot)\packages" -v quiet' />
+      Command='dotnet restore $(SolutionRoot)\$(SolutionName).sln --packages "$(SolutionRoot)\packages"' />
     <Message Importance="high" Text="--------- end of NUGET RESTORE  -------------------------------------" />
   </Target>
 
@@ -233,13 +235,12 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
     <Message Importance="high" Text="--------- end of BUILD  -------------------------------------" />
   </Target>
 
-
   <!-- 3- Run the TESTS -->
   <Target Name="ListTestProjects">
     <ItemGroup>
       <TestRun Include="@(TestProjects)"
                Condition="$([System.String]::Copy('%(TestProjects.Framework)').StartsWith('net-')) AND '%(TestProjects.Runner)'==''">
-        <Runner>"$(TestRunnerPath)"</Runner>
+        <Runner>$(nUnitTestRunnerPath)</Runner>
         <Args Condition="'%(TestProjects.DontReport)'!='true'">%(TestProjects.FullPath) $(NunitOptions) /framework:%(TestProjects.Framework)</Args>
         <Args Condition="'%(TestProjects.DontReport)'=='true'">%(TestProjects.FullPath) /framework:%(TestProjects.Framework)</Args>
         <Coverage>%(TestProjects.Coverage)</Coverage>
@@ -280,17 +281,16 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
 
   <Target Name="RunTests" DependsOnTargets="Build; ListTestProjects">
 
-    <Message Importance="high"
-             Text="
+    <Message Importance="high" Text="
 ---------------------------------------------------------------
 RUN ALL UNIT TESTS
 ---------------------------------------------------------------
           " />
-    <Exec Command='dotnet add package nunit.console -o "$(NuGetToolsPath)" -v $(nunitConsoleVersion)'
-          Condition='!Exists($(TestRunnerPath))' />
+    <!--Ensure runners are deployed-->
+    <Exec Command='dotnet add package nunit.console --package-directory "$(NuGetToolsPath)" --version $(nunitConsoleVersion)'
+          Condition='!Exists($(nUnitTestRunnerPath))' />
 
-    <Exec
-      Command='dotnet add package XUnit.runner.console --package-directory "$(NuGetToolsPath)" -v $(xunitConsoleVersion)'
+    <Exec Command='dotnet add package XUnit.runner.console --package-directory "$(NuGetToolsPath)" --version $(xunitConsoleVersion)'
       Condition='!Exists($(xUnitTestRunnerPath))' />
 
     <Message Importance="high" Text="--------- RUN TESTS ---------" />
@@ -302,9 +302,6 @@ RUN ALL UNIT TESTS
   <Target Name="Coverage" DependsOnTargets="ListTestProjects">
     <Message Importance="high" Text="--------- Coverage ---------" />
     <Delete Files="$(CoverageDataFile)" />
-    <PropertyGroup>
-      <CoverToolPath>$(NuGetToolsPath)\OpenCover.$(opencoverVersion)\tools</CoverToolPath>
-    </PropertyGroup>
     <!-- OpenCover must be added as an explicit dependency for one project as I do not know how to install a package outside a project 
      with dotnet nuget
     <Exec Command='dotnet add package opencover -package-directory "$(NuGetToolsPath)" -v $(opencoverVersion)' />
@@ -336,18 +333,14 @@ RUN ALL UNIT TESTS
   </Target>
 
   <Target Name="CoverageReport" DependsOnTargets="Coverage;CheckCoverage">
-    <PropertyGroup>
-      <CoverReportToolPath>$(NuGetToolsPath)\ReportGenerator.$(reportGeneratorVersion)\tools</CoverReportToolPath>
-    </PropertyGroup>
-    <!-- ReportGenerator must be added as an explicit dependency for one project as I do not know how to install a package outside a project 
- with dotnet nuget
-    <Exec Command='dotnet add package reportgenerator -package-directory "$(NuGetToolsPath)" -v $(reportGeneratorVersion)' />
-    -->
+    
+    <Exec Command='dotnet tool update dotnet-reportgenerator-globaltool --version $(reportGeneratorVersion)' />
+    
     <Message Importance="high" Text="--------- Publish Coverage ---------" />
     <Message Importance="high" Text="Get Tools" />
 
     <Exec
-      Command='dotnet exec "$(CoverReportToolPath)\netcoreapp2.0\ReportGenerator.dll" -reports:$(CoverageDataFile) -targetdir:"$(SolutionRoot)\CoverageReport"'
+      Command='dotnet reportgenerator -reports:$(CoverageDataFile) -targetdir:"$(SolutionRoot)\CoverageReport"'
       Condition="('$(APPVEYOR)'!='True') and (Exists($(CoverageDataFile)))" />
 
     <Exec Command="python -m pip install codecov --user" />

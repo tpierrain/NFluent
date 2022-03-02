@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\SourceLink.Create.CommandLine.2.8.3\build\SourceLink.Create.CommandLine.props" Condition="Exists('..\..\packages\SourceLink.Create.CommandLine.2.8.3\build\SourceLink.Create.CommandLine.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,6 +10,7 @@
     <RootNamespace>NFluent</RootNamespace>
     <AssemblyName>NFluent</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RuntimeIdentifiers>win;win-x86;win-x64</RuntimeIdentifiers>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -53,12 +53,18 @@
     <None Include="..\..\.build\NFluent.snk">
       <Link>NFluent.snk</Link>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\.build\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SourceLink.Create.CommandLine">
+      <Version>2.8.3</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   <Import Project="..\NFluent\NFluent.projitems" Label="Shared" />
   <Import Project="..\NFluent.Generated\NFluent.Generated.projitems" Label="Shared" />
