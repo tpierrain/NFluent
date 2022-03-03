@@ -20,6 +20,7 @@
     <TestsPath>$(SolutionRoot)\tests\</TestsPath>
 
     <NuspecFilePath>$(SolutionRoot)\$(SolutionName).nuspec</NuspecFilePath>
+    <PackProjectFilePath>$(SourcePath)NFluent.Standard.20\NFluent.Standard.20.csproj</PackProjectFilePath>
     <ReleaseNoteFile>$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.md</ReleaseNoteFile>
     <AppVeyorFile>$(SolutionRoot)\..\appveyor.yml</AppVeyorFile>
   </PropertyGroup>

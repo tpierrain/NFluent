@@ -410,7 +410,7 @@ CREATING NUGET PACKAGE IN:
             " />
     <MakeDir Directories="$(PackagesPath)" Condition="!Exists('$(PackagesPath)')" />
     <Delete Files="$(PackagesPath)\*.*" />
-    <Exec Command='dotnet pack -p:NuspecFile="$(NuspecFilePath)" --no-build -o "$(PackagesPath)"'
+    <Exec Command='dotnet pack "$(PackProjectFilePath)" -p:NuspecFile="$(NuspecFilePath)" --no-build -o "$(PackagesPath)"'
           LogStandardErrorAsError="true" />
 
     <Message Importance="high" Text="--------- End of PACKAGE ---------" />
