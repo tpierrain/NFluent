@@ -286,13 +286,13 @@ BUILD PROJECT with MSBuildToolsVersion: '$(MSBuildToolsVersion)'
 RUN ALL UNIT TESTS
 ---------------------------------------------------------------
           " />
-    <!--Ensure runners are deployed-->
-    <Exec Command='dotnet add package nunit.console --package-directory "$(NuGetToolsPath)" --version $(nunitConsoleVersion)'
+    <!--Ensure runners are deployed (disabled as this does not work with dotnet cli, only nuget
+    <Exec Command='dotnet add package nunit.console -package-directory "$(NuGetToolsPath)" -version $(nunitConsoleVersion)'
           Condition='!Exists($(nUnitTestRunnerPath))' />
 
-    <Exec Command='dotnet add package XUnit.runner.console --package-directory "$(NuGetToolsPath)" --version $(xunitConsoleVersion)'
+    <Exec Command='dotnet add package XUnit.runner.console -package-directory "$(NuGetToolsPath)" -version $(xunitConsoleVersion)'
       Condition='!Exists($(xUnitTestRunnerPath))' />
-
+-->
     <Message Importance="high" Text="--------- RUN TESTS ---------" />
     <Exec Command='%(TestRun.Runner) %(TestRun.Args)' LogStandardErrorAsError="true" WorkingDirectory="$(SolutionRoot)" />
     <Message Importance="high" Text="--------- end of RUN TESTS ---------" />
