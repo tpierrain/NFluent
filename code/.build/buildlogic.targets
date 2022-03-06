@@ -424,8 +424,9 @@ CREATING NUGET PACKAGE IN:
     <!--= Publish the package on Nuget-->
     <Message Importance="high" Text="--------- NUGET PUBLISH  -------------------------------------------" />
 
+    <!--Publish is this is a forced build-->
     <Exec Command='dotnet nuget push "$(PackageFileName)" -k $(NugetKey) -s $(NugetFeed)'
-          Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'==''" />
+          Condition="'$(NugetKey)'!='' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)'=='' AND '$(APPVEYOR_FORCED_BUILD)'!=''" />
 
     <Message Importance="high" Text="--------- end of NUGET PUBLISH  -------------------------------------" />
   </Target>
