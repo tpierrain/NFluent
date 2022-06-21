@@ -144,6 +144,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ReportErrorWhenNotEquivalent()
+        {
+            var array = new[] {1, 2, 3};
+            var otherArray = new List<int>(new []{3, 2, 4});
+            Check.ThatCode(() => Check.That(array).IsEquivalentTo(otherArray)).
+                IsAFailingCheckWithMessage("",
+                    "The checked enumerable is not equivalent to the expected one.",
+                    "1 should not exist (found in actual[0]); 4 should be found instead.",
+                    "The checked enumerable:",
+                    "\t{1,2,3} (3 items)",
+                    "The expected enumerable:",
+                    "\t{3,2,4} (3 items)");
+        }
+
+        [Test]
         public void FlagAsNonEquivalentIfMissingEntries()
         {
             var array = new[] {1, 2, 3};

@@ -5,7 +5,7 @@
 <#@ import namespace="EnvDTE" #>
 <#@ import namespace="System.Diagnostics" #>
 <#@ include file=".\TemplateFileManager.CS.ttinclude" #>
-<#@ include file=".\TypeCloningHelper.ttinclude" #>
+<#@ include file=".\NumberTypeCloningHelper.ttinclude" #>
 <#
     // --------------------------------------------------------------------------------------------------------------------
     // <copyright file="NumberFluentAssertionGenerator.tt" company="">
@@ -47,7 +47,7 @@
 		string checkClassName =  properlyCasedTypeName + "CheckExtensions"; // FloatCheckExtensions
 		manager.StartNewFile(checkClassName + ".cs", project, folder);
 		
-		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
+		string sourceCode = NumberTypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
 		
 		Write(sourceCode);
     }
@@ -67,7 +67,7 @@
 
 		manager.StartNewFile(checkClassName + ".cs", project, folder);
 
-		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
+		string sourceCode = NumberTypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
 
 		Write(sourceCode);
     }
@@ -87,7 +87,7 @@
 		
 		manager.StartNewFile(checkClassName + ".cs", project, folder);
 		
-		string sourceCode = TypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
+		string sourceCode = NumberTypeCloningHelper.GenerateSourceCode(goldenSourceClassFileName, checkClassName, typeName);
 		
 		Write(sourceCode);
     }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FluentCheckException.cs" company="">
-//   Copyright 2013 Thomas PIERRAIN
+//  <copyright file="MacroCheck1Should.cs" company="NFluent">
+//   Copyright 2022 Cyrille DUPUYDAUBY
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -12,27 +12,21 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace NFluent.Kernel
-{
-    using System;
 
-    /// <summary>
-    /// Thrown when an check failed.
-    /// </summary>
-#if !NETSTANDARD1_3
-    [Serializable]
-#endif
-    public class FluentCheckException : Exception
+namespace NFluent.Tests
+{
+    using NUnit.Framework;
+
+    public class MacroCheck1Should
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FluentCheckException" /> class. NFluent tries to use the
-        /// proper exception according to the unit test library (NUnit, xUnit, MsTest supported) and fallback
-        /// to this type otherwise.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public FluentCheckException(string message)
-            : base(message)
+        [Test]
+        public void
+            CanDeclareMacrosSingleParameter()
         {
+            var sut = Check.DeclareMacro((int x, int y) =>
+                Check.That(x).IsStrictlyGreaterThan(y), "The {0} is less than {1}.");
+
+            Check.That(2).VerifiesMacro(sut).With(1);
         }
     }
 }

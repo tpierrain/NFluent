@@ -25,15 +25,20 @@ namespace NFluent.Tests.xUnit
         [Fact]
         public void ExceptionScanTest()
         {
+            ExceptionHelper.ResetCache();
             // generate a dynamic assembly.
             /* Purpose: dynamic assemblies do not support runtime type discovery and may break unit test framework exception*/
             var tester = MyTypeBuilder.CreateNewObject();
             // inject a type from the fuzzing assembly to check for some degenerative case
             /* Purpose: type in root namespace have a namespace property set as null that may be the source of NRE.*/
             var temp = new NoNameSpaceType();
-            Check.That(ExceptionHelper.BuildException("Test")).IsInstanceOf<XunitException>();
-            Check.That(2).IsEqualTo(2);
-            Check.ThatCode(() => Check.That(2).IsEqualTo(0)).IsAFailingCheck();
+            // this if exists to prevent elision of the code
+            if (tester != null && !string.IsNullOrEmpty(temp.ToString()))
+            {
+                Check.That(ExceptionHelper.BuildException("Test")).IsInstanceOf<XunitException>();
+                Check.That(2).IsEqualTo(2);
+                Check.ThatCode(() => Check.That(2).IsEqualTo(0)).IsAFailingCheck();
+            }
         }
 
         [Fact]

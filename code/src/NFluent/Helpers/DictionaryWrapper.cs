@@ -19,6 +19,7 @@ namespace NFluent.Helpers
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    
     internal class DictionaryWrapper<TK, TV, TKSource, TVSource> 
         : IReadOnlyDictionary<TK, TV>
     where TKSource: TK
@@ -36,6 +37,7 @@ namespace NFluent.Helpers
             return this.source.Select( entry => new KeyValuePair<TK, TV>(entry.Key, entry.Value)).GetEnumerator();
         }
 
+        [ExcludeFromCodeCoverage]  
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -59,6 +61,7 @@ namespace NFluent.Helpers
 
         public IEnumerable<TK> Keys => this.source.Keys.Cast<TK>();
 
+        [ExcludeFromCodeCoverage]  
         public IEnumerable<TV> Values => this.source.Values.Cast<TV>();
     }
 
@@ -106,6 +109,7 @@ namespace NFluent.Helpers
 
         public IEnumerable<TK> Keys => this.source.Keys.Cast<TK>();
 
+        [ExcludeFromCodeCoverage]  
         public IEnumerable<TV> Values => this.source.Values.Cast<TV>();
 
         private class DictionaryEnumerator : IEnumerator<KeyValuePair<TK, TV>>
@@ -125,7 +129,7 @@ namespace NFluent.Helpers
                 return this.keyEnumerator.MoveNext();
             }
 
-            [ExcludeFromCodeCoverage]
+            [ExcludeFromCodeCoverage]  
             public void Reset()
             {
                 this.keyEnumerator.Reset();
@@ -154,6 +158,7 @@ namespace NFluent.Helpers
             return this.source.Select( entry => new KeyValuePair<TK, TV>(entry.Key, entry.Value)).GetEnumerator();
         }
 
+        [ExcludeFromCodeCoverage]  
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -177,6 +182,7 @@ namespace NFluent.Helpers
 
         public IEnumerable<TK> Keys => this.source.Keys.Cast<TK>();
 
+        [ExcludeFromCodeCoverage]  
         public IEnumerable<TV> Values => this.source.Values.Cast<TV>();
     }
 
@@ -197,6 +203,7 @@ namespace NFluent.Helpers
             return this.source.Select(p => new KeyValuePair<TK, TV>(p.Key, p.Value)).GetEnumerator();
         }
 
+        [ExcludeFromCodeCoverage]  
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -217,6 +224,7 @@ namespace NFluent.Helpers
                 return true;
             }
             catch (InvalidOperationException)
+            // Stryker disable once Block : Mutation does not alter behaviour
             {
                 value = default;
                 return false;
@@ -226,6 +234,8 @@ namespace NFluent.Helpers
         public TV this[TK key] => this.source.First(pair => key.Equals(pair.Key)).Value;
 
         public IEnumerable<TK> Keys => this.source.Select(pair => (TK) pair.Key);
+ 
+        [ExcludeFromCodeCoverage]  
         public IEnumerable<TV> Values => this.source.Select(pair => (TV) pair.Value);
     }
 }

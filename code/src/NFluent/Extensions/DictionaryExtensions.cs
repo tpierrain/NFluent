@@ -37,6 +37,7 @@ namespace NFluent.Extensions
             var interfaces = knownDictionary.GetType().GetInterfaces().Where( i=>i.IsGenericType()).ToArray();
             var roDictionaryInterface = interfaces
                 .FirstOrDefault(i=> i.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>));
+            // Stryker disable once Block: Mutation does not alter behaviour
             if (roDictionaryInterface != null)
             {
                 var targetRoType= typeof(ReadOnlyDictionaryWrapper<,,,>).MakeGenericType(typeof(TK), typeof(TV), roDictionaryInterface.GetGenericArguments()[0], roDictionaryInterface.GetGenericArguments()[1]);

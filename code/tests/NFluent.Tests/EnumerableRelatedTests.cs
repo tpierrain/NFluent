@@ -45,6 +45,10 @@ namespace NFluent.Tests
             var array = new[] { 45, 43, 54, 666 };
 
             Check.That(array).CountIs(4);
+            Check.ThatCode(() => Check.That(array).CountIs(5)).IsAFailingCheckWithMessage("",
+                    "The checked enumerable has 4 elements instead of 5.",
+                    "The checked enumerable:",
+                    "\t{45,43,54,666} (4 items)");
         }
 
         [Test]

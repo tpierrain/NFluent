@@ -347,15 +347,14 @@ namespace NFluent.Helpers
                     {
                         j++;
                     }
-
-                    if (actual.Substring(actualStart, i - actualStart)
-                        != expected.Substring(expectedStart, j - expectedStart))
+                    var actualLength = i - actualStart;
+                    var expectedLength = j - expectedStart;
+                    // if no other difference has been spotted, mark any difference in white spaces
+                    if (type != DifferenceMode.Spaces && ( expectedLength != actualLength 
+                                                           || actual.Substring(actualStart, actualLength) != expected.Substring(expectedStart, expectedLength)))
                     {
-                        if (type != DifferenceMode.Spaces)
-                        {       
-                            type = DifferenceMode.Spaces;
-                            position = i;
-                        }
+                        type = DifferenceMode.Spaces;
+                        position = i;
                     }
                 }
                 else if (actualChar == expectedChar)

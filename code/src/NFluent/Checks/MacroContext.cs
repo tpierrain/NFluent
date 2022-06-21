@@ -23,7 +23,10 @@ namespace NFluent
     /// <typeparam name="T"></typeparam>
     public class MacroContextBase<T>
     {
-        private readonly ICheck<T> check;
+        /// <summary>
+        /// Original check
+        /// </summary>
+        protected readonly ICheck<T> check;
 
         internal MacroContextBase(ICheck<T> check)
         {
@@ -44,26 +47,19 @@ namespace NFluent
         }
     }
 
-
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <typeparam name="T1"></typeparam>
-    /// <typeparam name="T2"></typeparam>
-    public class MacroContext<T, T1, T2> : MacroContextBase<T>
+    public class MacroContext<T> : MacroContextBase<T>
     {
-        private readonly MacroCheck<T, T1, T2> macro;
+        private readonly MacroCheck<T> macro;
 
-        internal MacroContext(ICheck<T> check, MacroCheck<T, T1, T2> macro) : base(check) => this.macro = macro;
+        internal MacroContext(ICheck<T> check, MacroCheck<T> macro) : base(check) => this.macro = macro;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="param1"></param>
-        /// <param name="param2"></param>
-        public void With(T1 param1, T2 param2) => RunMacro(sut => this.macro.evaluator(sut, param1, param2), this.macro.errorMessage);
+        internal void With() => RunMacro(sut => this.macro.Evaluator(sut), this.macro.ErrorMessage);
     }
+
 
     /// <summary>
     /// 
@@ -80,6 +76,10 @@ namespace NFluent
         /// 
         /// </summary>
         /// <param name="param1"></param>
-        public void With(T1 param1) => RunMacro(sut => this.macro.evaluator(sut, param1), this.macro.errorMessage);
+        public ICheck<T> With(T1 param1)
+        {
+            RunMacro(sut => this.macro.Evaluator(sut, param1), this.macro.ErrorMessage);
+            return check;
+        }
     }
 }

@@ -4,7 +4,7 @@
 <#@ assembly name="EnvDTE" #>
 <#@ import namespace="EnvDTE" #>
 <#@ include file="TemplateFileManager.CS.ttinclude" #>
-<#@ include file="TestsCloningHelper.ttinclude" #>
+<#@ include file="NumberTestsCloningHelper.ttinclude" #>
 <#
     // --------------------------------------------------------------------------------------------------------------------
     // <copyright file="NumberTestsGenerator.tt" company="">
@@ -52,7 +52,7 @@
         var folder = "";
 
 	string goldenSourceClassFileName = Host.ResolvePath(sourcePath+"IntRelatedTests.cs");
-	TestsCloningHelper.GenerateTestsViaCloning(
+	NumberTestsCloningHelper.GenerateTestsViaCloning(
 	goldenSourceClassFileName, 
 		"IntRelatedTests", 
 		"RelatedTests", 
@@ -75,7 +75,7 @@
 			new UnitTestsConfigurationForType() { TypeName = "sbyte", DetailedTypeName = "sbyte", ValueForZero = "0", ValueForOne = "1", ValueForTwo = "2", ValueForTwenty = "20", ValueForMinusFifty = "-50" },
 		};
 	goldenSourceClassFileName = Host.ResolvePath(sourcePath+"IntSignedNumberRelatedTests.cs");
-	TestsCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntSignedNumberRelatedTests", "SignedNumberRelatedTests", project, folder, signedTypesToWriteTestsFor, manager, this);
+	NumberTestsCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "IntSignedNumberRelatedTests", "SignedNumberRelatedTests", project, folder, signedTypesToWriteTestsFor, manager, this);
 	
 
 
@@ -86,7 +86,7 @@
 			new UnitTestsConfigurationForType() { TypeName = "float", DetailedTypeName = "float", ValueForZero = "0F", ValueForOne = "1F", ValueForTwo = "2F", ValueForTwenty = "20F", ValueForMinusFifty = "-50F" }
 		};
 	goldenSourceClassFileName = Host.ResolvePath(sourcePath+"DoubleFloatingPointBinaryRelatedTests.cs");
-	TestsCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "DoubleFloatingPointBinaryRelatedTests", "FloatingPointBinaryRelatedTests", project, folder, floatingPointBinaryTypesToWriteTestsFor, manager, this);
+	NumberTestsCloningHelper.GenerateTestsViaCloning(goldenSourceClassFileName, "DoubleFloatingPointBinaryRelatedTests", "FloatingPointBinaryRelatedTests", project, folder, floatingPointBinaryTypesToWriteTestsFor, manager, this);
 	
 
 	// Write output code into multiple files

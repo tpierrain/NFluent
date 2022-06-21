@@ -58,6 +58,18 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void IsShouldFailPropermy()
+        {
+            Check.ThatCode(() =>
+                Check.That(2).Is(3)).IsAFailingCheckWithMessage("",
+            "The checked value is different from the expected one.",
+            "The checked value:",
+            "\t[2]",
+            "The expected value:",
+            "\t[3]");
+        }
+
+        [Test]
         public void FailOnIllegalValues()
         {
             var test = new List<string>();

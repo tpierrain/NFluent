@@ -1,9 +1,0 @@
-{
-  "stryker-config": {
-    "reporters": [
-      "progress",
-      "html"
-    ],
-    "coverage-analysis": "perTest"
-  }
-}

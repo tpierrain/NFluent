@@ -17,6 +17,7 @@ namespace NFluent
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using Extensibility;
     using Extensions;
     using Helpers;
@@ -207,6 +208,7 @@ namespace NFluent
         ///     Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" />
         ///     when failing.
         /// </remarks>
+        [ExcludeFromCodeCoverage]
         [Obsolete("Use ThatCode instead.")]
         public static ICheck<RunTrace> ThatAsyncCode(Func<Task> awaitableMethod)
         {
@@ -226,6 +228,7 @@ namespace NFluent
         ///     Every method of the returned <see cref="ICheck{T}" /> instance will throw a <see cref="FluentCheckException" />
         ///     when failing.
         /// </remarks>
+        [ExcludeFromCodeCoverage]
         [Obsolete("Use ThatCode instead.")]
         public static ICheck<RunTraceResult<TResult>> ThatAsyncCode<TResult>(Func<Task<TResult>> awaitableFunction)
         {
@@ -272,7 +275,16 @@ namespace NFluent
         /// <typeparam name="T1">Type of first param</typeparam>
         /// <param name="function">Function that implements the desired checks.</param>
         /// <param name="errorMessage">Error message</param>
-        /// <returns>An <see cref="MacroCheck{T, T1, T2}"/> instance.</returns>
+        /// <returns>An <see cref="MacroCheck{T, T1}"/> instance.</returns>
         public static MacroCheck<T, T1> DeclareMacro<T, T1>(Action<T, T1> function, string errorMessage) => new(function, errorMessage);
+
+        /// <summary>
+        /// Declare a macro
+        /// </summary>
+        /// <typeparam name="T">Type to use this macro with.</typeparam>
+        /// <param name="function">Function that implements the desired checks.</param>
+        /// <param name="errorMessage">Error message</param>
+        /// <returns>An <see cref="MacroCheck{T}"/> instance.</returns>
+        public static MacroCheck<T> DeclareMacro<T>(Action<T> function, string errorMessage) => new(function, errorMessage);
     }
 }

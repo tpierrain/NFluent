@@ -33,6 +33,7 @@ namespace NFluent
         public static ICheckLink<ICheck<decimal>> IsCloseTo(this ICheck<decimal> check, decimal expected, decimal within)
         {
             var range = new RangeBlock(expected, within);
+            
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => !range.IsInRange(sut), "The {0} is outside the expected value range.")
                 .DefineExpectedValue(range).OnNegate("The {0} is within the expected range, whereas it must not.")

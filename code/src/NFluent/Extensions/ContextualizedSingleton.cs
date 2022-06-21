@@ -18,6 +18,7 @@ namespace NFluent.Helpers
     using System;
     using System.Collections.Generic;
 
+    // Stryker test apart once: cannot mutate this class without side effects
     internal sealed class ContextualizedSingleton<T>
     {
         public T DefaultValue { get; set; }

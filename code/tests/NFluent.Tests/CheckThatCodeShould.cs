@@ -533,10 +533,10 @@ namespace NFluent.Tests
             // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public int ExceptionNumber { get; private set; }
 
-            public LambdaExceptionForTest(int exeptionNumber, string message)
-                : base(FormatMessage(exeptionNumber, message))
+            public LambdaExceptionForTest(int exceptionNumber, string message)
+                : base(FormatMessage(exceptionNumber, message))
             {
-                this.ExceptionNumber = exeptionNumber;
+                this.ExceptionNumber = exceptionNumber;
             }
 
 #region Serializable stuff

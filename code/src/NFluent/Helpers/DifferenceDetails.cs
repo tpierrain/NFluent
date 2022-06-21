@@ -25,7 +25,6 @@ namespace NFluent.Helpers
     {
         private readonly DifferenceMode mode;
         private readonly DifferenceDetails[] subs;
-        private readonly long expectedIndex;
 
         private DifferenceDetails(string firstName, object firstValue, object secondValue, long expectedIndex, long actualIndex, DifferenceMode mode, IEnumerable<DifferenceDetails> subs = null)
         {
@@ -33,7 +32,7 @@ namespace NFluent.Helpers
             this.FirstName = firstName;
             this.FirstValue = firstValue;
             this.SecondValue = secondValue;
-            this.expectedIndex = expectedIndex;
+            this.Index = expectedIndex;
             this.ActualIndex = actualIndex;
             if (subs != null)
             {
@@ -89,7 +88,7 @@ namespace NFluent.Helpers
 
         public object SecondValue { get; internal set; }
 
-        public long Index => this.expectedIndex;
+        public long Index { get; }
 
         public long ActualIndex { get; }
 
@@ -98,10 +97,10 @@ namespace NFluent.Helpers
             if (this.subs == null || this.subs.Length == 0)
             {
                 actual = this.ActualIndex;
-                expected = this.expectedIndex;
+                expected = this.Index;
                 return;
             }
-
+            // Stryker disable once Linq : Mutation does not alter behaviour
             var firstDetail = this.subs.First();
 
             actual = firstDetail.ActualIndex;
@@ -136,11 +135,6 @@ namespace NFluent.Helpers
             if (this.IsEquivalent())
             {
                 messageText.Append(" But they are equivalent.");
-            }
-
-            if (details.Length == 0)
-            {
-                return messageText.ToString();
             }
 
             var differenceDetailsCount = Math.Min(ExtensionsCommonHelpers.CountOfLineOfDetails, details.Length);

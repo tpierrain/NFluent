@@ -70,26 +70,13 @@ namespace NFluent.Extensions
         /// <param name="evenWellKnown">treat well known enumerations (string) as enumeration as well</param>
         /// <returns>true if <see paramref="type" /> should treated as an enumeration.</returns>
         public static bool IsAnEnumeration(this Type type, bool evenWellKnown) => type.GetInterfaces().Contains(typeof(IEnumerable)) && (evenWellKnown || type != typeof(string));
-        
-        /// <summary>
-        /// Type is an ISet implementation.
-        /// </summary>
-        /// <param name="type">type to assess</param>
-        /// <returns>true if type is an ISet implementation.</returns>
-        public static bool IsACollection(this Type type)
-        {
-            return type.GetInterfaces().Any(t => t == typeof(ICollection) || t.IsGenericType && t.GetGenericTypeDefinition() == typeof(ICollection<>));
-        }
 
         /// <summary>
-        /// Type is an ISet implementation.
+        /// Type is an IList implementation.
         /// </summary>
         /// <param name="type">type to assess</param>
         /// <returns>true if type is an ISet implementation.</returns>
-        public static bool IsAList(this Type type)
-        {
-            return type.GetInterfaces().Any(t => t == typeof(IList));
-        }
+        public static bool IsAList(this Type type) => type.GetInterfaces().Any(t => t == typeof(IList) || t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IList<>));
 
         /// <summary>
         ///     Returns true if the type is a generic type
