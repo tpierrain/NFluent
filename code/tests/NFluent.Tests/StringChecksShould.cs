@@ -895,6 +895,21 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void ShouldSignalUnexpectedEol()
+        {
+            Check.ThatCode(() =>
+                {
+                    Check.That("This is one line. ").IsEqualTo("This is one line.\n");
+                })
+                .IsAFailingCheckWithMessage("",
+                "The checked string is different from expected one. At line 1, col 18, expected 'This is one line.<<LF>>' was 'This is one line. '.",
+                "The checked string:",
+                "\t[\"This is one line. \"]",
+                "The expected string:",
+                "\t[\"This is one line.\n\"]");
+        }
+
+        [Test]
         public void AsLinesShouldWorkWithNull()
         {
             Check.That((string)null).AsLines().HasSize(0);

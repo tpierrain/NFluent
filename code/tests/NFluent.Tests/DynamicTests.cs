@@ -16,6 +16,8 @@
 #if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
 namespace NFluent.Tests
 {
+    using System.Text;
+    using Extensibility;
     using NUnit.Framework;
 
     using NFluent.Helpers;
@@ -171,6 +173,40 @@ namespace NFluent.Tests
                 "The expected dynamic: different from",
                 "\t[\"test\"]"
                 );
+        }
+
+        [Test]
+        public void ShouldChainEvenOnErrors()
+        {
+            // smoke test for chaining when check fails.
+            var reporter = new MockReporter();
+            dynamic sut = "test";
+            using (var context = Check.ChangeReporterForScope(reporter))
+            {
+                Check.ThatDynamic(sut).Not.IsEqualTo(sut);
+                // we should have an error messages.
+                Check.That(reporter.Messages).IsNotEmpty();
+                Check.ThatDynamic(sut).Not.IsSameReferenceAs(sut).And.Not.IsNotNull();
+                Check.That(reporter.Messages.Length).IsStrictlyGreaterThan(150);
+            }
+        }
+
+
+        private class MockReporter : IErrorReporter
+        {
+            private readonly StringBuilder storage = new StringBuilder();
+
+            public string Messages => this.storage.ToString();
+
+            public void ReportError(string message)
+            {
+                this.storage.Append(message);
+            }
+
+            public void Clear()
+            {
+                this.storage.Clear();
+            }
         }
     }
 }

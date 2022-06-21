@@ -39,6 +39,7 @@ namespace NFluent
         /// <returns>The number of items present within the specified enumerable (returns 0 if the enumerable is null).</returns>
         public static long Count(this IEnumerable enumerable)
         {
+            // Stryker disable once Block: Mutation does not alter behaviour<
             if (enumerable is ICollection collection)
             {
                 return collection.Count;
@@ -297,6 +298,7 @@ namespace NFluent
 
                 public T Current => (T) this.wrapped.Current;
 
+                [ExcludeFromCodeCoverage]
                 object IEnumerator.Current => this.Current;
             }
         }

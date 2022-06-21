@@ -26,6 +26,19 @@ namespace NFluent
         /// <param name="sut"></param>
         /// <param name="macro"></param>
         /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static ICheck<T> VerifiesMacro<T>(this ICheck<T> sut, MacroCheck<T> macro)
+        {
+            new MacroContext<T>(sut, macro).With();
+            return sut;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sut"></param>
+        /// <param name="macro"></param>
+        /// <typeparam name="T"></typeparam>
         /// <typeparam name="T1"></typeparam>
         /// <returns></returns>
         public static MacroContext<T, T1> VerifiesMacro<T, T1>(this ICheck<T> sut, MacroCheck<T, T1> macro)
@@ -42,9 +55,9 @@ namespace NFluent
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
         /// <returns></returns>
-        public static MacroContext<T, T1, T2> VerifiesMacro<T, T1, T2>(this ICheck<T> sut, MacroCheck<T, T1, T2> macro)
+        public static IMacroCheck<T, T1, T2> VerifiesMacro<T, T1, T2>(this ICheck<T> sut, MacroCheck<T, T1, T2> macro)
         {
-            return new MacroContext<T, T1, T2>(sut, macro);
+            return macro.PrepareCheck(sut);
         }
     }
 }

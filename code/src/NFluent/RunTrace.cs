@@ -62,6 +62,7 @@ namespace NFluent
         /// <returns>
         ///     Return <see cref="RunTrace" /> describing the execution.
         /// </returns>
+        // Stryker test apart: this code is used everywhere
         internal static RunTrace GetTrace(Action action)
         {
             var result = new RunTrace();

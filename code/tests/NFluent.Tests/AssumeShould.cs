@@ -46,6 +46,7 @@
             Assuming.ThatCode(() => {}).DoesNotThrow();
             Check.ThatCode(() => Assuming.ThatCode(() =>2).ThrowsAny()).IsAFailingAssumption();
         }
+        
 #if !NETCOREAPP1_1
 // this test is not relevant if the framework does not offer assembly reflection methods
         [Test]

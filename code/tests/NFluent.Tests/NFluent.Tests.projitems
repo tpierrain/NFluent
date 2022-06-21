@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensibility\CheckLogicShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CustomDico.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CustomEnumerable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MacroCheck1Should.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NFluentEqualityShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NullableChecksShould.cs" />

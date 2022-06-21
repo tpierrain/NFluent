@@ -272,10 +272,26 @@ namespace NFluent.Tests
         }
 
         [Test]
+        public void HasSameValuePass()
+        {
+            var mySelf = new Person { Name = "dupdob" };
+            var myClone = new PersonEx { Name = "dupdob" };
+            Check.That(myClone).HasSameValueAs(mySelf);
+        }
+
+        [Test]
+        public void HasDifferentValuePass()
+        {
+            var mySelf = new Person { Name = "tpierrain" };
+            var myClone = new PersonEx { Name = "dupdob" };
+            Check.That(myClone).HasDifferentValueThan(mySelf);
+        }
+
+        [Test]
         public void HasDifferentValueAsFailsWithCorrectMessage()
         {
-            var mySelf = new Person() { Name = "dupdob" };
-            var myClone = new PersonEx() { Name = "dupdob" };
+            var mySelf = new Person { Name = "dupdob" };
+            var myClone = new PersonEx { Name = "dupdob" };
 
             Check.ThatCode(() => {
                 Check.That((object)null).HasDifferentValueThan((object)null);

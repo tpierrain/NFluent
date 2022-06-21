@@ -149,10 +149,8 @@ namespace NFluent.Helpers
         // compare to an expected anonymous type
         private static DifferenceDetails AnonymousTypeDifference<TA, TE>(TA actual, string firstname, TE expected, Type type)
         {
-            var criteria = new ClassMemberCriteria(BindingFlags.Instance|BindingFlags.Public);
             // anonymous types only have public properties
-            criteria.CaptureProperties();
-            // use field based comparison
+            var criteria = new ClassMemberCriteria(BindingFlags.Instance|BindingFlags.Public);
             var wrapper = ReflectionWrapper.BuildFromInstance(type, expected, criteria);
             var actualWrapped = ReflectionWrapper.BuildFromInstance(actual.GetType(), actual, criteria);
             var differences = actualWrapped.MemberMatches(wrapper).Where(match => !match.DoValuesMatches).Select(DifferenceDetails.FromMatch).ToList();
@@ -186,6 +184,7 @@ namespace NFluent.Helpers
             var valueDifferences = new List<DifferenceDetails>();
             var equivalent = true;
             var unexpectedKeys = sutDictionary.Keys.Where(k => !expectedDictionary.ContainsKey(k)).ToList();
+            // Stryker disable once Equality,Block : Mutation does not alter behaviour
             if (options.HasFlag(Option.Fast) && unexpectedKeys.Count > 0)
             {
                 return DifferenceDetails.DoesNotHaveExpectedValue(sutName, sutDictionary, expectedDictionary, refIndex, expectedIndex);
@@ -232,6 +231,7 @@ namespace NFluent.Helpers
                         options);
                     if (itemDiffs != null)
                     {
+                        // Stryker disable once Block : Mutation does not alter behaviour
                         if (options.HasFlag(Option.Fast))
                         {
                             return DifferenceDetails.DoesNotHaveExpectedValue(sutName, sutDictionary, expectedDictionary, refIndex, expectedIndex);

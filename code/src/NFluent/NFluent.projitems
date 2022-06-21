@@ -33,7 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExpressionHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocalRegisterHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ThreadStaticStore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MacroCheck.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kernel\MacroCheck.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\InconclusiveExceptionReporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ISelfDescriptiveValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\TypeEnumerationValue.cs" />

@@ -26,16 +26,24 @@ namespace NFluent.Tests
         public void
             WorkForSingleCheck()
         {
+
             var sut = Check.StartBatch();
+            try
+            {
+                Check.That(2).IsEqualTo(3);
 
-            Check.That(2).IsEqualTo(3);
-
-            Check.ThatCode(() => sut.Dispose()).IsAFailingCheckWithMessage("",
-                "The checked value is different from the expected one.",
-                "The checked value:",
-                "\t[2]",
-                "The expected value:",
-                "\t[3]");
+                Check.ThatCode(() => sut.Dispose()).IsAFailingCheckWithMessage("",
+                    "The checked value is different from the expected one.",
+                    "The checked value:",
+                    "\t[2]",
+                    "The expected value:",
+                    "\t[3]");
+            }
+            catch
+            {
+                sut.Dispose();
+                throw;
+            }
         }
 
         [Test]
@@ -43,16 +51,23 @@ namespace NFluent.Tests
             WorkForTwoChecks()
         {
             var sut = Check.StartBatch();
+            try
+            {
+                Check.That(2).IsPositiveOrZero();
+                Check.That(2).IsEqualTo(3);
 
-            Check.That(2).IsPositiveOrZero();
-            Check.That(2).IsEqualTo(3);
-
-            Check.ThatCode(() => sut.Dispose()).IsAFailingCheckWithMessage("",
-                "The checked value is different from the expected one.",
-                "The checked value:",
-                "\t[2]",
-                "The expected value:",
-                "\t[3]");
+                Check.ThatCode(() => sut.Dispose()).IsAFailingCheckWithMessage("",
+                    "The checked value is different from the expected one.",
+                    "The checked value:",
+                    "\t[2]",
+                    "The expected value:",
+                    "\t[3]");
+            }
+            catch
+            {
+                sut.Dispose();
+                throw;
+            }
         }
 
         [Test]
@@ -61,19 +76,27 @@ namespace NFluent.Tests
         {
             var sut = Check.StartBatch();
 
-            Check.That(2).IsNegativeOrZero();
-            Check.That(2).IsEqualTo(3);
+            try
+            {
+                Check.That(2).IsNegativeOrZero();
+                Check.That(2).IsEqualTo(3);
 
-            Check.ThatCode(() => sut.Dispose()).IsAFailingCheckWithMessage("",
-                "The checked value is not negative or equal to zero.",
-                "The checked value:",
-                "\t[2]",
-                "** And **",
-                "The checked value is different from the expected one.",
-                "The checked value:",
-                "\t[2]",
-                "The expected value:",
-                "\t[3]");
+                Check.ThatCode(() => sut.Dispose()).IsAFailingCheckWithMessage("",
+                    "The checked value is not negative or equal to zero.",
+                    "The checked value:",
+                    "\t[2]",
+                    "** And **",
+                    "The checked value is different from the expected one.",
+                    "The checked value:",
+                    "\t[2]",
+                    "The expected value:",
+                    "\t[3]");
+            }
+            catch
+            {
+                sut.Dispose();
+                throw;
+            }
         }
 
         [Test]
@@ -93,10 +116,9 @@ namespace NFluent.Tests
                 "\t[2]");
         }
 
-
         [Test]
         public void
-            DoesNotCatchUnexpectedExceptions()
+            NotCatchUnexpectedExceptions()
         {
             Check.ThatCode(() =>
             {
@@ -105,6 +127,27 @@ namespace NFluent.Tests
                     throw new ApplicationException("Random exception");
                 }
             }).Throws<ApplicationException>().WithMessage("Random exception");
+        }
+
+        [Test]
+        public void
+            NotCorruptNormalErrorReporting()
+        {
+            var sut = Check.StartBatch();
+            try
+            {
+                Check.That(2).IsEqualTo(2);
+            }
+            finally
+            {
+                sut.Dispose();
+            }
+            Check.ThatCode(() => Check.That(2).IsEqualTo(3)).IsAFailingCheckWithMessage("",
+                "The checked value is different from the expected one.",
+                "The checked value:",
+                "\t[2]",
+                "The expected value:",
+                "\t[3]");
         }
 
         [Test]
@@ -119,12 +162,24 @@ namespace NFluent.Tests
 
         [Test]
         public void
-            CanDeclareMacrosSingleParameter()
+            CanDeclareMacrosWithoutParameter()
         {
-            var sut = Check.DeclareMacro<int, int>((x, y) =>
-                Check.That(x).IsStrictlyGreaterThan(y), "The {0} is less than {1}.");
+            var sut = Check.DeclareMacro<int>((x) =>
+                Check.That(x).IsNegativeOrZero(), "The {0} is not in the proper range.");
 
-            Check.That(2).VerifiesMacro(sut).With(1);
+            Check.That(-2).VerifiesMacro(sut);
+        }
+
+        [Test]
+        public void
+            DoNotAlterErrorReporting()
+        {
+            var sut = Check.DeclareMacro<int>((x) =>
+                Check.That(x).IsNegativeOrZero(), "The {0} is not in the proper range.");
+            var reporter = Check.Reporter;
+            Check.That(-2).VerifiesMacro(sut);
+            // we do not use NFluent for this check: if error reporter is corrupted, the test may fail silently
+            Assert.AreEqual(reporter, Check.Reporter);
         }
 
         [Test]
@@ -145,4 +200,4 @@ namespace NFluent.Tests
 "\t[5]");
         }
     }
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+}

@@ -1,0 +1,14 @@
+{
+  "stryker-config": {
+        "project": "src\\NFluent.Standard.20\\NFluent.Standard.20.csproj",
+        "test-projects": [
+            "..\\..\\tests\\NFluent.NetStandard.20.Tests\\NFluent.NetStandard.20.Tests.csproj",
+            "..\\..\\tests\\NFluent.NetStandard.20.Tests.Internals\\NFluent.NetStandard.20.Tests.Internals.csproj"
+        ],
+    "reporters": [
+      "progress",
+      "html"
+    ],
+    "coverage-analysis": "perTest"
+  }
+}

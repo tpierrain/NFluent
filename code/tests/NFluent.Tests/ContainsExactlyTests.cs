@@ -190,7 +190,7 @@ namespace NFluent.Tests
             Check.That(dicoSut).ContainsExactly(new Dictionary<int, int> { [2] = 4 }, null)).IsAFailingCheck();
             Check.ThatCode(()=>
             Check.That(dicoSut).ContainsExactly(new Dictionary<int, int> { [3] = 3 }, null)).IsAFailingCheck();
-
+            Check.That(dicoSut).ContainsExactly(new Dictionary<int, int> { [2] = 3 }, null);
             var listSut = new ArrayList { Enumerable.Range(0, 4), null};
             Check.ThatCode(()=>
                 Check.That(listSut).ContainsExactly(Enumerable.Range(0, 3), null)).IsAFailingCheck();
@@ -227,13 +227,8 @@ namespace NFluent.Tests
         [Test]
         public void ContainsExactlyWithEnumerableGenerateExtractForLongEnumerations()
         {
-            var integers = new List<int>();
-            var expected = new List<int>();
-            for (var i = 0; i < 40; i++)
-            {
-                integers.Add(i);
-                expected.Add(i);
-            }
+            var integers = Enumerable.Range(0, 40).ToList();
+            var expected = Enumerable.Range(0, 40).ToList();
             integers[25] = 666;
 
             Check.ThatCode(() =>
@@ -247,6 +242,26 @@ namespace NFluent.Tests
                 "\t{...,15,16,17,18,19,20,21,22,23,24,*666*,26,27,28,29,30,31,32,33,34...} (40 items)",
                 "The expected value(s):",
                 "\t{...,15,16,17,18,19,20,21,22,23,24,*25*,26,27,28,29,30,31,32,33,34...} (40 items)");
+        }
+
+        [Test]
+        public void ContainsExactlyWithEnumerableGenerateExtractForLongEnumerationsWithDiffAtEnd()
+        {
+            var integers = Enumerable.Range(0, 40).ToList();
+            var expected = Enumerable.Range(0, 40).ToList();
+            integers[30] = 666;
+
+            Check.ThatCode(() =>
+            {
+                Check.That(integers).ContainsExactly(expected);
+            })
+            .IsAFailingCheckWithMessage(
+                "",
+                "The checked enumerable does not contain exactly the expected value(s). First difference is at index #30.",
+                "The checked enumerable:",
+                "\t{...,20,21,22,23,24,25,26,27,28,29,*666*,31,32,33,34,35,36,37,38,39} (40 items)",
+                "The expected value(s):",
+                "\t{...,20,21,22,23,24,25,26,27,28,29,*30*,31,32,33,34,35,36,37,38,39} (40 items)");
         }
 
         [Test]

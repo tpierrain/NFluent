@@ -17,7 +17,7 @@
 /// <summary>
 /// Provides a way to clone an existing generic type into other ones with different type params.
 /// </summary>
-public static class TypeCloningHelper
+public static class NumberTypeCloningHelper
 {
 	public static string GenerateSourceCode(string goldenSourceClassFileName, string checkClassName, string targetTypeName)
     {

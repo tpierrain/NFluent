@@ -78,7 +78,7 @@ namespace NFluent.Extensions
         /// <returns>true if type is an ISet implementation.</returns>
         public static bool IsACollection(this Type type)
         {
-            return type.GetInterfaces().Any(t => t == typeof(ICollection) || t.IsGenericType && t.GetGenericTypeDefinition() == typeof(ICollection<>));
+            return type.GetInterfaces().Any(t => t != typeof(ICollection) || t.IsGenericType && t.GetGenericTypeDefinition() == typeof(ICollection<>));
         }
 
         /// <summary>

@@ -80,9 +80,9 @@ namespace NFluent.Messages
         /// <summary>
         /// Clear the default name cached. Used in NFluent tests.
         /// </summary>
+        // Stryker disable once Statement: Mutation does not alter behaviour
         public static void ClearDefaultNameCache()
         {
-            // Stryker disable once Statement: Mutation does not alter behaviour
             NamingCache.Clear();
         }
 

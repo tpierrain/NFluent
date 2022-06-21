@@ -800,16 +800,19 @@ namespace NFluent
 
         private static IEnumerable<T> ExtractEnumerableValueFromPossibleOneValueArray<T>(T[] expectedValues)
         {
-            if (IsAOneValueArrayWithOneCollectionInside(expectedValues))
+            if (!IsAOneValueArrayWithOneCollectionInside(expectedValues))
             {
-                if (expectedValues[0] is IEnumerable<T> goodEnum)
-                {
-                    return goodEnum;
-                }
-                // a cast is necessary
-                 return ((IEnumerable)expectedValues[0]).AmbitiousCast<T>();
+                return expectedValues;
             }
-            return expectedValues;
+
+            // See if we can avoid the conversions
+            // Stryker disable once Block : Mutation does not alter behaviour
+            if (expectedValues[0] is IEnumerable<T> goodEnum)
+            {
+                return goodEnum;
+            }
+            // a cast is necessary
+            return ((IEnumerable)expectedValues[0]).AmbitiousCast<T>();
         }
 
         private static IEnumerable ExtractEnumerableValueFromSingleEntry<T>(T[] expectedValues)

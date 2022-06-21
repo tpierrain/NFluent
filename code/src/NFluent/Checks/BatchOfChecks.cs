@@ -24,34 +24,38 @@ namespace NFluent.Kernel
         private readonly string message;
         private readonly StringBuilder errors  = new();
 
+        // Stryker test apart once: cannot mutate this method without side effects
         public BatchOfChecks(string message)
         {
             this.message = message;
             Check.ReporterStore.Push(this);
         }
 
+        // Stryker test apart once: cannot mutate this method without side effects
         public void Dispose()
         {
             Check.ReporterStore.Pop();
-            if (this.errors.Length > 0)
+            if (this.errors.Length <= 0)
             {
-                var errorMessage = this.errors;
-                if (!string.IsNullOrEmpty(this.message))
-                {
-                    errorMessage = errorMessage.Insert(0, FluentMessage.BuildMessageWithGiven(this.message).ToString());
-                }
-                Check.Reporter.ReportError(errorMessage.ToString());
+                return;
             }
+
+            var errorMessage = this.errors;
+            if (!string.IsNullOrEmpty(this.message))
+            {
+                errorMessage = errorMessage.Insert(0, FluentMessage.BuildMessageWithGiven(this.message).ToString());
+            }
+            Check.Reporter.ReportError(errorMessage.ToString());
         }
 
-        public void ReportError(string message)
+        public void ReportError(string errorMessage)
         {
             if (this.errors.Length > 0)
             {
                 this.errors.AppendLine();
                 this.errors.Append("** And **");
             }
-            this.errors.Append(message);
+            this.errors.Append(errorMessage);
         }
     }    
 }
