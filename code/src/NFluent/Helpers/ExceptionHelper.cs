@@ -53,60 +53,51 @@ namespace NFluent.Helpers
         private static ExceptionConstructor constructors;
         private static readonly string ExceptionSeparator = Environment.NewLine + "--> ";
 
-        private static readonly Dictionary<TestFramework, ExceptionConstructor> Exceptions =
-            new();
-
-        private const string Patterns = 
-            "MsTest,microsoft.visualstudio.testplatform.testframework,Microsoft.VisualStudio.TestTools,AssertFailedException,AssertInconclusiveException;"+
-            "NUnit,nunit.framework,NUnit.,AssertionException,InconclusiveException;"+
-            "XUnit,xunit.assert,Xunit.Sdk,XunitException,";
-
         private static ExceptionConstructor Constructors
         {
             get
             {
-                if (constructors != null)
-                {
-                    return constructors;
-                }
-                
-                // we need to identify required exception types
-                Exceptions[TestFramework.None] = new ExceptionConstructor(typeof(FluentCheckException), message => new FluentCheckException(message));
-
-                InitCache(Patterns);
-
-                foreach (var id in Enum.GetValues(typeof(TestFramework)))
-                {
-                    var builder = Exceptions[(TestFramework) id];
-                    if (!builder.IsSupported())
-                    {
-                        continue;
-                    }
-
-                    constructors = builder;
-                    break;
-                }
-                return constructors;
+                return constructors ??= LoadSupportedExceptionConstructor();
             }
         }
 
-        private static void InitCache(string patterns)
+        private static ExceptionConstructor LoadSupportedExceptionConstructor()
         {
-            var lines = patterns.Split(';');
-            foreach (var line in lines)
+            // we need to identify required exception types
+            var exceptions = LoadExceptionConstructors();
+            
+            foreach (var id in Enum.GetValues(typeof(TestFramework)))
             {
-                var parameters = line.Split(',');
-                var testFrameworkId = (TestFramework)Enum.Parse(typeof(TestFramework), parameters[0]);
-                Exceptions[testFrameworkId] = new ExceptionConstructor(parameters[1], parameters[2], parameters[3], parameters[4]);
+                var builder = exceptions[(TestFramework) id];
+                if (builder.IsSupported())
+                {
+                    return builder;
+                }
             }
-            ExceptionScanner();
+
+            return null;
         }
 
-        private static void ExceptionScanner()
+        private static Dictionary<TestFramework, ExceptionConstructor> LoadExceptionConstructors()
+        {
+            var exceptions = new Dictionary<TestFramework, ExceptionConstructor>
+            {
+                [TestFramework.None] = new ExceptionConstructor(typeof(FluentCheckException), message => new FluentCheckException(message)),
+                [TestFramework.MsTest] = new ExceptionConstructor("microsoft.visualstudio.testplatform.testframework", "Microsoft.VisualStudio.TestTools", "AssertFailedException", "AssertInconclusiveException"),
+                [TestFramework.NUnit] = new ExceptionConstructor("nunit.framework", "NUnit", "AssertionException", "InconclusiveException"),
+                [TestFramework.XUnit] = new ExceptionConstructor("xunit.assert", "Xunit.Sdk", "XunitException", ""),
+            };
+            
+            ScanAssemblies(exceptions);
+
+            return exceptions;
+        }
+
+        private static void ScanAssemblies(Dictionary<TestFramework, ExceptionConstructor> exceptions)
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (var exceptionConstructor in Exceptions.Values)
+                foreach (var exceptionConstructor in exceptions.Values)
                 {
                     exceptionConstructor.ScanAssembly(assembly);
                 }
