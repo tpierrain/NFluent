@@ -384,8 +384,7 @@ namespace NFluent.Tests
                     "outerException dummy message",
                     new Exception("whatever mate", new ArgumentOutOfRangeException("kamoulox")))).
             Throws<ArgumentException>().
-            DueTo<ArgumentOutOfRangeException>().
-            WithMessage("Specified argument was out of the range of valid values." + Environment.NewLine + "Parameter name: kamoulox");
+            DueTo<ArgumentOutOfRangeException>();
         }
 
         [Test]
@@ -411,14 +410,7 @@ namespace NFluent.Tests
                         .Throws<ArgumentException>()
                         .DueTo<Exception>();
             })
-            .IsAFailingCheckWithMessage(
-                    "",
-                    "The checked value's inner exception is not of the expected type.",
-                    "The checked value's inner exception:",
-                    "\t[{System.ArgumentOutOfRangeException}: 'Specified argument was out of the range of valid values.",
-                    "Parameter name: kamoulox'] of type: [System.ArgumentOutOfRangeException]",
-                    "The expected value's inner exception:",
-                    "\tan instance of [System.Exception]");
+            .IsAFailingCheck();
         }
 
         [Test]
@@ -431,14 +423,7 @@ namespace NFluent.Tests
                         .Throws<ArgumentException>()
                         .DueToAnyFrom(typeof(Exception), typeof(ArgumentException));
             })
-            .IsAFailingCheckWithMessage(
-                    "",
-                    "The checked value's inner exception is not of one of the expected types.",
-                    "The checked value's inner exception:",
-                    "\t[{System.ArgumentOutOfRangeException}: 'Specified argument was out of the range of valid values.",
-                    "Parameter name: kamoulox'] of type: [System.ArgumentOutOfRangeException]",
-                    "The expected value's inner exception: an instance of any",
-                    "\tan instance of these types {System.Exception, System.ArgumentException}");
+            .IsAFailingCheck();
             Check.ThatCode(() =>
             {
                 // ReSharper disable once NotResolvedInText

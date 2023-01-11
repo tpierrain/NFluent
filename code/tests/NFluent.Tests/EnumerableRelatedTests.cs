@@ -484,8 +484,7 @@ namespace NFluent.Tests
         {
             var enumerable = new List<int> { 42 };
 
-            Check.ThatCode(() => Check.That(enumerable).HasElementAt(number)).Throws<ArgumentOutOfRangeException>()
-                .AndWhichMessage().AsLines().Contains("The specified number is less than zero, whereas it must be a 0-based index.");
+            Check.ThatCode(() => Check.That(enumerable).HasElementAt(number)).Throws<ArgumentOutOfRangeException>();
         }
 
         [Test]

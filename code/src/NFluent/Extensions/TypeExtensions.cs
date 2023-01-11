@@ -76,7 +76,20 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="type">type to assess</param>
         /// <returns>true if type is an ISet implementation.</returns>
-        public static bool IsAList(this Type type) => type.GetInterfaces().Any(t => t == typeof(IList) || t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IList<>));
+        public static bool IsACollection(this Type type)
+        {
+            return type.GetInterfaces().Any(t => t != typeof(ICollection) || t.IsGenericType && t.GetGenericTypeDefinition() == typeof(ICollection<>));
+        }
+
+        /// <summary>
+        /// Type is an ISet implementation.
+        /// </summary>
+        /// <param name="type">type to assess</param>
+        /// <returns>true if type is an ISet implementation.</returns>
+        public static bool IsAList(this Type type)
+        {
+            return type.GetInterfaces().Any(t => t == typeof(IList));
+        }
 
         /// <summary>
         ///     Returns true if the type is a generic type

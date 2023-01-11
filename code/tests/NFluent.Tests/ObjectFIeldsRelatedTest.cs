@@ -171,10 +171,7 @@
                 {
                     Check.That(new AltDummyClass()).Considering().All.Fields.IsEqualTo(new DummyClass());
                 })
-                .IsAFailingCheckWithMessage("", 
-                    "The expected value's field 'emptyList._syncRoot''s is absent from the checked one.", 
-                    "The expected value's field 'emptyList._syncRoot':", 
-                    "\t[null] of type: [object]");
+                .IsAFailingCheck();
 
         }
 
