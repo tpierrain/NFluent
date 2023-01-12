@@ -1,5 +1,9 @@
 version: 3.0.0.{build}
-image: Visual Studio 2019
+image: Visual Studio 2022
+# Uncomment following lines to log environment variables
+#init:
+#- set
+
 branches:
   only:
   - master
@@ -16,7 +20,6 @@ artifacts:
     name: NFluentPackages
 
 environment:
-  NFLUENT_NUGET_API_KEY: 
   NFLUENT_NUGET_FEED: https://www.nuget.org/api/v2/package
   CODECOV_KEY:
     secure: DsJzrv6YlrqW177NuquKFS/jq6Cj4PMJ2+QyuY+Garee3M+M+gWhplP0sRKFUIqZ
