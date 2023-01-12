@@ -34,7 +34,7 @@ namespace NFluent.Tests
         {
             this.session.Dispose();
         }
-
+            
         private static double DecimalValue => 0.95000000000000006d;
 
         // GH #205 
@@ -46,7 +46,12 @@ namespace NFluent.Tests
                 Check.ThatCode(() => Check.That(DecimalValue*(1<<16)).IsEqualTo(0.95d*(1<<16))).IsAFailingCheckWithMessage("",
                     "The checked value is different from the expected one, with a difference of 7.3E-12. You may consider using IsCloseTo() for comparison.",
                     "The checked value:",
+                    #if DOTNET_35 || DOTNET_45
+                    "\t[62259.2]",
+                    #else
+
                     "\t[62259.200000000004]",
+#endif
                     "The expected value:",
                     "\t[62259.2]");
 
