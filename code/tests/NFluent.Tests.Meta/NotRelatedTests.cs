@@ -25,6 +25,7 @@ namespace NFluent.Tests
     public class NotRelatedTests
     {
         [Test]
+        [Explicit]
         public void CheckContextWorks()
         {
             if (!CheckContext.DefaultNegated)

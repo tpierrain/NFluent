@@ -227,7 +227,7 @@ namespace NFluent.Kernel
                             : fluentMessage.Expected(this.expected, this.indexInExpected);
                         block.WithType(this.Option.HasFlag(MessageOption.WithType));
                         block.WithHashCode(this.Option.HasFlag(MessageOption.WithHash));
-                        if (this.expected is IEnumerable list && !(this.expected is string))
+                        if (this.expected is IEnumerable list and not string)
                         {
                             block.WithEnumerableCount(this.expected is ICollection collection ? collection.Count: list.Count());
                         }

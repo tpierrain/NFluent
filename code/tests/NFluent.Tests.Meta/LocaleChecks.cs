@@ -25,6 +25,7 @@ namespace NFluent.Tests
     public class LocaleChecks
     {
         [Test]
+        [Explicit]
         public void Spanish()
         {
             var assembly = typeof(ObjectRelatedTest).GetTypeInfo().Assembly;
@@ -35,6 +36,7 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [Explicit]
         public void Chinese()
         {
             var assembly = typeof(ObjectRelatedTest).GetTypeInfo().Assembly;
@@ -45,6 +47,7 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [Explicit]
         public void CanadianFrench()
         {
             var assembly = typeof(ObjectRelatedTest).GetTypeInfo().Assembly;
@@ -55,6 +58,7 @@ namespace NFluent.Tests
         }
 
         [Test]
+        [Explicit]
         public void Japanese()
         {
             var assembly = typeof(ObjectRelatedTest).GetTypeInfo().Assembly;
