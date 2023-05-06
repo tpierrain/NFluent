@@ -449,7 +449,7 @@ CREATING NUGET PACKAGE IN:
             var parts = (version+".0.0").Split('.');
             if (string.IsNullOrEmpty(stream))
             {
-              builder.AppendFormat("{0}.{1}.{2}", parts[0], parts[1], parts[2]);
+              builder.AppendFormat("{0}.{1}.{2}.{3}", parts[0], parts[1], parts[2], parts[3]);
             }
             else
             {
