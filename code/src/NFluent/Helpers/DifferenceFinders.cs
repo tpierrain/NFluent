@@ -384,10 +384,6 @@ namespace NFluent.Helpers
                 {
                     if (ordered)
                     {
-                        if (options.HasFlag(Option.Fast))
-                        {
-                            return DifferenceDetails.DoesNotHaveExpectedValue(firstName, actualEnumerable, expectedEnumerable, sutIndex, expectedIndex);
-                        }
                         aggregatedDifferences.Add(index, aggregatedDifference);
                     }
                     if (!aggregatedDifference.IsEquivalent())

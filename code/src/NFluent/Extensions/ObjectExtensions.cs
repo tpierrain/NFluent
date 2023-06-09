@@ -16,11 +16,12 @@
 namespace NFluent.Extensions
 {
     using System;
-
+#if !DOTNET_35
+    using System.Threading.Tasks;
+#endif
     internal static class ObjectExtensions
     {
-
-#if !NETSTANDARD1_3 && !DOTNET_45
+#if !DOTNET_45
         /// <summary>
         /// Stub implementation for GetTypeInfo() for Net Framework.
         /// </summary>
@@ -58,6 +59,19 @@ namespace NFluent.Extensions
         public static bool IsAnEnumeration<T>(this T instance, bool evenWellKnown)
         {
             return  instance!= null &&  instance.GetTypeWithoutThrowingException().IsAnEnumeration(evenWellKnown);
+        }
+
+        public static bool IsAwaitable<T>(this T instance, out Action waiter)
+        {
+#if !DOTNET_35
+            if (instance is Task ta && ta.Status != TaskStatus.Created)
+            {
+                waiter = () => ta.Wait(); 
+                return true;
+            }
+#endif
+            waiter = () =>{};
+            return false;
         }
     }
 }

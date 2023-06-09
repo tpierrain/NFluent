@@ -42,13 +42,19 @@ namespace NFluent.Tests
         [Test]
         public void ShouldNotUseCheckThatCodeForAsyncMethods()
         {
-            Check.ThatCode(BadAsync).DoesNotThrow();
             // Bad way for async methods since it does not catch the proper exception, but 
             // the TPL AggregateException wrapper instead
             Check.ThatCode(DoSomethingBadAsync().Wait).Throws<AggregateException>();
             // this should work without waiting
             Check.ThatCode(DoSomethingBadAsync).Throws<SecurityException>();
             Check.ThatCode(ReturnTheAnswerAfterAWhileAsync).DoesNotThrow();
+        }
+
+        [Test]
+        public void ShouldThrowOnAsyncVoid()
+        {
+            Check.ThatCode( ()=>
+                Check.ThatCode(BadAsync).DoesNotThrow()).Throws<InvalidOperationException>();
         }
 
         [Test]
@@ -117,7 +123,7 @@ namespace NFluent.Tests
         }
         
         [Test]
-        public void CheckThatAsyncCodeWorksWithLestLass()
+        public void CheckThatAsyncCodeWorksWithLastLess()
         {
             Check.ThatCode(async () =>
             {

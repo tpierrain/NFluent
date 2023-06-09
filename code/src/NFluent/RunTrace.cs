@@ -15,6 +15,7 @@
 
 namespace NFluent
 {
+    using NFluent.Extensions;
     using System;
     using System.Diagnostics;
 #if !DOTNET_35
@@ -88,20 +89,14 @@ namespace NFluent
             {
                 result.Result = function();
 #if !DOTNET_35
-                if (result.Result is not Task ta)
-                {
-                    return;
-                }
-
-                // we must check if the method is flagged async
-                if (!FunctionIsAsync(function))
+                if (!result.Result.IsAwaitable(out var waiter))
                 {
                     return;
                 }
 
                 try
                 {
-                    ta.Wait();
+                    waiter();
                 }
                 catch (AggregateException exception)
                 {
@@ -113,14 +108,27 @@ namespace NFluent
         }
 
 #if !DOTNET_35
-        private static bool FunctionIsAsync<TU>(Func<TU> function)
+        private static bool IsLambda<TU>(Func<TU> function)
         {
-            return Attribute.GetCustomAttributes(function.GetMethodInfo(), typeof(AsyncStateMachineAttribute)).Any();
+            return function.GetMethodInfo().DeclaringType?.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false) !=
+                   null;
+        }
+
+        private static bool FunctionIsAsync(Action function)
+        {
+            return function.GetMethodInfo().GetCustomAttribute(typeof(AsyncStateMachineAttribute))!=null;
         }
 #endif
 
         private static void CaptureTrace(Action action, RunTrace result)
         {
+#if !DOTNET_35
+            if (FunctionIsAsync(action))
+            {
+                // this is a void async method
+                throw new InvalidOperationException("Can't check async void function.");
+            }
+#endif
             var watch = new Stopwatch();
             var cpu = Process.GetCurrentProcess().TotalProcessorTime;
             watch.Start();

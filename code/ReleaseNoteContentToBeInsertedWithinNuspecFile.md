@@ -1,3 +1,9 @@
+#V 3.0.0.1
+## Fix
+* Fix `Check.ThatCode` not awaiting `Task` returning lambdas in V3.0.0. Note that `Task<T>` returning lambdas do work in V3.0.0
+* an InvalidOperation is thrown when using `Check.ThatCode` on an async void method/lambda (as those cannot be awaited)
+
+
 # V 3.0.0
 ## Major changes
 * You can execute multiple check as a single batch and get every failures, instead of the first one. This can be achieved using:
@@ -65,33 +71,3 @@ problem for you, open an issue
 * `Checker.BuildLinkWhich` (used for custom extension): please use `ExtensibilityHelper.BuildCheckLinkWhich` instead.
 * `Checker.ExecuteCheckAndProvideSubItem` (used for custom extension): please 'ExtensibilityHelper' static class methods instead.
 
-# V 2.8.0
-## Breaking changes
-* Removed typed overload for IsEqualTo. This may degrade autocompletion somewhat;
-* Equality comparison logic has been slightly revised to take failing `Equals` result when the expected type provides a specific implementation (only success was used so far).
-
-## New check
-* Is : replaces the typed overload for IsEqualTo
-
-## GitHub Issue
-* #335
-
-
-# V 2.7.2
-## Fixes
-* HasFieldWithSameValues resulted in false positive when string fields had the same value.
-* IsZero failed for very small double (<1E-28) in previous versions.
-* IsEquivalentTo was not permissive enougth for dictionaries.
-
-## GitHub Issues
-* #331, #333# 
-
-# V 2.7.1
-# Fixes
-* HasFieldsWithSameValues failed to properly compare when the expected value contained duplicate string. 
-More generally, instances where only checked once for equality; any subsequent check was assumed to be succesful. 
-This could lead to false positive (i.e. checks succeeded when it should have failed). 
-This regression was introduced by V 2.2.0 in 02/2018. Sorry about that.
-
-# GitHub Issues
-* #331

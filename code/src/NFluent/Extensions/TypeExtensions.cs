@@ -37,7 +37,7 @@ namespace NFluent.Extensions
         };
 
         /// <summary>
-        ///     Checks if a type has at least one attribute of a give type.
+        /// Checks if a type has at least one attribute of a give type.
         /// </summary>
         /// <param name="type">Type to check</param>
         /// <param name="attribute">Attribute type to check for.</param>
@@ -51,13 +51,10 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="type">type to check</param>
         /// <returns>true if <see paramref="type"/> is anonymous.</returns>
-        public static bool TypeIsAnonymous(this Type type)
-        {
-            return type.Name.Contains("Anonymous") && type.TypeHasAttribute(typeof(CompilerGeneratedAttribute));
-        }
+        public static bool TypeIsAnonymous(this Type type) => type.Name.Contains("Anonymous") && type.TypeHasAttribute(typeof(CompilerGeneratedAttribute));
 
         /// <summary>
-        ///     Checks if a type possesses at least a field or a property.
+        /// Checks if a type possesses at least a field or a property.
         /// </summary>
         /// <param name="type">Type to be checked</param>
         /// <returns>true if the type as at least one field or property</returns>
@@ -72,42 +69,28 @@ namespace NFluent.Extensions
         public static bool IsAnEnumeration(this Type type, bool evenWellKnown) => type.GetInterfaces().Contains(typeof(IEnumerable)) && (evenWellKnown || type != typeof(string));
 
         /// <summary>
-        /// Type is an IList implementation.
-        /// </summary>
-        /// <param name="type">type to assess</param>
-        /// <returns>true if type is an ISet implementation.</returns>
-        public static bool IsACollection(this Type type)
-        {
-            return type.GetInterfaces().Any(t => t != typeof(ICollection) || t.IsGenericType && t.GetGenericTypeDefinition() == typeof(ICollection<>));
-        }
-
-        /// <summary>
         /// Type is an ISet implementation.
         /// </summary>
         /// <param name="type">type to assess</param>
         /// <returns>true if type is an ISet implementation.</returns>
-        public static bool IsAList(this Type type)
-        {
-            return type.GetInterfaces().Any(t => t == typeof(IList));
-        }
+        public static bool IsAList(this Type type) => type.GetInterfaces().Any(t => t == typeof(IList));
 
         /// <summary>
-        ///     Returns true if the type is a generic type
+        /// Returns true if the type is a generic type
         /// </summary>
         /// <param name="type">type to asses</param>
         /// <returns>true if <see paramref="type" /> is a generic type.</returns>
         public static bool IsGenericType(this Type type) => type.GetTypeInfo().IsGenericType;
 
         /// <summary>
-        ///     Checks if a type is numerical (i.e: int, double, short, uint...).
+        /// Checks if a type is numerical (i.e: int, double, short, uint...).
         /// </summary>
         /// <param name="type">Type to evaluate.</param>
         /// <returns>true if the type is a numerical type.</returns>
         public static bool IsNumerical(this Type type) => UnsignedTypesOrder.Contains(type);
 
-
         /// <summary>
-        ///     Finds an implicit conversion that works for both types.
+        /// Finds an implicit conversion that works for both types.
         /// </summary>
         /// <param name="type">First type</param>
         /// <param name="otherType">Other types</param>

@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CheckObjectShould.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CheckThatCodeShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CultureSession.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EdgeCasesTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Nationality.cs" />
