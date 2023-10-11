@@ -125,7 +125,7 @@
       <Coverage>false</Coverage>
     </TestProjects>
     <TestProjects
-      Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\netcoreapp2.1\NFluent.Tests.SelfHosted.dll'>
+      Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\net6.0\NFluent.Tests.SelfHosted.dll'>
       <Framework>netcoreapp2.1</Framework>
       <Runner>Self</Runner>
       <Coverage>true</Coverage>
