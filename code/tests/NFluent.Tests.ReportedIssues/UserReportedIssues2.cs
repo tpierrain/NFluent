@@ -47,6 +47,38 @@ namespace NFluent.Tests.FromIssues
             //Check.That(obj["data"]).IsEqualTo(new JObject());
         }
         
+        public class MyEntity
+        {
+    
+        }
+
+        public class MyExample
+        {
+            public object Value { get; set; }
+        }
+        
+        [Test]
+        // GH #340
+        public void ThrowsOnMacro()
+        {
+
+
+            var value = new MyExample
+            {
+                Value = new List<MyEntity>()
+            };
+
+// Assert
+            Check.ThatCode( () =>{
+            Check.That(value).IsInstanceOf<MyExample>()
+            .Which
+                .WhichMember(x => x.Value)
+            .Verifies(x =>
+            {
+                x.IsNull();
+            }); }).IsAFailingCheckWithMessage();
+        }
+
         [Test]
         // GH #334
         public void IssueWithDictionaryIsEquivalent()

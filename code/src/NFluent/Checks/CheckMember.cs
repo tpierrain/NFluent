@@ -19,6 +19,7 @@ namespace NFluent
     using System.Linq.Expressions;
     using Extensibility;
     using Kernel;
+    using NFluent.Extensions;
 
     /// <summary>
     /// Offers checks on members of an object
@@ -53,7 +54,7 @@ namespace NFluent
                 return this;
             }
 
-            var message = "The {checked} fails the check because:"+this.errors;
+            var message = "The {checked} fails the check because:" +  this.errors.DoubleCurlyBraces();
             ExtensibilityHelper.ExtractChecker(this.originalCheck).BeginCheck().CantBeNegated("Verifies").Fail(message, MessageOption.NoCheckedBlock).EndCheck();
             return this;
         }
