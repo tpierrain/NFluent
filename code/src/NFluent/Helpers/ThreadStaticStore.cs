@@ -33,7 +33,11 @@ namespace NFluent.Helpers
         /// <returns>The thread specific value</returns>
         public static T GetStack(object identifier)
         {
-            stacksMap ??= new Dictionary<object, T>();
+
+            if (stacksMap == null)
+            {
+                stacksMap = new Dictionary<object, T>();
+            }
 
             if (!stacksMap.ContainsKey(identifier))
             {

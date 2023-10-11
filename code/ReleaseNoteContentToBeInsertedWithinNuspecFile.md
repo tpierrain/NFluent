@@ -1,4 +1,4 @@
-#V 3.0.0.1
+# V 3.0.1
 ## Fix
 * Fix `Check.ThatCode` not awaiting `Task` returning lambdas in V3.0.0. Note that `Task<T>` returning lambdas do work in V3.0.0
 * an InvalidOperation is thrown when using `Check.ThatCode` on an async void method/lambda (as those cannot be awaited)

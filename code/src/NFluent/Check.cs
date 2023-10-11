@@ -32,7 +32,7 @@ namespace NFluent
     /// </summary>
     public static class Check
     {
-        internal static readonly ContextualizedSingleton<IErrorReporter> ReporterStore = new()
+        internal static readonly ContextualizedSingleton<IErrorReporter> ReporterStore = new ContextualizedSingleton<IErrorReporter>()
             { DefaultValue = new ExceptionReporter() };
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace NFluent
         /// <param name="function">Function that implements the desired checks.</param>
         /// <param name="errorMessage">Error message</param>
         /// <returns>An <see cref="MacroCheck{T, T1, T2}"/> instance.</returns>
-        public static MacroCheck<T, T1, T2> DeclareMacro<T, T1, T2>(Action<T, T1, T2> function, string errorMessage) => new(function, errorMessage);
+        public static MacroCheck<T, T1, T2> DeclareMacro<T, T1, T2>(Action<T, T1, T2> function, string errorMessage) => new MacroCheck<T, T1, T2>(function, errorMessage);
         
         /// <summary>
         /// Declare a macro
@@ -276,7 +276,7 @@ namespace NFluent
         /// <param name="function">Function that implements the desired checks.</param>
         /// <param name="errorMessage">Error message</param>
         /// <returns>An <see cref="MacroCheck{T, T1}"/> instance.</returns>
-        public static MacroCheck<T, T1> DeclareMacro<T, T1>(Action<T, T1> function, string errorMessage) => new(function, errorMessage);
+        public static MacroCheck<T, T1> DeclareMacro<T, T1>(Action<T, T1> function, string errorMessage) => new MacroCheck<T, T1>(function, errorMessage);
 
         /// <summary>
         /// Declare a macro
@@ -285,6 +285,6 @@ namespace NFluent
         /// <param name="function">Function that implements the desired checks.</param>
         /// <param name="errorMessage">Error message</param>
         /// <returns>An <see cref="MacroCheck{T}"/> instance.</returns>
-        public static MacroCheck<T> DeclareMacro<T>(Action<T> function, string errorMessage) => new(function, errorMessage);
+        public static MacroCheck<T> DeclareMacro<T>(Action<T> function, string errorMessage) => new MacroCheck<T>(function, errorMessage);
     }
 }

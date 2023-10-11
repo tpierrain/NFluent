@@ -95,7 +95,7 @@ namespace NFluent.Helpers
 
         internal static ReflectionWrapper BuildFromType(Type type, ClassMemberCriteria criteria)
         {
-            return new(type, null, criteria);
+            return new ReflectionWrapper(type, null, criteria);
         }
 
         internal static ReflectionWrapper BuildFromField(string prefix, string name, Type type, object value,
@@ -123,7 +123,7 @@ namespace NFluent.Helpers
         internal static ReflectionWrapper BuildFromProperty(string prefix, string name, Type type, object value,
             ClassMemberCriteria criteria)
         {
-            return new(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria);
+            return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria);
         }
 
         internal void MapFields(ReflectionWrapper other,

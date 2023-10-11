@@ -44,14 +44,15 @@ namespace NFluent.NetCore3.Tests.ReportedIssues
             }
             
             // assert
-            //Check.ThatCode(async () => await PleaseThrowAsync()).Throws<InvalidOperationException>();
+            Check.ThatCode(async () => await PleaseThrowAsync()).Throws<InvalidOperationException>();
             Check.ThatCode(() => PleaseThrowAsync()).Throws<InvalidOperationException>();
 
-            //Check.ThatCode(async () => await PleaseThrowAsync2()).Throws<InvalidOperationException>();
-            //Check.ThatCode(() => PleaseThrowAsync2()).Throws<InvalidOperationException>();
+            Check.ThatCode(async () => await PleaseThrowAsync2()).Throws<InvalidOperationException>();
+            Check.ThatCode(() => PleaseThrowAsync2()).Throws<InvalidOperationException>();
 
-            //Check.ThatCode(PleaseThrowAsync2).Throws<InvalidOperationException>();
+            Check.ThatCode(PleaseThrowAsync2).Throws<InvalidOperationException>();
             Check.ThatCode(PleaseThrowAsync).Throws<InvalidOperationException>();
+            Check.ThatCode(PleaseThrowAsync3).Throws<InvalidOperationException>();
             SimpleTest(() => PleaseThrowAsync2());
         }
 

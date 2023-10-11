@@ -197,7 +197,10 @@ namespace NFluent.Messages
                 this.nameBuilder = other.nameBuilder;
             }
 
-            this.EntityType ??= other.EntityType;
+            if (this.EntityType == null)
+            {
+                this.EntityType = other.EntityType;
+            }
         }
 
         internal EntityNamingLogic Clone()

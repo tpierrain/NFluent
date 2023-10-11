@@ -57,7 +57,11 @@ namespace NFluent.Helpers
         {
             get
             {
-                return constructors ??= LoadSupportedExceptionConstructor();
+                if (constructors == null)
+                {
+                    constructors = LoadSupportedExceptionConstructor();
+                }
+                return constructors;
             }
         }
 

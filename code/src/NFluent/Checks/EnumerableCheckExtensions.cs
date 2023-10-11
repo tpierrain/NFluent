@@ -478,18 +478,20 @@ namespace NFluent
                 .FailIfNull("The {0} is null, whereas it must have one element.")
                 .Analyze((sut, test) =>
                 {
-                    using var enumerator = sut.GetEnumerator();
-                    if (!enumerator.MoveNext())
+                    using (var enumerator = sut.GetEnumerator())
                     {
-                        test.Fail("The {0} is empty, whereas it must have one element.");
-                    }
-                    else
-                    {
-                        item = enumerator.Current;
-                        if (enumerator.MoveNext())
+                        if (!enumerator.MoveNext())
                         {
-                            test.Fail(
-                                "The {0} contains more than one element, whereas it must have one element only.");
+                            test.Fail("The {0} is empty, whereas it must have one element.");
+                        }
+                        else
+                        {
+                            item = enumerator.Current;
+                            if (enumerator.MoveNext())
+                            {
+                                test.Fail(
+                                    "The {0} contains more than one element, whereas it must have one element only.");
+                            }
                         }
                     }
                 })

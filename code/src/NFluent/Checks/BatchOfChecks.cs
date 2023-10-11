@@ -22,7 +22,7 @@ namespace NFluent.Kernel
     internal class BatchOfChecks : IDisposable, IErrorReporter
     {
         private readonly string message;
-        private readonly StringBuilder errors  = new();
+        private readonly StringBuilder errors  = new StringBuilder();
 
         // Stryker test apart once: cannot mutate this method without side effects
         public BatchOfChecks(string message)

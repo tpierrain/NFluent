@@ -33,6 +33,7 @@
     <None Include="..\..\.build\NFluent.snk" Link="NFluent.snk" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Friday.ValueTypes" Version="1.0.6" Aliases="Values,ValueTypes" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3">
       <PrivateAssets>all</PrivateAssets>

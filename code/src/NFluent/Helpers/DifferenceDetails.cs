@@ -46,30 +46,32 @@ namespace NFluent.Helpers
 
         public bool IsEquivalent() => this.mode == DifferenceMode.Equivalent;
 
-        public static DifferenceDetails WasNotExpected(string checkedName, object value, long index) => new(checkedName, value, null, EnumerableExtensions.NullIndex, index, DifferenceMode.Extra);
+        public static DifferenceDetails WasNotExpected(string checkedName, object value, long index) => new DifferenceDetails(checkedName, value, null, EnumerableExtensions.NullIndex, index, DifferenceMode.Extra);
 
-        public static DifferenceDetails DoesNotHaveExpectedValue(string checkedName, object value, object expected, long sutIndex, long expectedIndex) => new(checkedName, value, expected, expectedIndex, sutIndex, DifferenceMode.Value);
+        public static DifferenceDetails DoesNotHaveExpectedValue(string checkedName, object value, object expected, long sutIndex, long expectedIndex) => new DifferenceDetails(checkedName, value, expected, expectedIndex, sutIndex, DifferenceMode.Value);
 
         public static DifferenceDetails IsDifferent(object value, object expected) =>
             // Stryker disable once String: Mutation does not alter behaviour
-            new(string.Empty, value, expected, EnumerableExtensions.NullIndex, EnumerableExtensions.NullIndex, DifferenceMode.Value);
+            new DifferenceDetails(string.Empty, value, expected, EnumerableExtensions.NullIndex, EnumerableExtensions.NullIndex, DifferenceMode.Value);
 
-        public static DifferenceDetails DoesNotHaveExpectedAttribute(string checkedName, object value, object expected, long index = EnumerableExtensions.NullIndex) => new(checkedName, value, expected, index, index, DifferenceMode.Attribute);
+        public static DifferenceDetails DoesNotHaveExpectedAttribute(string checkedName, object value, object expected, long index = EnumerableExtensions.NullIndex) => new DifferenceDetails(checkedName, value, expected, index, index, DifferenceMode.Attribute);
 
         public static DifferenceDetails DoesNotHaveExpectedDetails(string checkedName, object value, object expected,
             long actualIndex, long expectedIndex, ICollection<DifferenceDetails> details) =>
             details.Count == 0 ? null : new DifferenceDetails(checkedName, value, expected, expectedIndex, actualIndex,DifferenceMode.Value, details);
 
         public static DifferenceDetails DoesNotHaveExpectedDetailsButIsEquivalent(string checkedName, object value,
-            object expected,
-            long actualIndex, long expectedIndex, ICollection<DifferenceDetails> details) =>
-            new(checkedName, value, expected, expectedIndex, actualIndex, DifferenceMode.Equivalent, details);
+            object expected, long actualIndex, long expectedIndex, ICollection<DifferenceDetails> details) =>
+            new DifferenceDetails(checkedName, value, expected, expectedIndex, actualIndex, DifferenceMode.Equivalent, details);
 
-        public static DifferenceDetails WasNotFound(string checkedName, object expected, long index) => new(checkedName, null, expected, index, EnumerableExtensions.NullIndex, DifferenceMode.Missing);
+        public static DifferenceDetails WasNotFound(string checkedName, object expected, long index) 
+            => new DifferenceDetails(checkedName, null, expected, index, EnumerableExtensions.NullIndex, DifferenceMode.Missing);
 
-        public static DifferenceDetails WasFoundElseWhere(string checkedName, object value, long expectedIndex, long actualIndex) => new(checkedName, value, null, expectedIndex, actualIndex, DifferenceMode.Moved);
+        public static DifferenceDetails WasFoundElseWhere(string checkedName, object value, long expectedIndex, long actualIndex) 
+            => new DifferenceDetails(checkedName, value, null, expectedIndex, actualIndex, DifferenceMode.Moved);
 
-        public static DifferenceDetails WasFoundInsteadOf(string checkedName, object checkedValue, object expectedValue, long checkedIndex = EnumerableExtensions.NullIndex, long expectedIndex = EnumerableExtensions.NullIndex) => new DifferenceDetails(checkedName, checkedValue, expectedValue, expectedIndex, checkedIndex, DifferenceMode.FoundInsteadOf);
+        public static DifferenceDetails WasFoundInsteadOf(string checkedName, object checkedValue, object expectedValue, long checkedIndex = EnumerableExtensions.NullIndex, long expectedIndex = EnumerableExtensions.NullIndex) 
+            => new DifferenceDetails(checkedName, checkedValue, expectedValue, expectedIndex, checkedIndex, DifferenceMode.FoundInsteadOf);
 
         public static DifferenceDetails FromMatch(MemberMatch match)
         {
@@ -109,7 +111,7 @@ namespace NFluent.Helpers
 
         private IEnumerable<DifferenceDetails> Details(bool firstLevel = true)
         {
-            if (this.subs is {Length: > 0})
+            if (this.subs!=null && this.subs.Length > 0)
             {
                 return this.subs.
                     //Where(d => (forEquivalence && (d.StillNeededForEquivalence || d.IsEquivalent()) ) || (!forEquivalence && d.StillNeededForEquality)).
@@ -163,23 +165,26 @@ namespace NFluent.Helpers
 
         public string GetDetails(bool forEquivalence)
         {
-            return this.mode switch
+            switch(this.mode)
             {
-                DifferenceMode.Extra => forEquivalence
-                    ? $"{this.FirstName} value should not exist (value {this.FirstValue.ToStringProperlyFormatted()})"
-                    : $"{this.FirstName} should not exist (value {this.FirstValue.ToStringProperlyFormatted()}).",
-                DifferenceMode.Missing => forEquivalence
-                    ? $"{this.SecondValue.ToStringProperlyFormatted()} should be present but was not found."
-                    : $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.",
-                DifferenceMode.Moved =>
-                $"{this.FirstName} value ('{this.FirstValue}') was found at index {this.ActualIndex} instead of {this.Index}.",
-                DifferenceMode.Attribute =>
-                $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.",
-                DifferenceMode.FoundInsteadOf =>
-                $"{this.FirstValue.ToStringProperlyFormatted()} should not exist (found in {this.FirstName}); {this.SecondValue.ToStringProperlyFormatted()} should be found instead.",
-                _ =>
-                $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}."
-            };
+                case DifferenceMode.Extra:
+                    return forEquivalence
+                        ? $"{this.FirstName} value should not exist (value {this.FirstValue.ToStringProperlyFormatted()})"
+                        : $"{this.FirstName} should not exist (value {this.FirstValue.ToStringProperlyFormatted()}).";
+                case DifferenceMode.Missing:
+                    return forEquivalence
+                        ? $"{this.SecondValue.ToStringProperlyFormatted()} should be present but was not found."
+                        : $"{this.FirstName} does not exist. Expected {this.SecondValue.ToStringProperlyFormatted()}.";
+                case DifferenceMode.Moved:
+                    return $"{this.FirstName} value ('{this.FirstValue}') was found at index {this.ActualIndex} instead of {this.Index}.";
+                case DifferenceMode.Attribute:
+                    return $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
+                case DifferenceMode.FoundInsteadOf:
+                    return
+                        $"{this.FirstValue.ToStringProperlyFormatted()} should not exist (found in {this.FirstName}); {this.SecondValue.ToStringProperlyFormatted()} should be found instead.";
+                default:
+                    return $"{this.FirstName} = {this.FirstValue.ToStringProperlyFormatted()} instead of {this.SecondValue.ToStringProperlyFormatted()}.";
+            }
         }
 
         public enum DifferenceMode

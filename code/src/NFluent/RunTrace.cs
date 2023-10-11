@@ -108,10 +108,25 @@ namespace NFluent
         }
 
 #if !DOTNET_35
-        private static bool IsLambda<TU>(Func<TU> function)
+        private static bool IsAwaitable<TU>(Type type)
         {
-            return function.GetMethodInfo().DeclaringType?.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false) !=
-                   null;
+            var waiter = type.GetMethod("GetAwaiter")?.ReturnType;
+            if (waiter == null)
+            {
+                return false;
+            }
+
+            if (waiter.GetInterface("System.Runtime.CompilerServices.INotifyCompletion") == null)
+            {
+                return false;
+            }
+
+            if (waiter.GetProperty("IsCompleted")?.PropertyType != typeof(bool))
+            {
+                return false;
+            }
+
+            return waiter.GetMethod("GetResult", Array.Empty<Type>()) != null;
         }
 
         private static bool FunctionIsAsync(Action function)
