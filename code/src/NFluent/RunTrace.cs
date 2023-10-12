@@ -108,27 +108,6 @@ namespace NFluent
         }
 
 #if !DOTNET_35
-        private static bool IsAwaitable<TU>(Type type)
-        {
-            var waiter = type.GetMethod("GetAwaiter")?.ReturnType;
-            if (waiter == null)
-            {
-                return false;
-            }
-
-            if (waiter.GetInterface("System.Runtime.CompilerServices.INotifyCompletion") == null)
-            {
-                return false;
-            }
-
-            if (waiter.GetProperty("IsCompleted")?.PropertyType != typeof(bool))
-            {
-                return false;
-            }
-
-            return waiter.GetMethod("GetResult", Array.Empty<Type>()) != null;
-        }
-
         private static bool FunctionIsAsync(Action function)
         {
             return function.GetMethodInfo().GetCustomAttribute(typeof(AsyncStateMachineAttribute))!=null;

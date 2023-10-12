@@ -9,7 +9,7 @@
     <license type="expression">Apache-2.0</license>
     <projectUrl>http://www.n-fluent.net</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <!--icon>images\Icon.png</icon-->
+    <icon>images\Icon.png</icon>
     <description>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience (based on simple Check.That() check statements). NFluent aims your tests to be fluent to write (with an happy 'dot' auto completion experience), fluent to read (i.e. as close as possible to plain English expression), but also fluent to troubleshoot, in a less-error-prone way comparing to the classical .NET test frameworks. NFluent is directly, but also freely, inspired by the awesome Java FEST fluent check/reflection library (http://fest.easytesting.org/).</description>
     <summary>NFluent is an ergonomic check library which aims to fluent your .NET TDD experience.</summary>
     <releaseNotes># V 3.0.0
@@ -181,8 +181,11 @@ This regression was introduced by V 2.2.0 in 02/2018. Sorry about that.
       <group targetFramework=".NETFramework4.6" />
       <group targetFramework=".NETFramework3.5" />
     </dependencies>
+    <readme>docs\README.md</readme>
   </metadata>
   <files>
+    <!-- Documentation -->  
+    <file src="..\README.md" target="docs\" />
     <!-- Images -->
     <file src="..\Images\icon.png" target="images\" />
     <!-- Core -->
@@ -198,4 +201,5 @@ This regression was introduced by V 2.2.0 in 02/2018. Sorry about that.
     <file src="Artifacts\Binaries\net35\NFluent.xml" target="lib\net35\" />
     <file src="Artifacts\Binaries\net35\NFluent.pdb" target="lib\net35\" />
   </files>
+
 </package>
