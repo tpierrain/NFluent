@@ -57,11 +57,13 @@ namespace NFluent.Helpers
         {
             get
             {
-                if (constructors == null)
+                var exceptionConstructor = constructors;
+                while (exceptionConstructor == null)
                 {
                     constructors = LoadSupportedExceptionConstructor();
+                    exceptionConstructor = constructors;
                 }
-                return constructors;
+                return exceptionConstructor;
             }
         }
 
