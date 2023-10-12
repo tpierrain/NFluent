@@ -103,8 +103,8 @@
     </TestProjects>
     <TestProjects Include='$(TestsPath)\NFluent.Tests.xUnit\NFluent.Tests.xUnit.csproj'>
       <Framework>net-4.8</Framework>
-      <Runner>xUnit</Runner>
       <Coverage>true</Coverage>
+      <Runner>dotnet</Runner>
     </TestProjects>
     <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests\NFluent.NetStandard.20.Tests.csproj'>
       <Framework>netstandard2.0</Framework>
@@ -123,6 +123,7 @@
     <TestProjects Include='$(TestsPath)\NFluent.Tests.Core.xUnit\NFluent.Tests.Core.xUnit.csproj'>
       <Framework>net-4.8</Framework>
       <Coverage>false</Coverage>
+      <Runner>dotnet</Runner>
     </TestProjects>
     <TestProjects
       Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\net6.0\NFluent.Tests.SelfHosted.dll'>
