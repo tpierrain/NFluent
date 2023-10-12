@@ -102,7 +102,7 @@
       <Coverage>true</Coverage>
     </TestProjects>
     <TestProjects Include='$(TestsPath)\NFluent.Tests.xUnit\NFluent.Tests.xUnit.csproj'>
-      <Framework>netstandard2.0</Framework>
+      <Framework>net-4.8</Framework>
       <Runner>xUnit</Runner>
       <Coverage>true</Coverage>
     </TestProjects>
@@ -121,7 +121,7 @@
       <Coverage>true</Coverage>
     </TestProjects>
     <TestProjects Include='$(TestsPath)\NFluent.Tests.Core.xUnit\NFluent.Tests.Core.xUnit.csproj'>
-      <Framework>netstandard1.3</Framework>
+      <Framework>net-4.8</Framework>
       <Coverage>false</Coverage>
     </TestProjects>
     <TestProjects
