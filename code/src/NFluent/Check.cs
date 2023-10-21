@@ -22,7 +22,7 @@ namespace NFluent
     using Extensions;
     using Helpers;
     using Kernel;
-#if !DOTNET_35
+#if !NET35
     using System.Threading.Tasks;
 #endif
 
@@ -162,7 +162,7 @@ namespace NFluent
             return new FluentCheck<Type>(typeof(T));
         }
 
-#if !DOTNET_35
+#if !NET35
         /// <summary>
         ///     Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>

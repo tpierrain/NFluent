@@ -13,7 +13,7 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 
-#if !DOTNET_20 && !DOTNET_30 && !DOTNET_35 && !DOTNET_40
+#if !DOTNET_20 && !DOTNET_30 && !NET35 && !DOTNET_40
 namespace NFluent.Tests
 {
     using System.Text;

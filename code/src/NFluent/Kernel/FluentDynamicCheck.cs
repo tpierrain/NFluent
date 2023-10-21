@@ -15,7 +15,7 @@
 
 namespace NFluent
 {
-#if !DOTNET_35
+#if !NET35
     using Extensibility;
     using Kernel;
     using Messages;

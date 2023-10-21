@@ -16,12 +16,12 @@
 namespace NFluent.Extensions
 {
     using System;
-#if !DOTNET_35
+#if !NET35
     using System.Threading.Tasks;
 #endif
     internal static class ObjectExtensions
     {
-#if !DOTNET_45
+#if NET35
         /// <summary>
         /// Stub implementation for GetTypeInfo() for Net Framework.
         /// </summary>
@@ -63,7 +63,7 @@ namespace NFluent.Extensions
 
         public static bool IsAwaitable<T>(this T instance, out Action waiter)
         {
-#if !DOTNET_35
+#if !NET35
             if (instance is Task ta && ta.Status != TaskStatus.Created)
             {
                 waiter = () => ta.Wait(); 

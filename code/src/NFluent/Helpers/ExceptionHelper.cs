@@ -19,8 +19,8 @@ namespace NFluent.Helpers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Text;
-    using Kernel;
 
     /// <summary>
     /// Supported test frameworks
@@ -39,10 +39,6 @@ namespace NFluent.Helpers
         /// xUnit framework
         /// </summary>
         XUnit,
-        /// <summary>
-        /// No known framework, using built in exceptions
-        /// </summary>
-        None
     };
 
     /// <summary>
@@ -50,10 +46,10 @@ namespace NFluent.Helpers
     /// </summary>
     public static class ExceptionHelper
     {
-        private static ExceptionConstructor constructors;
+        private static IExceptionConstructor constructors;
         private static readonly string ExceptionSeparator = Environment.NewLine + "--> ";
 
-        private static ExceptionConstructor Constructors
+        private static IExceptionConstructor Constructors
         {
             get
             {
@@ -67,7 +63,7 @@ namespace NFluent.Helpers
             }
         }
 
-        private static ExceptionConstructor LoadSupportedExceptionConstructor()
+        private static IExceptionConstructor LoadSupportedExceptionConstructor()
         {
             // we need to identify required exception types
             var exceptions = LoadExceptionConstructors();
@@ -81,14 +77,13 @@ namespace NFluent.Helpers
                 }
             }
 
-            return null;
+            return new DefaultExceptionConstructor();
         }
 
         private static Dictionary<TestFramework, ExceptionConstructor> LoadExceptionConstructors()
         {
             var exceptions = new Dictionary<TestFramework, ExceptionConstructor>
             {
-                [TestFramework.None] = new ExceptionConstructor(typeof(FluentCheckException), message => new FluentCheckException(message)),
                 [TestFramework.MsTest] = new ExceptionConstructor("microsoft.visualstudio.testplatform.testframework", "Microsoft.VisualStudio.TestTools", "AssertFailedException", "AssertInconclusiveException"),
                 [TestFramework.NUnit] = new ExceptionConstructor("nunit.framework", "NUnit", "AssertionException", "InconclusiveException"),
                 [TestFramework.XUnit] = new ExceptionConstructor("xunit.assert", "Xunit.Sdk", "XunitException", ""),
@@ -172,7 +167,7 @@ namespace NFluent.Helpers
                 {
                     result.Append(ExceptionSeparator);
                 }
-                result.AppendFormat("{{ {0} }} \"{1}\"", innerException.GetType(), innerException.Message);
+                result.AppendFormat(CultureInfo.InvariantCulture, "{{ {0} }} \"{1}\"", innerException.GetType(), innerException.Message);
                 
                 innerException = innerException.InnerException;
                 firstRow = false;

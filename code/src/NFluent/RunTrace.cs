@@ -18,7 +18,7 @@ namespace NFluent
     using NFluent.Extensions;
     using System;
     using System.Diagnostics;
-#if !DOTNET_35
+#if !NET35
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -88,7 +88,7 @@ namespace NFluent
             CaptureTrace(() =>
             {
                 result.Result = function();
-#if !DOTNET_35
+#if !NET35
                 if (!result.Result.IsAwaitable(out var waiter))
                 {
                     return;
@@ -107,7 +107,7 @@ namespace NFluent
             return result;
         }
 
-#if !DOTNET_35
+#if !NET35
         private static bool FunctionIsAsync(Action function)
         {
             return function.GetMethodInfo().GetCustomAttribute(typeof(AsyncStateMachineAttribute))!=null;
@@ -116,7 +116,7 @@ namespace NFluent
 
         private static void CaptureTrace(Action action, RunTrace result)
         {
-#if !DOTNET_35
+#if !NET35
             if (FunctionIsAsync(action))
             {
                 // this is a void async method
@@ -142,7 +142,7 @@ namespace NFluent
             }
         }
 
-#if !DOTNET_35
+#if !NET35
         /// <summary>
         /// Execute the function to capture the run.
         /// </summary>

@@ -12,7 +12,7 @@
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
     <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
 
-    <OpenCoverFilter>+[*]* -[*.Tests*]* -[nunit*]* -[NUnit*]* -[xunit*]* -[Newtonsoft*]*</OpenCoverFilter>
+    <OpenCoverFilter>+[*]* -[*.Tests*]* -[nunit*]* -[NUnit*]* -[xunit*]* -[Newtonsoft*]* -[Microsoft*]* -[testhost*]*</OpenCoverFilter>
     <CoverageDataFile>$(SolutionRoot)\$(SolutionName)-coverage.xml</CoverageDataFile>
 
     <PackageStream>alpha</PackageStream>
@@ -156,6 +156,8 @@
     <PropertyGroup>
       <NumericalVersion>$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch).$(AssemblyVersionPreRelease)</NumericalVersion>
       <APIVersion Condition="$(APIVersion)==''">$(AssemblyVersionMajor).$(AssemblyVersionMinor).0.0</APIVersion>
+      <VersionPrefix>$(NumericalVersion)</VersionPrefix>
+      <VersionSuffix>$(PackageStream)</VersionSuffix>
     </PropertyGroup>
     <VersionBuilding version="$(NumericalVersion)" stream="$(PackageStream)">
       <Output PropertyName="PrettyVersion" TaskParameter="fullVersion" />
@@ -185,7 +187,7 @@
       <CSProjToPatch Include="@(ProjectFolder)" Condition="'%(ProjectFolder.Fwk)'=='core'">
         <FullName>%(ProjectFolder.FullPath)\%(ProjectFolder.CsProj)</FullName>
       </CSProjToPatch>
-    </ItemGroup>
+
     <Message Importance="high" Text="Patching versions in %(CSProjToPatch.FullName) to $(PrettyVersion)" />
     <XmlPoke
       XmlInputPath="%(CSProjToPatch.FullName)"
@@ -203,6 +205,7 @@
       XmlInputPath="%(CSProjToPatch.FullName)"
       Query="//InformationalVersion"
       Value="$(PrettyVersion)" />
+    </ItemGroup>
     <Message Importance="high" Text="--------- end of VERSION NUMBER SYNCHRO  ------------------------------" />
   </Target>
 
@@ -364,6 +367,7 @@ RUN ALL UNIT TESTS
   <Target Name="PackageTarget" DependsOnTargets="SynchroVersion">
     <Message Importance="high" Text="---------- PACKAGE ---------" />
     <ItemGroup>
+      <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
       <FilesForNuget Include="@(ProjectFolder)"
                      Condition="'%(ProjectFolder.PackageTarget)'!='' AND '%(ProjectFolder.Fwk)'!='core'">
         <TargetFwk>%(ProjectFolder.PackageTarget)</TargetFwk>
@@ -374,10 +378,10 @@ RUN ALL UNIT TESTS
         <TargetFwk>%(ProjectFolder.PackageTarget)</TargetFwk>
         <SourceDir>%(ProjectFolder.FullPath)\bin\$(Configuration)\%(ProjectFolder.PackageTarget)\*.*</SourceDir>
       </FilesForNuget>
+      <Message Importance="high" Text="xcopy %(FilesForNuget.SourceDir) $(BinariesPath)\%(FilesForNuget.TargetFwk)\ /E /Y" />
+      <Exec Command='xcopy "%(FilesForNuget.SourceDir)" "$(BinariesPath)\%(FilesForNuget.TargetFwk)\" /E /Y /Q' />
     </ItemGroup>
-    <!-- Copies the dll into an easy path targeted by the .nuspec file. -->
-    <Message Importance="high" Text="xcopy %(FilesForNuget.SourceDir) $(BinariesPath)\%(FilesForNuget.TargetFwk)\ /E /Y" />
-    <Exec Command='xcopy "%(FilesForNuget.SourceDir)" "$(BinariesPath)\%(FilesForNuget.TargetFwk)\" /E /Y /Q' />
+
 
     <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
     <Message Importance="high" Text="[Print] PackageVersion: '$(NumericalVersion)'" />

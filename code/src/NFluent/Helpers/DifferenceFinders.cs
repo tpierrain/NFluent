@@ -18,6 +18,7 @@ namespace NFluent.Helpers
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -166,8 +167,8 @@ namespace NFluent.Helpers
             long expectedIndex, 
             Type commonType)
         {
-            var convertedActual = Convert.ChangeType(actual, commonType);
-            var convertedExpected = Convert.ChangeType(expected, commonType);
+            var convertedActual = Convert.ChangeType(actual, commonType, CultureInfo.InvariantCulture);
+            var convertedExpected = Convert.ChangeType(expected, commonType, CultureInfo.InvariantCulture);
             return convertedExpected.Equals(convertedActual) ? null : 
                 DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex, expectedIndex);
         }
@@ -303,7 +304,7 @@ namespace NFluent.Helpers
                     temp /= firstArray.SizeOfDimension(j);
                 }
 
-                return $"{firstName}[{string.Join(",", indices.Select(x => x.ToString()).ToArray())}]";
+                return $"{firstName}[{string.Join(",", indices.Select(x => x.ToString(CultureInfo.InvariantCulture)).ToArray())}]";
             }, 
                 sutIndex, 
                 expectedIndex,

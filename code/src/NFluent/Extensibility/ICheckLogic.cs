@@ -16,7 +16,7 @@
 namespace NFluent.Extensibility
 {
     using System.Collections.Generic;
-#if !DOTNET_35
+#if !NET35
     using System;
 #endif
 
@@ -40,17 +40,17 @@ namespace NFluent.Extensibility
         /// <summary>
         /// Fails the check if the checked value is null,
         /// </summary>
-        /// <param name="error">Error message</param>
+        /// <param name="errorMessage">Error message</param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> FailIfNull(string error = "The {0} is null.");
+        ICheckLogic<T> FailIfNull(string errorMessage = "The {0} is null.");
 
         /// <summary>
         /// Explicitly fails
         /// </summary>
-        /// <param name="error">error message</param>
+        /// <param name="errorMessage">error message</param>
         /// <param name="options">options</param>
         /// <returns>Continuation object</returns>
-        ICheckLogic<T> Fail(string error, MessageOption options = MessageOption.None);
+        ICheckLogic<T> Fail(string errorMessage, MessageOption options = MessageOption.None);
 
         /// <summary>
         /// Specify expected value.
@@ -113,10 +113,10 @@ namespace NFluent.Extensibility
         /// Failing condition on check negation.
         /// </summary>
         /// <param name="predicate">Predicate, returns true if test fails.</param>
-        /// <param name="error">Error message on failure</param>
+        /// <param name="errorMessage">Error message on failure</param>
         /// <param name="options">Options to use on parts of the message</param>
         /// <returns>Continuation object.</returns>
-        ICheckLogic<T> OnNegateWhen(Func<T, bool> predicate, string error, MessageOption options = MessageOption.None);
+        ICheckLogic<T> OnNegateWhen(Func<T, bool> predicate, string errorMessage, MessageOption options = MessageOption.None);
 
         /// <summary>
         /// Executes arbitrary code on the sut.

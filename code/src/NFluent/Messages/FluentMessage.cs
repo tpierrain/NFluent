@@ -17,6 +17,7 @@
 namespace NFluent.Extensibility
 {
     using System;
+    using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
     using Extensions;
@@ -121,7 +122,7 @@ namespace NFluent.Extensibility
             var localLabel = (same && this.doNotRepeatChecked) ? this.checkedLabel.CustomMessage("{0} one") : this.checkedLabel.ToString();
             var givenOrExpectedLabel = (same && this.doNotRepeatExpected) ? this.expectedLabel.CustomMessage("{0} one") : this.expectedLabel.ToString();
 
-            builder.AppendFormat(this.message, localLabel, givenOrExpectedLabel);
+            builder.AppendFormat(CultureInfo.InvariantCulture, this.message, localLabel, givenOrExpectedLabel);
 
             if (this.checkedBlock != null)
             {

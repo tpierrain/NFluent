@@ -22,7 +22,7 @@ namespace NFluent.Tests
     [TestFixture]
     public class NFluentEqualityShould
     {
-        #if !DOTNET_35
+        #if !NET35
         [Test]
         public void HandleAnonymousTuples()
         {

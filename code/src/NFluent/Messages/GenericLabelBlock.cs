@@ -14,6 +14,8 @@
 // // </copyright>
 // // --------------------------------------------------------------------------------------------------------------------
 #endregion
+using System.Globalization;
+
 namespace NFluent.Messages
 {
     internal class GenericLabelBlock
@@ -73,7 +75,7 @@ namespace NFluent.Messages
         /// </returns>
         public string CustomMessage(string message)
         {
-            return string.Format(message ?? Template, this.adjectiveForMessages, this.EntityName());
+            return string.Format(CultureInfo.InvariantCulture, message ?? Template, this.adjectiveForMessages, this.EntityName());
         }
 
         private string Adjective()

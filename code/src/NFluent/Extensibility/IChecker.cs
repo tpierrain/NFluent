@@ -15,7 +15,7 @@
 namespace NFluent.Extensibility
 {
     using Kernel;
-#if !DOTNET_35
+#if !NET35
     using System;
 #endif
 
@@ -78,7 +78,7 @@ namespace NFluent.Extensibility
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
         ICheckLink<TC> ExecuteCheck(
-#if DOTNET_35
+#if NET35
             System.
 #endif
                 Action action, string negatedExceptionMessage);
@@ -92,7 +92,7 @@ namespace NFluent.Extensibility
         /// <param name="negatedExceptionMessage">The message for the exception to be thrown when the check fails, in the case we were running the negated version.</param>
         /// <exception cref="FluentCheckException">The check fails.</exception>
         void ExecuteNotChainableCheck(
-#if DOTNET_35
+#if NET35
             System.
 #endif
             Action action, string negatedExceptionMessage);

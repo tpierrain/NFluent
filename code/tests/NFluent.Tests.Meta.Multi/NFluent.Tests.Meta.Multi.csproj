@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net46</TargetFrameworks>
+    <Nullable>disable</Nullable>
+    <RootNamespace>NFluent.Tests</RootNamespace>
+    <IsPublishable>False</IsPublishable>
+    <AssemblyName>NFluent.Tests.Meta</AssemblyName>
+    <AssemblyOriginatorKeyFile>..\..\.build\NFluent.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>True</SignAssembly>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="..\..\.build\NFluent.snk" Link="NFluent.snk" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.13.3" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\NFluent.Tests.Multi\NFluent.Tests.Multi.csproj" />
+  </ItemGroup>
+  
+  <Import Project="..\NFluent.Tests.Meta\NFluent.Tests.Meta.projitems" Label="Shared" />
+  
+</Project>

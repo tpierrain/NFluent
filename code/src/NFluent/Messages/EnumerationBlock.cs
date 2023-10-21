@@ -17,6 +17,7 @@ namespace NFluent.Messages
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.Text;
     using Extensions;
 
@@ -73,7 +74,7 @@ namespace NFluent.Messages
 
             if (this.includeType && this.type != null)
             {
-                builder.AppendFormat(" of type: [{0}]", this.type.ToStringProperlyFormatted());
+                builder.AppendFormat(CultureInfo.InvariantCulture, " of type: [{0}]", this.type.ToStringProperlyFormatted());
             }
 
             return builder.ToString();
@@ -123,7 +124,7 @@ namespace NFluent.Messages
 
             if (this.enumerableCount.HasValue && this.test != null)
             {
-                description.AppendFormat(
+                description.AppendFormat(CultureInfo.InvariantCulture,
                     " ({0} {1})",
                     this.enumerableCount,
                     this.enumerableCount <= 1 ? "item" : "items");

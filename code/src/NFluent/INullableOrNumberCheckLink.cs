@@ -29,6 +29,7 @@ namespace NFluent
         /// The new fluent check instance dedicated to the nullable, which has been chained to the previous one.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
+#pragma warning disable CA1716
         ICheck<TN?> And { get; }
 
         /// <summary>
@@ -39,5 +40,6 @@ namespace NFluent
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
         ICheck<TN> Which { get; }
+#pragma warning restore CA1716
     }
 }

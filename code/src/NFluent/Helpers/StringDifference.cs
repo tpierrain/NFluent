@@ -16,6 +16,7 @@ namespace NFluent.Helpers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using Extensions;
 
     /// <summary>
@@ -128,7 +129,7 @@ namespace NFluent.Helpers
                 else
                 {
                     temp.Add(text.Substring(start, index+1-start));
-                    index = index + 1;
+                    index++;
                 }
             }
             return temp.ToArray();
@@ -257,7 +258,7 @@ namespace NFluent.Helpers
                 }
                 else
                 {
-                    mainText += string.Format(
+                    mainText += string.Format(CultureInfo.InvariantCulture,
                     " At line {0}, col {3}, expected '{1}' was '{2}'.",
                     this.Line + 1,
                     HighlightCrlfOrLfIfAny(expected),

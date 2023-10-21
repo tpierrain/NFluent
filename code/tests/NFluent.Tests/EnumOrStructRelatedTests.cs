@@ -286,7 +286,7 @@ namespace NFluent.Tests
         {
             Check.ThatCode( ()=>  Check.That(Flags.First).HasFlag(Flags.None))
                 .IsAFailingCheckWithMessage("", 
-                    "Wrong chek: The expected flag is 0. You must use IsEqualTo, or a non zero flag value.", 
+                    "Wrong check: The expected flag is 0. You must use IsEqualTo, or a non zero flag value.", 
                     "The checked enum:", 
                     "\t[First]", 
                     "The expected enum: having flag", 

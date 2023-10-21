@@ -15,6 +15,7 @@
 namespace NFluent.Kernel
 {
     using System;
+    using System.Globalization;
     using Extensibility;
 
     /// <summary>
@@ -58,7 +59,7 @@ namespace NFluent.Kernel
         public ICheckLink<ICheck<TN>> IsStrictlyPositive()
         {
             ExtensibilityHelper.BeginCheck(this.check)
-                .FailWhen(sut => Convert.ToDouble(sut) <=0, "The {0} is not strictly positive (i.e. greater than zero).")
+                .FailWhen(sut => Convert.ToDouble(sut, CultureInfo.InvariantCulture) <=0, "The {0} is not strictly positive (i.e. greater than zero).")
                 .OnNegate("The {0} is strictly positive (i.e. greater than zero), whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);
@@ -72,7 +73,7 @@ namespace NFluent.Kernel
         public ICheckLink<ICheck<TN>> IsPositiveOrZero()
         {
             ExtensibilityHelper.BeginCheck(this.check)
-                .FailWhen(sut => Convert.ToDouble(sut) <0, "The {0} is not positive or equal to zero.")
+                .FailWhen(sut => Convert.ToDouble(sut, CultureInfo.InvariantCulture) <0, "The {0} is not positive or equal to zero.")
                 .OnNegate("The {0} is positive or equal to zero, whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);
@@ -86,7 +87,7 @@ namespace NFluent.Kernel
         public ICheckLink<ICheck<TN>> IsStrictlyNegative()
         {
             ExtensibilityHelper.BeginCheck(this.check)
-                .FailWhen(sut => Convert.ToDouble(sut) >=0, "The {0} is not strictly negative.")
+                .FailWhen(sut => Convert.ToDouble(sut, CultureInfo.InvariantCulture) >=0, "The {0} is not strictly negative.")
                 .OnNegate("The {0} is strictly negative, whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);
@@ -100,7 +101,7 @@ namespace NFluent.Kernel
         public ICheckLink<ICheck<TN>> IsNegativeOrZero()
         {
             ExtensibilityHelper.BeginCheck(this.check)
-                .FailWhen(sut => Convert.ToDouble(sut) >0, "The {0} is not negative or equal to zero.")
+                .FailWhen(sut => Convert.ToDouble(sut, CultureInfo.InvariantCulture) >0, "The {0} is not negative or equal to zero.")
                 .OnNegate("The {0} is negative or equal to zero, whereas it must not.")
                 .EndCheck();
             return ExtensibilityHelper.BuildCheckLink(this.check);
@@ -209,7 +210,7 @@ namespace NFluent.Kernel
         /// </returns>
         private static bool InternalIsZero(TN value)
         {
-            return value.CompareTo(Convert.ChangeType(0, typeof(TN))) == 0;
+            return value.CompareTo(Convert.ChangeType(0, typeof(TN), CultureInfo.InvariantCulture)) == 0;
         }
     }
 }

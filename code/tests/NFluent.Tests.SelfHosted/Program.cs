@@ -16,6 +16,7 @@
 namespace NFluent.Tests.SelfHosted
 {
     using System;
+    using Extensibility;
     using Helpers;
     using Kernel;
     using NFluent;
@@ -32,6 +33,7 @@ namespace NFluent.Tests.SelfHosted
                 BasicTest();
                 ExceptionScanTest();
                 AssumptionTest();
+                HandleProperlyNegationOnFailing();
             }
             catch (Exception e)
             {
@@ -60,5 +62,17 @@ namespace NFluent.Tests.SelfHosted
         {
             Check.That(ExceptionHelper.BuildException("Test")).IsInstanceOf<FluentCheckException>();
         }
+
+        public static void HandleProperlyNegationOnFailing()
+        {
+            var check = Check.That(2);
+            var checker = ExtensibilityHelper.ExtractChecker(check.Not);
+            
+            checker.ExecuteNotChainableCheck(()=> throw ExceptionHelper.BuildException("oups"), "should have failed");
+            Check.ThatCode(() =>
+                    checker.ExecuteNotChainableCheck(() => { }, "should have failed"))
+                .IsAFailingCheck();
+        }
+
     }
 }

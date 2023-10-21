@@ -15,7 +15,7 @@
 
 namespace NFluent.Kernel
 {
-#if !DOTNET_35
+#if !NET35
     using System;
 #endif
     using Extensibility;
@@ -134,7 +134,7 @@ namespace NFluent.Kernel
         /// </returns>
         /// <exception cref="FluentCheckException">The check fails.</exception>
         public ICheckLink<TC> ExecuteCheck(
-#if DOTNET_35
+#if NET35
             System.
 #endif
             Action action, string negatedExceptionMessage)
@@ -145,7 +145,7 @@ namespace NFluent.Kernel
 
         /// <inheritdoc />
         public void ExecuteNotChainableCheck(
-#if DOTNET_35
+#if NET35
             System.
 #endif
             Action action, string negatedExceptionMessage)

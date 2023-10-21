@@ -23,7 +23,9 @@ namespace NFluent
         /// <summary>
         ///     Allow to scope to public.
         /// </summary>
+#pragma warning disable CA1716
         IFieldsOrProperties Public { get; }
+#pragma warning restore CA1716
 
         /// <summary>
         ///     Allow to scope to non public member (private, protected, internal)

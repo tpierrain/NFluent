@@ -26,11 +26,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeOffsetRangeBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeRangeBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\DefaultExceptionConstructor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DictionaryWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DifferenceDetails.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DifferenceFinders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExceptionConstructor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ExpressionHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\IExceptionConstructor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\LocalRegisterHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ThreadStaticStore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kernel\MacroCheck.cs" />

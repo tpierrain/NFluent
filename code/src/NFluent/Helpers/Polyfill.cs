@@ -13,7 +13,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if DOTNET_35
+#if NET35
 namespace System.Diagnostics.CodeAnalysis
 {
     /// <summary>
@@ -28,7 +28,7 @@ namespace System.Diagnostics.CodeAnalysis
 
 namespace NFluent
 {
-#if DOTNET_35
+#if NET35
     using System.Collections.Generic;
     using System.Linq;
     /// <summary>
@@ -68,7 +68,7 @@ namespace NFluent
     {
         public static bool IsNullOrWhiteSpace(string testedText)
         {
-#if DOTNET_35
+#if NET35
             return string.IsNullOrEmpty(testedText) || testedText.All(char.IsWhiteSpace);
 
 #else
@@ -87,7 +87,7 @@ namespace NFluent
         }
     }
 
-#if DOTNET_35
+#if NET35
     internal interface IReadOnlyDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
     {
         int Count { get; }

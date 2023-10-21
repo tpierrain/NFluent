@@ -29,6 +29,8 @@ namespace NFluent
         /// The next check negated.
         /// </value>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Reviewed. Suppression is OK here since we want to trick and improve the auto-completion experience here.")]
+#pragma warning disable CA1716
         T Not { get; }
+#pragma warning restore CA1716
     }
 }

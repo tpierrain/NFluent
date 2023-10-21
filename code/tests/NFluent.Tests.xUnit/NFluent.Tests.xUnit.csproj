@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NFluent.Standard.20\NFluent.Standard.20.csproj" />
+    <ProjectReference Include="..\..\src\NFluent.Multi\NFluent.Multi.csproj" />
     <ProjectReference Include="..\NFluent.Tests.Fuzzing\NFluent.Tests.Fuzzing.csproj" />
   </ItemGroup>
 

@@ -29,7 +29,7 @@ namespace NFluent
     internal static class EnumerableExtensions
     {
         private const string Ellipsis = "...";
-        private const string Separator = ",";
+        private const char Separator = ',';
         public const long NullIndex = -1;
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace NFluent
         }
 
         private static string ToEnumeratedStringAdvanced(this IEnumerable enumerable,
-            long referenceIndex, long numberOfItemsToOutput, ICollection<object> seen)
+            long referenceIndex, long numberOfItemsToOutput, List<object> seen)
         {
             if (seen.Contains(enumerable))
             {

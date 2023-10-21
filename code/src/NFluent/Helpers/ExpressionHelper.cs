@@ -15,7 +15,7 @@
 
 namespace NFluent.Helpers
 {
-#if !DOTNET_35
+#if !NET35
     using System;
 #endif
     using System.Collections.Generic;

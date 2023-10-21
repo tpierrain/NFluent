@@ -21,7 +21,7 @@ namespace NFluent.Messages
     using System.Threading;
     using Extensions;
     using Helpers;
-#if NETSTANDARD1_3 || DOTNET_45
+#if !NET35
     using System.Reflection;
 #endif
 
@@ -93,11 +93,11 @@ namespace NFluent.Messages
                 return DefaultEntityName;
             }
             
-            if (!NamingCache.ContainsKey(type))
+            if (!NamingCache.TryGetValue(type, out var result))
             {
-                NamingCache[type] = BuildTypeLabel(type);
+                result = NamingCache[type] = BuildTypeLabel(type);
             }
-            return NamingCache[type];
+            return result;
         }
 
         private static string BuildTypeLabel(Type type)

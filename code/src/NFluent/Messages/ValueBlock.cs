@@ -17,6 +17,7 @@ namespace NFluent.Messages
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Text;
     using Extensions;
 
@@ -55,12 +56,12 @@ namespace NFluent.Messages
 
             if (this.includeType)
             {
-                builder.AppendFormat(" of type: [{0}]", this.type.ToStringProperlyFormatted());
+                builder.AppendFormat(CultureInfo.InvariantCulture, " of type: [{0}]", this.type.ToStringProperlyFormatted());
             }
 
             if (this.includeHash && this.value != null)
             {
-                builder.AppendFormat(" with HashCode: [{0}]", this.value.GetHashCode());
+                builder.AppendFormat(CultureInfo.InvariantCulture, " with HashCode: [{0}]", this.value.GetHashCode());
             }
 
             return builder.ToString();
