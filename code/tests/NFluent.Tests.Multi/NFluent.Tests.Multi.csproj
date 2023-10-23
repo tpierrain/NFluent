@@ -4,6 +4,7 @@
     <TargetFrameworks>netcoreapp3.1;netcoreapp2.1;net6.0;net46;net35</TargetFrameworks>
     <Nullable>disable</Nullable>
     <RootNamespace>NFluent.Tests</RootNamespace>
+    <IsPublishable>False</IsPublishable>
     <IsTestProject>true</IsTestProject>
     <NoWin32Manifest>true</NoWin32Manifest>
     <IsPackable>false</IsPackable>
@@ -15,9 +16,8 @@
 
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.13.3" />
-
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-      <PackageReference Include="coverlet.collector" Version="3.2.0" />
+    <PackageReference Include="coverlet.collector" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,14 +31,8 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
   </ItemGroup>
   
-  <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp2.1'">
       <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="System.ValueTuple">
-      <Version>4.5.0</Version>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
@@ -46,5 +40,5 @@
       <Version>4.5.0</Version>
     </PackageReference>
   </ItemGroup>
-
+  
 </Project>
