@@ -10,7 +10,7 @@ assignees: dupdob
 **Bug Type**
 Please pick one:
 - [ ] a check failed to detect an error (false negative), i.e. a test is green while it should be red.
-- [ ] a check raised un existing error (false positive), i.e a test is red while it should be green.
+- [ ] a check raised a non existing error (false positive), i.e a test is red while it should be green.
 - [ ] an error message is invalid/incomplete (please provide samples)
 - [ ] a ran into an exception.
 - [ ] other.
