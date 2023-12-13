@@ -36,6 +36,45 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+
+        [Test]
+        public void NonThrowingMethodsReturningNull()
+        {
+            object ReturnNull() => null;
+            ReturnNull(); // does not throw
+            Check.ThatCode(() => ReturnNull()).DoesNotThrow();
+        }
+
+        [Test]
+        public void Check_NaNs()
+        {
+            //CheckIt(double.NaN); // succeeds 2.7.2, fails 3.0.2 -- 1
+            CheckIt((double?)Double.NaN); // 2
+
+            CheckIt2(double.NaN); // 3
+            CheckIt2((double?)Double.NaN); // 4
+
+            Check.That(double.NaN.Equals(double.NaN)).IsTrue(); // 5
+
+            //Check.That(double.NaN).IsEqualTo(double.NaN); // fails in both 2.7.2 and 3.0.2 - 6
+            Check.That(double.NaN).IsEqualTo<double>(double.NaN); // 7
+        
+            Check.That((double?)double.NaN).IsEqualTo((double?)double.NaN); // 8
+            Check.That((double?)double.NaN).IsEqualTo<double?>(double.NaN); // 9
+
+        }
+
+        private static void CheckIt<T>(T t) => Check.That(t).IsEqualTo(t);
+
+        private static void CheckIt2<T>(T t) => Check.That(t).IsEqualTo<T>(t);
+
+        [Test]
+        public void InfiniteShouldBeEqual()
+        {
+            Check.That(double.PositiveInfinity).IsEqualTo(double.PositiveInfinity);
+
+        }
+
         [Test]
         public void IsEqualToIssue()
         {

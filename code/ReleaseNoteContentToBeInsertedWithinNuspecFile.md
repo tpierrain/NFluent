@@ -1,6 +1,7 @@
 # V 3.0.2
 ## Fix
 * Fix `FormatException` for some failure conditions with `Verifies` (issue #340)
+* Fix `IsEqualTo` failing for PositiveInfinity and NEgative Infinity (issue #341)
 
 # V 3.0.1
 ## Fix

@@ -22,7 +22,7 @@ namespace NFluent.Helpers
     using System.Linq;
 
     using System.Reflection;
-
+    using System.Security.Cryptography.X509Certificates;
     using Extensibility;
     using Extensions;
 
@@ -189,7 +189,7 @@ namespace NFluent.Helpers
                 {
                     var diff = Math.Abs(sut - expected);
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
-                    if (diff == 0.0)
+                    if (diff == 0.0 || sut.Equals(expected))
                     {
                         return;
                     }
@@ -223,7 +223,7 @@ namespace NFluent.Helpers
                 {
                     var diff = Math.Abs(sut - expected);
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
-                    if (diff == 0.0)
+                    if (diff == 0.0 || sut.Equals(expected))
                     {
                         return;
                     }

@@ -25,6 +25,7 @@
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <Version>3.0.2.500</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\..\ReadMe.md" Link="ReadMe.md">
