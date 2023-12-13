@@ -25,7 +25,8 @@
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
-    <Version>3.0.2.500</Version>
+    <Version>3.0.3-beta</Version>
+    <PackageReleaseNotes>fix issue #342 and 343</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\..\ReadMe.md" Link="ReadMe.md">
