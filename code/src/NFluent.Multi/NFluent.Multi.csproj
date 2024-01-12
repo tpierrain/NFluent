@@ -25,7 +25,7 @@
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
-    <Version>3.0.3-beta</Version>
+    <Version>3.0.3</Version>
     <PackageReleaseNotes>fix issue #342 and 343</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
