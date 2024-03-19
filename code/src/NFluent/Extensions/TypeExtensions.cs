@@ -73,7 +73,7 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="type">type to assess</param>
         /// <returns>true if type is an ISet implementation.</returns>
-        public static bool IsAList(this Type type) => IsLinkedList(type) || type.GetInterfaces().Any(t => t == typeof(IList));
+        public static bool IsAList(this Type type) => type.GetInterfaces().Any(t => t == typeof(IList)) || IsLinkedList(type);
 
         private static bool IsLinkedList(Type type)
         {

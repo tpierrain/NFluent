@@ -1,5 +1,10 @@
 # V 3.0.3
 ## Fix
+* Fix for LinkedList being considered as unordered collection (issue #344)
+
+
+# V 3.0.3
+## Fix
 * Fix `IsEqualTo` failing for NaN (issue #342)
 * Fix for null returning methods or function failing with 'Check.ThatCode' (issue #343). This was a regression introduced in V3.0.0.
 
@@ -12,7 +17,6 @@
 ## Fix
 * Fix `Check.ThatCode` not awaiting `Task` returning lambdas in V3.0.0. Note that `Task<T>` returning lambdas do work in V3.0.0
 * an InvalidOperation is thrown when using `Check.ThatCode` on an async void method/lambda (as those cannot be awaited)
-
 
 # V 3.0.0
 ## Major changes

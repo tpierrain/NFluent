@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;netcoreapp2.1;net6.0;net46;net35</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;netcoreapp2.2;net6.0;net472;net35</TargetFrameworks>
     <Nullable>disable</Nullable>
     <RootNamespace>NFluent.Tests</RootNamespace>
     <IsPublishable>False</IsPublishable>
@@ -17,28 +17,23 @@
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-    <PackageReference Include="coverlet.collector" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\NFluent.Multi\NFluent.Multi.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
-    <PackageReference Include="System.ValueTuple">
-      <Version>4.5.0</Version>
-    </PackageReference>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1' or '$(TargetFramework)' == 'net35'">
     <PackageReference Include="NUnit3TestAdapter" Version="4.3.0" />
   </ItemGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp2.1'">
-      <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp2.1' and '$(TargetFramework)' != 'net35'">
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'netcoreapp2.1'">
     <PackageReference Include="System.ValueTuple">
       <Version>4.5.0</Version>
     </PackageReference>
   </ItemGroup>
-  
 </Project>
