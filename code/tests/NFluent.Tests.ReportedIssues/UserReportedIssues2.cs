@@ -36,6 +36,12 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        [Test]
+        public void Should_not_be_equal_when_order_is_different()
+        {
+            Check.That(new LinkedList<int>(new [] {3, 1 })).IsEquivalentTo(new LinkedList<int>(new [] {1, 3 }));
+            Check.That(new LinkedList<int>(new [] {3, 1 })).IsNotEqualTo(new LinkedList<int>(new [] {1, 3 }));
+        }
 
         [Test]
         public void NonThrowingMethodsReturningNull()
