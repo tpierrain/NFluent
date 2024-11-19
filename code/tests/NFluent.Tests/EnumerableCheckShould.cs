@@ -300,7 +300,23 @@ namespace NFluent.Tests
                     "The expected enumerable:", 
                     "\t{{3,3,1},{4,5,6}} (2 items)");
         }
-        
+
+        [Test]
+        public void CheckIsEquivalentMoreThanOneExtra()
+        {
+            var actual = new[] { 1, 2 };
+            var expected = Enumerable.Repeat(0, 0);
+            Check.ThatCode(() =>  Check.That((IEnumerable)actual).IsEquivalentTo(expected))
+                .IsAFailingCheckWithMessage("",
+                    "The checked enumerable is not equivalent to the expected one. 2 differences found!",
+                    "actual[0] value should not exist (value 1)",
+                    "actual[1] value should not exist (value 2)",
+                    "The checked enumerable:",
+                    "\t{1,2} (2 items)",
+                    "The expected enumerable:",
+                    "\t{} (0 item)");
+        }
+
         [Test]
         public void CheckIsEqualWorksOnSet()
         {
