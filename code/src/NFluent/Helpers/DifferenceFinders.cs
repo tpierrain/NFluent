@@ -370,7 +370,7 @@ namespace NFluent.Helpers
                 if (!scanner.MoveNext())
                 {
                     valueDifferences.Add(DifferenceDetails.WasNotExpected(firstItemName, actualItem, index));
-                    unexpected.Add(index, actualItem);
+                    unexpected.Add(index++, actualItem);
                     if (options.HasFlag(Option.Fast))
                     {
                         return DifferenceDetails.DoesNotHaveExpectedValue(firstName, actualEnumerable, expectedEnumerable, sutIndex, expectedIndex);
