@@ -25,8 +25,19 @@
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
-    <Version>3.0.4</Version>
-    <PackageReleaseNotes>fix issue #342 and 343</PackageReleaseNotes>
+    <Version>3.1.0</Version>
+    <PackageReleaseNotes># V 3.1.0
+## Major changes
+- Changes in supported framework version. NFluent is now distributed for net8, net462, net35 and netstandard2.1.
+Thre is only partial support on framework that are no longer supported my Microsoft.
+
+## Fix
+- NFluent would crash when comparing enumerations that have 2 or more extra items vs the expected value. This is fixed
+
+# V 3.0.4
+## Fix
+- LinkedList are now handled as regular list, so order is relevant when doing comparison. Previous versions handled them as set.
+</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\..\ReadMe.md" Link="ReadMe.md">

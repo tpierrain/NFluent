@@ -111,9 +111,9 @@ namespace NFluent.Helpers
             }
 
             // do not recurse
-            if (firstSeen.ContainsKey(actual))
+            if (firstSeen.TryGetValue(actual, out var value))
             {
-                return ReferenceEquals(firstSeen[actual], expected) ? null : DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex, expectedIndex);
+                return ReferenceEquals(value, expected) ? null : DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex, expectedIndex);
             }
 
             firstSeen = new Dictionary<object, object>(firstSeen, ReferenceComparer) { [actual] = expected };
@@ -376,7 +376,6 @@ namespace NFluent.Helpers
                     {
                         return DifferenceDetails.DoesNotHaveExpectedValue(firstName, actualEnumerable, expectedEnumerable, sutIndex, expectedIndex);
                     }
-                    index++;
                     continue;
                 }
 

@@ -5,7 +5,10 @@ Thre is only partial support on framework that are no longer supported my Micros
 
 ## Fix
 - NFluent would crash when comparing enumerations that have 2 or more extra items vs the expected value. This is fixed
-	
+
+# V 3.0.4
+## Fix
+- LinkedList are now handled as regular list, so order is relevant when doing comparison. Previous versions handled them as set.
 
 # V 3.0.3
 ## Fix
