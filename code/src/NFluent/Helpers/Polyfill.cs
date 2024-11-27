@@ -14,6 +14,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 #if NET35
+using System.Collections.Generic;
+using System.Linq;
 namespace System.Diagnostics.CodeAnalysis
 {
     /// <summary>
@@ -29,8 +31,6 @@ namespace System.Diagnostics.CodeAnalysis
 namespace NFluent
 {
 #if NET35
-    using System.Collections.Generic;
-    using System.Linq;
     /// <summary>
     /// Delegates that has a return value and takes one parameter.
     /// </summary>
@@ -94,7 +94,7 @@ namespace NFluent
         bool ContainsKey(TKey key);
         bool TryGetValue(TKey key, out TValue value);
         TValue this[TKey key] { get; }
-        IEnumerable<TKey> Keys {  get; }
+        IEnumerable<TKey> Keys { get; }
         IEnumerable<TValue> Values { get; }
     }
 #endif

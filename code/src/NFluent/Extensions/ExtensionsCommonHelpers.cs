@@ -266,7 +266,7 @@ namespace NFluent.Extensions
                 return false;
             }
             return TypeToString.ContainsKey(type);
- #else
+#else
             return type.IsPrimitive;
 #endif
         }

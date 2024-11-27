@@ -25,6 +25,7 @@ namespace NFluent.Tests.FromIssues
     using Newtonsoft.Json.Linq;
     using NFluent.Helpers;
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
     using SutClasses;
 
     public enum Friends

@@ -35,7 +35,7 @@ namespace NFluent.Tests
             CheckContext.DefaultNegated = false;
             try
             {
-               Assert.IsFalse(CheckContext.DefaultNegated);
+               Assert.Equals(true, CheckContext.DefaultNegated);
             }
             finally
             {

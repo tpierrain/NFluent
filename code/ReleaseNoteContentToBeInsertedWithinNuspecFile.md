@@ -1,3 +1,11 @@
+# V 3.1.0
+## Major changes
+- Changes in supported framework version. NFluent is now distributed for net8, net462, net35 and netstandard2.1.
+Thre is only partial support on framework that are no longer supported my Microsoft.
+
+## Fix
+- NFluent would crash when comparing enumerations that have 2 or more extra items vs the expected value. This is fixed
+	
 
 # V 3.0.3
 ## Fix

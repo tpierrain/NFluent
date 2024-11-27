@@ -110,7 +110,7 @@ namespace NFluent
 #if !NET35
         private static bool FunctionIsAsync(Action function)
         {
-            return function.GetMethodInfo().GetCustomAttribute(typeof(AsyncStateMachineAttribute))!=null;
+            return function.GetMethodInfo().GetCustomAttribute<AsyncStateMachineAttribute>()!=null;
         }
 #endif
 

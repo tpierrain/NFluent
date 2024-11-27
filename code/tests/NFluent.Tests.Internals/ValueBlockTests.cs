@@ -26,10 +26,10 @@ namespace NFluent.Tests
         public void ShouldWorkForBasicValue()
         {
             var blk = new ValueBlock<int>(2);
-            Assert.AreEqual("[2]", blk.GetMessage());
+            Assert.That(blk.GetMessage(), Is.EqualTo("[2]"));
 
             blk.WithType();
-            Assert.AreEqual("[2] of type: [int]", blk.GetMessage());
+            Assert.That(blk.GetMessage(), Is.EqualTo("[2] of type: [int]"));
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace NFluent.Tests
             var list = new []{ "a", "b", "c" };
             var blk = new ValueBlock<string[]>(list);
 
-            Assert.AreEqual("[{\"a\",\"b\",\"c\"}]", blk.GetMessage());
+            Assert.That(blk.GetMessage(), Is.EqualTo("[{\"a\",\"b\",\"c\"}]"));
 
             Assert.Throws<InvalidOperationException>(() => blk.WithEnumerableCount(list.GetLength(0)));
         }
@@ -48,7 +48,7 @@ namespace NFluent.Tests
         {
             var matrix = new[,] {{1, 2, 3}, {4, 5, 6}};
             var blk = new ValueBlock<int[,]>(matrix);
-            Assert.AreEqual("[{{1,2,3},{4,5,6}}]", blk.GetMessage());
+            Assert.That(blk.GetMessage(), Is.EqualTo("[{{1,2,3},{4,5,6}}]"));
         }
 
 
@@ -59,7 +59,7 @@ namespace NFluent.Tests
             var blk = new EnumerationBlock<char[]>(list, 0);
 
             blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("{*\'t\'*,\'h\',\'i\',\'s\',\' \',\'i\',\'s\',\' \',\'a\',\' \',\'l\',\'o\',\'n\',\'g\',\' \',\'s\',\'t\',\'r\',\'i\',\'n\',...} (53 items)", blk.GetMessage());
+            Assert.That(blk.GetMessage(), Is.EqualTo("{*\'t\'*,\'h\',\'i\',\'s\',\' \',\'i\',\'s\',\' \',\'a\',\' \',\'l\',\'o\',\'n\',\'g\',\' \',\'s\',\'t\',\'r\',\'i\',\'n\',...} (53 items)"));
         }
        
         [Test]
@@ -69,7 +69,7 @@ namespace NFluent.Tests
             var blk = new EnumerationBlock<char[]>(list, 0);
 
             blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("{} (0 item)", blk.GetMessage());
+            Assert.That(blk.GetMessage(), Is.EqualTo("{} (0 item)"));
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace NFluent.Tests
             var blk = new EnumerationBlock<char[]>(list, 15);
 
             blk.WithEnumerableCount(list.GetLength(0));
-            Assert.AreEqual("{...,\'i\',\'s\',\' \',\'a\',\' \',\'l\',\'o\',\'n\',\'g\',\' \',*\'s\'*,\'t\',\'r\',\'i\',\'n\',\'g\',\' \',\'t\',\'o\',\' \',...} (53 items)", blk.GetMessage());
+            Assert.That(blk.GetMessage(), Is.EqualTo("{...,\'i\',\'s\',\' \',\'a\',\' \',\'l\',\'o\',\'n\',\'g\',\' \',*\'s\'*,\'t\',\'r\',\'i\',\'n\',\'g\',\' \',\'t\',\'o\',\' \',...} (53 items)"));
         }
     }
 }

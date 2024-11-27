@@ -6,6 +6,7 @@
     using Newtonsoft.Json.Linq;
     using NFluent;
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
 
     public class UserReported
     {

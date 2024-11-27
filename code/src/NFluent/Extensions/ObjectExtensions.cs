@@ -68,7 +68,7 @@ namespace NFluent.Extensions
             {
                 waiter = () => ta.Wait(); 
                 return true;
-            } 
+            }
             var awaiter= instance?.GetType().GetMethod("GetAwaiter")?.ReturnType;
             if (awaiter?.GetInterface("System.Runtime.CompilerServices.INotifyCompletion") != null
                 && awaiter.GetProperty("IsCompleted")?.PropertyType != typeof(bool)

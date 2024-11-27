@@ -12,13 +12,14 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+#if !NET35 && !NETSTANDARD2_0
+using System;
+#endif
+using System.Text.RegularExpressions;
+using NFluent.Extensions;
+
 namespace NFluent
 {
-#if !NET35
-    using System;
-#endif
-    using System.Text.RegularExpressions;
-    using Extensions;
 
     /// <summary>
     /// Capture a criteria and an evaluation logic
@@ -31,7 +32,7 @@ namespace NFluent
         {
             this.criteria = criteria;
         }
-        
+
         /// <summary>
         /// Check if the given value answers the appropriate predicated
         /// </summary>
@@ -41,7 +42,7 @@ namespace NFluent
         {
             return this.criteria.Compare(other);
         }
-        
+
         /// <summary>
         /// Build an expected value criteria that will match the same value.
         /// </summary>
