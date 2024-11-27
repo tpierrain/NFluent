@@ -46,7 +46,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => Check.That(DecimalValue*(1<<16)).IsEqualTo(0.95d*(1<<16))).IsAFailingCheckWithMessage("",
                     "The checked value is different from the expected one, with a difference of 7.3E-12. You may consider using IsCloseTo() for comparison.",
                     "The checked value:",
-#if DOTNET_35 || DOTNET_45
+#if  NETFRAMEWORK || !NETCOREAPP3_0_OR_GREATER
                     "\t[62259.2]",
 #else
 
@@ -58,7 +58,7 @@ namespace NFluent.Tests
                 Check.ThatCode(() => Check.That(0.9500001f*(1<<16)).IsEqualTo(0.95f*(1<<16))).IsAFailingCheckWithMessage("",
                     "The checked value is different from the expected one, with a difference of 0.0078. You may consider using IsCloseTo() for comparison.",
                     "The checked value:",
-#if DOTNET_35 || DOTNET_45
+#if  NETFRAMEWORK || !NETCOREAPP3_0_OR_GREATER
                     "\t[62259.21]",
 #else
 

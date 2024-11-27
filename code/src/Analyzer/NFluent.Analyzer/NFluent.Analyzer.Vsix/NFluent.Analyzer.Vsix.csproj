@@ -33,7 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.7.2196" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.11.0" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.12.2069" PrivateAssets="all" />
   </ItemGroup>
 
   <PropertyGroup>

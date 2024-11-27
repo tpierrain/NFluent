@@ -26,9 +26,11 @@ namespace NFluent
         /// <summary>
         /// Link to add another scope
         /// </summary>
+#pragma warning disable CA1716
         IMembersSelection And { get; }
+#pragma warning restore CA1716
 
-       /// <summary>
+        /// <summary>
        /// Exclude fields that are not present in sut.
        /// </summary>
         ICheckPlusAnd IgnoreExtra { get; }

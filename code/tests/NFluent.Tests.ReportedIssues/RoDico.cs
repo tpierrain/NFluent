@@ -15,7 +15,7 @@
 
 namespace NFluent.Tests.SutClasses
 {
-#if !DOTNET_35
+#if !NET35
     using System.Collections;
     using System.Collections.Generic;
 

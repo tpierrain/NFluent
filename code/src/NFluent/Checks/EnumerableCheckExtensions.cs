@@ -23,6 +23,7 @@ namespace NFluent
     using Helpers;
     using Kernel;
     using System.Linq;
+    using System.Globalization;
 
     /// <summary>
     /// Provides check methods to be executed on an <see cref="IEnumerable" /> value.
@@ -94,7 +95,7 @@ namespace NFluent
                     "The {0} is null and thus, does not contain the given expected value(s).")
                 .DefineExpectedValues(otherEnumerable, otherEnumerable.Count())
                 .Analyze((sut, _) => notFoundValues = ExtractNotFoundValues(sut, otherEnumerable)).FailWhen(
-                    (_) => notFoundValues.Any(), string.Format(
+                    (_) => notFoundValues.Any(), string.Format(CultureInfo.InvariantCulture,
                         "The {{0}} does not contain the expected value(s):" + Environment.NewLine + "\t{0}",
                         notFoundValues.ToStringProperlyFormatted().DoubleCurlyBraces()))
                 .OnNegate("The {0} contains all the given values whereas it must not.").EndCheck();
@@ -686,7 +687,7 @@ namespace NFluent
                     }
 
                     test.Fail(
-                        string.Format(
+                        string.Format(CultureInfo.InvariantCulture,
                             "The {{0}} does not contain only the given value(s)."
                             + Environment.NewLine
                             + "It contains also other values:"
@@ -787,7 +788,7 @@ namespace NFluent
 
         private static string BuildElementNumberLiteral(long itemsCount)
         {
-            var foundElementsNumberDescription = itemsCount.ToString();
+            var foundElementsNumberDescription = itemsCount.ToString(CultureInfo.InvariantCulture);
             if (itemsCount > 1)
             {
                 foundElementsNumberDescription += " elements";
@@ -840,7 +841,7 @@ namespace NFluent
         /// <returns>
         ///     A list containing all the expected values that aren't present in the enumerable.
         /// </returns>
-        private static IList<object> ExtractNotFoundValues(IEnumerable enumerable, IEnumerable expectedValues)
+        private static List<object> ExtractNotFoundValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
             if (expectedValues == null)
             {
@@ -879,7 +880,7 @@ namespace NFluent
         /// <returns>
         ///     A list with all the values found in the enumerable that don't belong to the expected ones.
         /// </returns>
-        private static IList<object> ExtractUnexpectedValues(IEnumerable enumerable, IEnumerable expectedValues)
+        private static List<object> ExtractUnexpectedValues(IEnumerable enumerable, IEnumerable expectedValues)
         {
             var equalityComparer = new EqualityHelper.EqualityComparer<object>();
             var values = (expectedValues ?? new List<object>()).Cast<object>().ToList();

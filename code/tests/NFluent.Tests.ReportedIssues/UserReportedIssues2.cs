@@ -25,6 +25,7 @@ namespace NFluent.Tests.FromIssues
     using Newtonsoft.Json.Linq;
     using NFluent.Helpers;
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
     using SutClasses;
 
     public enum Friends
@@ -36,6 +37,51 @@ namespace NFluent.Tests.FromIssues
     [TestFixture]
     public class UserReportedIssues2
     {
+        [Test]
+        public void Should_not_be_equal_when_order_is_different()
+        {
+            Check.That(new LinkedList<int>(new [] {3, 1 })).IsEquivalentTo(new LinkedList<int>(new [] {1, 3 }));
+            Check.That(new LinkedList<int>(new [] {3, 1 })).IsNotEqualTo(new LinkedList<int>(new [] {1, 3 }));
+        }
+
+        [Test]
+        public void NonThrowingMethodsReturningNull()
+        {
+            object ReturnNull() => null;
+            ReturnNull(); // does not throw
+            Check.ThatCode(() => ReturnNull()).DoesNotThrow();
+        }
+
+        [Test]
+        public void Check_NaNs()
+        {
+            //CheckIt(double.NaN); // succeeds 2.7.2, fails 3.0.2 -- 1
+            CheckIt((double?)Double.NaN); // 2
+
+            CheckIt2(double.NaN); // 3
+            CheckIt2((double?)Double.NaN); // 4
+
+            Check.That(double.NaN.Equals(double.NaN)).IsTrue(); // 5
+
+            //Check.That(double.NaN).IsEqualTo(double.NaN); // fails in both 2.7.2 and 3.0.2 - 6
+            Check.That(double.NaN).IsEqualTo<double>(double.NaN); // 7
+        
+            Check.That((double?)double.NaN).IsEqualTo((double?)double.NaN); // 8
+            Check.That((double?)double.NaN).IsEqualTo<double?>(double.NaN); // 9
+
+        }
+
+        private static void CheckIt<T>(T t) => Check.That(t).IsEqualTo(t);
+
+        private static void CheckIt2<T>(T t) => Check.That(t).IsEqualTo<T>(t);
+
+        [Test]
+        public void InfiniteShouldBeEqual()
+        {
+            Check.That(double.PositiveInfinity).IsEqualTo(double.PositiveInfinity);
+
+        }
+
         [Test]
         public void IsEqualToIssue()
         {
@@ -149,7 +195,7 @@ namespace NFluent.Tests.FromIssues
             var dictOf2Dict_A = new Dictionary<string, Dictionary<string, string>> { { "key1", dictOf2 }, { "key2", dictOf3_A } };
             var dictOf2Dict_B = new Dictionary<string, Dictionary<string, string>> { { "key2", dictOf3_B }, { "key1", dictOf2 } };
             Check.That(dictOf2Dict_A).IsEquivalentTo(dictOf2Dict_B);  
-#if !DOTNET_35
+#if !NET35
             var dictOf2Dict_C = new Dictionary<string, IReadOnlyDictionary<string, string>> { { "key1", new RoDico(dictOf2)} , { "key2", new RoDico(dictOf3_B) } };
 
             Check.That(dictOf2Dict_A).IsEquivalentTo(dictOf2Dict_C); 

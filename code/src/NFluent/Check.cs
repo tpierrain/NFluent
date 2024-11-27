@@ -13,19 +13,19 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+#if !NET35
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
+#endif
+using NFluent.Extensibility;
+using NFluent.Extensions;
+using NFluent.Helpers;
+using NFluent.Kernel;
+
 namespace NFluent
 {
-    using System;
-    using System.Collections;
-    using System.Diagnostics.CodeAnalysis;
-    using Extensibility;
-    using Extensions;
-    using Helpers;
-    using Kernel;
-#if !DOTNET_35
-    using System.Threading.Tasks;
-#endif
-
     /// <summary>
     ///     Provides <see cref="ICheck{T}" /> instances to be used in order to make
     ///     check(s) on the provided value.
@@ -33,7 +33,7 @@ namespace NFluent
     public static class Check
     {
         internal static readonly ContextualizedSingleton<IErrorReporter> ReporterStore = new ContextualizedSingleton<IErrorReporter>()
-            { DefaultValue = new ExceptionReporter() };
+        { DefaultValue = new ExceptionReporter() };
 
         /// <summary>
         ///     Gets/sets how equality comparison are done.
@@ -162,7 +162,7 @@ namespace NFluent
             return new FluentCheck<Type>(typeof(T));
         }
 
-#if !DOTNET_35
+#if !NET35
         /// <summary>
         ///     Returns a <see cref="ICheck{T}" /> instance that will provide check methods to be executed on a given value.
         /// </summary>
@@ -234,7 +234,8 @@ namespace NFluent
         {
             return new FluentCheck<RunTraceResult<TResult>>(RunTrace.GetAsyncTrace(awaitableFunction), Reporter);
         }
-
+#endif
+#if !NET35 && !NET462
         /// <summary>
         ///     Returns a <see cref="FluentDynamicCheck" /> instance that will provide check for dynamics.
         /// </summary>
@@ -247,6 +248,7 @@ namespace NFluent
             return new FluentDynamicCheck(value, Reporter);
         }
 #endif
+
         /// <summary>
         /// Starts a batch of checks.
         /// </summary>
@@ -267,7 +269,7 @@ namespace NFluent
         /// <param name="errorMessage">Error message</param>
         /// <returns>An <see cref="MacroCheck{T, T1, T2}"/> instance.</returns>
         public static MacroCheck<T, T1, T2> DeclareMacro<T, T1, T2>(Action<T, T1, T2> function, string errorMessage) => new MacroCheck<T, T1, T2>(function, errorMessage);
-        
+
         /// <summary>
         /// Declare a macro
         /// </summary>

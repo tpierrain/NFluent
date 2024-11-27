@@ -19,6 +19,7 @@ namespace NFluent.Helpers
     using Kernel;
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Text;
@@ -75,7 +76,7 @@ namespace NFluent.Helpers
 
         internal ClassMemberCriteria Criteria { get; set; }
 
-        internal string MemberLabel => this.labelPattern == null ? this.MemberLongName : string.Format(this.labelPattern, this.MemberLongName);
+        internal string MemberLabel => this.labelPattern == null ? this.MemberLongName : string.Format(CultureInfo.InvariantCulture, this.labelPattern, this.MemberLongName);
 
         internal object Value { get; }
 
@@ -206,7 +207,7 @@ namespace NFluent.Helpers
             }
         }
 
-        private IEnumerable<ReflectionWrapper> GetSubExtendedMemberInfosFields()
+        private List<ReflectionWrapper> GetSubExtendedMemberInfosFields()
         {
             var result = new List<ReflectionWrapper>();
             if (this.ValueType.IsPrimitive())
@@ -246,7 +247,7 @@ namespace NFluent.Helpers
             return finalResult;
         }
 
-        private IEnumerable<ReflectionWrapper> ExtractProperties(IEnumerable<PropertyInfo> propertyInfos, IDictionary<string, ReflectionWrapper> memberDictionary)
+        private List<ReflectionWrapper> ExtractProperties(IEnumerable<PropertyInfo> propertyInfos, Dictionary<string, ReflectionWrapper> memberDictionary)
         {
             var result = new List<ReflectionWrapper>();
             foreach (var info in propertyInfos)
@@ -266,7 +267,7 @@ namespace NFluent.Helpers
             return result;
         } 
 
-        private IEnumerable<ReflectionWrapper> ExtractFields(IEnumerable<FieldInfo> fieldsInfo, IDictionary<string, ReflectionWrapper> memberDictionary)
+        private List<ReflectionWrapper> ExtractFields(IEnumerable<FieldInfo> fieldsInfo, Dictionary<string, ReflectionWrapper> memberDictionary)
         {
             var result = new List<ReflectionWrapper>();
             foreach (var info in fieldsInfo)
@@ -291,7 +292,7 @@ namespace NFluent.Helpers
             return result;
         }
 
-        private IEnumerable<ReflectionWrapper> GetSubArrayExtendedInfo(Array array)
+        private List<ReflectionWrapper> GetSubArrayExtendedInfo(Array array)
         {
             var result = new List<ReflectionWrapper>();
             var fieldType = array.GetType().GetElementType();
@@ -320,7 +321,7 @@ namespace NFluent.Helpers
                     {
                         var isLastDimension = j == array.Rank - 1;
                         var currentIndex = isLastDimension ? temp : temp % array.SizeOfDimension(j);
-                        label.Append(currentIndex.ToString());
+                        label.Append(currentIndex);
                         label.Append(isLastDimension ? "]" : ",");
                         indices[j] = currentIndex + array.GetLowerBound(j);
                         temp /= array.SizeOfDimension(j);
@@ -393,7 +394,7 @@ namespace NFluent.Helpers
                     first = false;
                 }
 
-                resultAsText.AppendFormat(" {0} = {1} ", sub.NameInSource, sub.ToString(scanned));
+                resultAsText.AppendFormat(CultureInfo.InvariantCulture, " {0} = {1} ", sub.NameInSource, sub.ToString(scanned));
             }
 
             resultAsText.Append('}');

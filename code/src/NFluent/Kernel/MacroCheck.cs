@@ -32,7 +32,9 @@ namespace NFluent
         /// <param name="p1"></param>
         /// <param name="p2"></param>
         /// <returns></returns>
+#pragma warning disable CA1716
         ICheckLink<ICheck<T>> With(T1 p1, T2 p2);
+#pragma warning restore CA1716
     }
 
 

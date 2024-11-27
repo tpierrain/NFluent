@@ -15,7 +15,7 @@
 
 namespace NFluent
 {
-#if !DOTNET_35
+#if !NET35
     using System;
 #endif
     using System.Linq.Expressions;

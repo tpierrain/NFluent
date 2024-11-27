@@ -13,7 +13,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if DOTNET_35
+#if NET35
+using System.Collections.Generic;
+using System.Linq;
 namespace System.Diagnostics.CodeAnalysis
 {
     /// <summary>
@@ -28,9 +30,7 @@ namespace System.Diagnostics.CodeAnalysis
 
 namespace NFluent
 {
-#if DOTNET_35
-    using System.Collections.Generic;
-    using System.Linq;
+#if NET35
     /// <summary>
     /// Delegates that has a return value and takes one parameter.
     /// </summary>
@@ -68,7 +68,7 @@ namespace NFluent
     {
         public static bool IsNullOrWhiteSpace(string testedText)
         {
-#if DOTNET_35
+#if NET35
             return string.IsNullOrEmpty(testedText) || testedText.All(char.IsWhiteSpace);
 
 #else
@@ -87,14 +87,14 @@ namespace NFluent
         }
     }
 
-#if DOTNET_35
+#if NET35
     internal interface IReadOnlyDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
     {
         int Count { get; }
         bool ContainsKey(TKey key);
         bool TryGetValue(TKey key, out TValue value);
         TValue this[TKey key] { get; }
-        IEnumerable<TKey> Keys {  get; }
+        IEnumerable<TKey> Keys { get; }
         IEnumerable<TValue> Values { get; }
     }
 #endif

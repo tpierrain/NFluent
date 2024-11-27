@@ -13,7 +13,7 @@ configuration: Release
 platform: Any CPU
 build_script:
 - cmd: CI
-test: off
+test: false
 
 artifacts:
   - path: 'code\Artifacts\Packages\*.nupkg'

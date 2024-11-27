@@ -18,7 +18,7 @@ namespace NFluent.Extensions
     using System.Collections;
     using System.Collections.Generic;
     using Helpers;
-#if DOTNET_45 || NETSTANDARD1_3
+#if NET45_OR_GREATER || NETSTANDARD1_3_OR_GREATER
     using System.Reflection;
 #endif
     using System.Linq;

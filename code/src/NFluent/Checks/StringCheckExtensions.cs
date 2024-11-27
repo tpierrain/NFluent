@@ -15,6 +15,7 @@
 
 namespace NFluent
 {
+    using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using Extensibility;
@@ -105,7 +106,7 @@ namespace NFluent
             ExtensibilityHelper.BeginCheck(check)
                 .FailWhen(sut => possibleElements == null && sut != null,
                     "The {0} must be null as there is no other possible value.", MessageOption.NoExpectedBlock)
-                .FailWhen(sut => possibleElements != null && !possibleElements.Any(x => string.Equals(x, sut)),
+                .FailWhen(sut => possibleElements != null && !possibleElements.Any(x => string.Equals(x, sut, StringComparison.Ordinal)),
                     "The {0} is not one of the possible elements.")
                 .DefinePossibleValues(possibleElements, possibleElements== null ? 0 : possibleElements.Length)
                 .OnNegate("The {0} is one of the possible elements whereas it must not.")
@@ -159,7 +160,7 @@ namespace NFluent
                             (sut.Contains(value) ? presentItems : missingItems).Add(value);
                         }
 
-                        if (missingItems.Any())
+                        if (missingItems.Count>0)
                         {
                             test.Fail($"The {{0}} does not contain the expected value(s): " +
                                       $"{missingItems.ToStringProperlyFormatted().DoubleCurlyBraces()}");
@@ -186,7 +187,7 @@ namespace NFluent
 
             checker.BeginCheck()
                 .FailIfNull()
-                .FailWhen(sut => !sut.StartsWith(expectedPrefix), "The {0}'s start is different from the {1}.")
+                .FailWhen(sut => !sut.StartsWith(expectedPrefix, StringComparison.InvariantCulture), "The {0}'s start is different from the {1}.")
                 .DefineExpectedValue(expectedPrefix, "starts with", "does not start with")
                 .OnNegate("The {0} starts with the {1}, whereas it must not.")
                 .EndCheck();
@@ -207,7 +208,7 @@ namespace NFluent
             var checker = ExtensibilityHelper.ExtractChecker(check);
             checker.BeginCheck()
                 .FailIfNull()
-                .FailWhen(sut => !sut.EndsWith(expectedEnd), "The {0}'s end is different from the {1}.")
+                .FailWhen(sut => !sut.EndsWith(expectedEnd, StringComparison.InvariantCulture), "The {0}'s end is different from the {1}.")
                 .DefineExpectedValue(expectedEnd, "ends with", "does not end with")
                 .OnNegate("The {0} ends with {1}, whereas it must not.")
                 .EndCheck();

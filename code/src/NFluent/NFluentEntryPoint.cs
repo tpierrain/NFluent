@@ -72,7 +72,7 @@ namespace NFluent
             };
         }
 
-#if !DOTNET_35
+#if !NET35 && !NET462
         /// <summary>
         /// 
         /// </summary>

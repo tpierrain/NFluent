@@ -70,7 +70,7 @@ namespace NFluent.Helpers
 
             if (!Enum.IsDefined(typeof(TimeUnit), timeUnit))
             {
-                throw new ArgumentException();
+                throw new ArgumentException($"{timeUnit} is not a valid TimeUnit value.", nameof(timeUnit));
             }
             this.Unit = timeUnit;
         }

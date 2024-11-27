@@ -17,6 +17,7 @@ namespace NFluent
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using Extensibility;
     using Extensions;
 
@@ -52,8 +53,8 @@ namespace NFluent
                 .DefineExpectedValue(flag, "having flag", "not having flag")
                 .FailWhen(_ => !typeof(T).TypeHasAttribute(typeof(FlagsAttribute)), 
                     "The checked enum type is not a set of flags. You must add [Flags] attribute to its declaration.")
-                .FailWhen(_ => Convert.ToInt64(flag) == 0, 
-                    "Wrong chek: The expected flag is 0. You must use IsEqualTo, or a non zero flag value.")
+                .FailWhen(_ => Convert.ToInt64(flag, CultureInfo.InvariantCulture) == 0, 
+                    "Wrong check: The expected flag is 0. You must use IsEqualTo, or a non zero flag value.")
                 .FailWhen(sut => !sut.HasFlag(flag), "The checked enum does not have the expected flag.")
                 .OnNegate("The {0} does have the expected flag, whereas it should not.")
                 .EndCheck();
@@ -62,8 +63,8 @@ namespace NFluent
 
         internal static bool HasFlag<T>(this T value, T flag) where T: struct
         {
-            var sutAsInt = Convert.ToInt64(value);
-            var expectedAsInt = Convert.ToInt64(flag);
+            var sutAsInt = Convert.ToInt64(value, CultureInfo.InvariantCulture);
+            var expectedAsInt = Convert.ToInt64(flag, CultureInfo.InvariantCulture);
             return (sutAsInt & expectedAsInt) == expectedAsInt;
         }
     }

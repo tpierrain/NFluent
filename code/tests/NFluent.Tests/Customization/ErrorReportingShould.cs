@@ -43,7 +43,7 @@ namespace NFluent.Tests.Customization
                 "The expected value: different from",
                 "\t[12] of type: [int]");
 
-            Assert.AreEqual(oldReporter, Check.Reporter);
+            Assert.That(Check.Reporter, Is.EqualTo(oldReporter));
         }
 
         private class StringReporting : IErrorReporter

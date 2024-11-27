@@ -15,7 +15,7 @@
 
 namespace NFluent.Kernel
 {
-#if !DOTNET_35
+#if !NET35
     using System;
 #endif
     using Extensibility;

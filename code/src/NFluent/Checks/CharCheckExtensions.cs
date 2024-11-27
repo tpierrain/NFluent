@@ -15,7 +15,7 @@
 namespace NFluent
 {
     using System;
-
+    using System.Globalization;
     using Extensibility;
     using Kernel;
 
@@ -121,7 +121,7 @@ namespace NFluent
 
         private static bool IsSameCharCaseInsensitive(char checkedChar, char otherChar)
         {
-            return char.ToLower(checkedChar).Equals(char.ToLower(otherChar));
+            return char.ToLower(checkedChar, CultureInfo.InvariantCulture).Equals(char.ToLower(otherChar, CultureInfo.InvariantCulture));
         }
 
         private static bool HaveSameCase(char checkedChar, char otherChar)

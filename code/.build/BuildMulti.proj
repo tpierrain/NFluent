@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Project ToolsVersion="17.0" DefaultTargets="RunAll" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <SolutionName>NFluent</SolutionName>
+    <APIVersion>3.0.0.0</APIVersion>
+    <SolutionRoot>$(MSBuildProjectDirectory)\..</SolutionRoot>
+    <AssemblyFileNameRoot>$(SolutionRoot)\$(SolutionName)</AssemblyFileNameRoot>
+    <CodeCovURL>https://codecov.io/gh/dupdob/$(SolutionName)</CodeCovURL>
+    <NugetKey>$(NFLUENT_NUGET_API_KEY)</NugetKey>
+    <NugetFeed>$(NFLUENT_NUGET_FEED)</NugetFeed>
+    <CodeCovKey>$(CODECOV_KEY)</CodeCovKey>
+    <AttributeVersionFile>$(SolutionRoot)\.build\Version.cs</AttributeVersionFile>
+
+    <ToolsPath>$(SolutionRoot)\tools\</ToolsPath>
+    <SourcePath>$(SolutionRoot)\src\</SourcePath>
+    <TestsPath>$(SolutionRoot)\tests\</TestsPath>
+
+    <NuspecFilePath>$(SolutionRoot)\$(SolutionName).nuspec</NuspecFilePath>
+    <PackProjectFilePath>$(SourcePath)\NFluent.Multi\NFluent.Multi.csproj</PackProjectFilePath>
+    <ReleaseNoteFile>$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.md</ReleaseNoteFile>
+    <AppVeyorFile>$(SolutionRoot)\..\appveyor.yml</AppVeyorFile>
+  </PropertyGroup>
+
+  <Import Project="buildlogic.targets" />
+
+  <ItemGroup>
+    <ProjectFolder Include="$(SourcePath)\NFluent.T4" />
+    <ProjectFolder Include="$(SourcePath)\NFluent.Multi">
+
+      <Fwk>core</Fwk>
+    </ProjectFolder>
+    <ProjectFolder Include="$(TestsPath)\Nugget" />
+    <ProjectFolder Include="$(TestsPath)\NFluent.Tests.SelfHosted" />
+    <ProjectFolder Include="$(TestsPath)\NFluent.Tests.Core.xUnit" />
+    <ProjectFolder Include="$(SourcePath)\Analyzer\NFluent.Analyzer\NFluent.Analyzer" />
+    <ProjectFolder Include="$(SourcePath)\Analyzer\NFluent.Analyzer\.CodeFixes\NFluent.Analyzer" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TestProjects Include='$(TestsPath)\NFluent.Tests.MsTest\NFluent.Tests.MsTest.csproj'>
+      <Framework>netstandard2.0</Framework>
+      <Runner>MsTest</Runner>
+      <Coverage>true</Coverage>
+    </TestProjects>
+    <TestProjects Include='$(TestsPath)\NFluent.Tests.xUnit\NFluent.Tests.xUnit.csproj'>
+      <Framework>net-4.8</Framework>
+      <Coverage>true</Coverage>
+      <Runner>dotnet</Runner>
+    </TestProjects>
+    <TestProjects Include='$(TestsPath)\NFluent.Tests.Core.xUnit\NFluent.Tests.Core.xUnit.csproj'>
+      <Framework>net-4.8</Framework>
+      <Coverage>false</Coverage>
+      <Runner>dotnet</Runner>
+    </TestProjects>
+    <TestProjects
+      Include='$(TestsPath)\NFluent.Tests.SelfHosted\bin\$(Configuration)\net6.0\NFluent.Tests.SelfHosted.dll'>
+      <Framework>netcoreapp2.1</Framework>
+      <Runner>Self</Runner>
+      <Coverage>true</Coverage>
+    </TestProjects>
+  </ItemGroup>
+</Project>

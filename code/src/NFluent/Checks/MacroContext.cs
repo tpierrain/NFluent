@@ -26,11 +26,11 @@ namespace NFluent
         /// <summary>
         /// Original check
         /// </summary>
-        protected readonly ICheck<T> check;
+        protected ICheck<T> Checker { get; }
 
         internal MacroContextBase(ICheck<T> check)
         {
-            this.check = check;
+            this.Checker = check;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace NFluent
         {
             using (Check.StartBatch(message))
             {
-                invocation(Extensibility.ExtensibilityHelper.ExtractChecker(this.check).Value);
+                invocation(Extensibility.ExtensibilityHelper.ExtractChecker(this.Checker).Value);
             }
         }
     }
@@ -79,7 +79,7 @@ namespace NFluent
         public ICheck<T> With(T1 param1)
         {
             RunMacro(sut => this.macro.Evaluator(sut, param1), this.macro.ErrorMessage);
-            return check;
+            return Checker;
         }
     }
 }

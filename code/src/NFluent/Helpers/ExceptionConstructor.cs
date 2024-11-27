@@ -15,12 +15,13 @@
 namespace NFluent.Helpers
 {
     using System;
+    using System.Globalization;
     using System.Reflection;
 
     /// <summary>
     /// Stores adequate constructors.
     /// </summary>
-    internal class ExceptionConstructor
+    internal class ExceptionConstructor: IExceptionConstructor
     {
         private readonly string assemblyNameBeginning;
         private readonly string @namespace;
@@ -41,12 +42,6 @@ namespace NFluent.Helpers
             this.inconclusiveExceptionName = inconclusiveExceptionName;
         }
 
-        public ExceptionConstructor(Type basicType, Func<string, Exception> builder)
-        {
-            this.assertExceptionType = basicType;
-            this.assertExceptionBuilder = builder;
-        }
-
         public bool IsSupported()
         {
             return this.assertExceptionBuilder != null;
@@ -54,14 +49,13 @@ namespace NFluent.Helpers
 
         public void ScanAssembly(Assembly assembly)
         {
-            if(this.assemblyNameBeginning == null)
-            {
-                return;
-            }
 
+#pragma warning disable CA1862
             if (!assembly.FullName.ToLowerInvariant().Contains(this.assemblyNameBeginning))
+#pragma warning restore CA1862
             {
                 // Stryker disable once Statement: Mutation does not alter behaviour
+                // this is a speed optimization (avoid scanning ALL assemblies for a specific type)
                 return;
             }
 
@@ -71,18 +65,20 @@ namespace NFluent.Helpers
 
                 foreach (var type in exportedTypes)
                 {
-                    if (type.Namespace.StartsWith(this.@namespace))
+                    if (type.Namespace?.StartsWith(this.@namespace, StringComparison.InvariantCulture) != true)
                     {
-                        if (type.Name == this.assertExceptionName)
-                        {
-                            this.assertExceptionBuilder = GetConstructor(type);
-                            this.assertExceptionType = type;
-                        }
-                        else if (type.Name == this.inconclusiveExceptionName)
-                        {
-                            this.inconclusiveExceptionBuilder = GetConstructor(type);
-                            this.inconclusiveExceptionType = type;
-                        }
+                        continue;
+                    }
+
+                    if (type.Name == this.assertExceptionName)
+                    {
+                        this.assertExceptionBuilder = GetConstructor(type);
+                        this.assertExceptionType = type;
+                    }
+                    else if (type.Name == this.inconclusiveExceptionName)
+                    {
+                        this.inconclusiveExceptionBuilder = GetConstructor(type);
+                        this.inconclusiveExceptionType = type;
                     }
                 }
             }
@@ -94,7 +90,7 @@ namespace NFluent.Helpers
 
         private static Func<string, Exception> GetConstructor(Type type)
         {
-            return (message) => type.GetConstructor(Types).Invoke(new object[] {message}) as Exception;
+            return (message) => type.GetConstructor(Types)?.Invoke(new object[] {message}) as Exception;
         }
 
         public Exception BuildFailedException(string message)

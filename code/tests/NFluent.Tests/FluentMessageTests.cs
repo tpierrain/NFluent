@@ -31,11 +31,11 @@ namespace NFluent.Tests
         {
             var message = FluentMessage.BuildMessage("The {0} is ok.").ToString();
 
-            Assert.AreEqual(Environment.NewLine+ "The checked value is ok.", message);
+            Assert.That(message, Is.EqualTo(Environment.NewLine + "The checked value is ok."));
 
             // override entity
             message = FluentMessage.BuildMessage("The {0} is ok.").For(typeof(string)).ToString();
-            Assert.AreEqual(Environment.NewLine+"The checked string is ok.", message);
+            Assert.That(message, Is.EqualTo(Environment.NewLine + "The checked string is ok."));
         }
         
  
@@ -45,18 +45,18 @@ namespace NFluent.Tests
             var test = DateTime.Today;
             var message = FluentMessage.BuildMessage("The {0} is below.").On(test).ToString();
             var lines = message.Split('\n');
-            Assert.AreEqual(4, lines.Length);
-            Assert.IsTrue(lines[1].Contains("checked"));
+            Assert.That(lines.Length, Is.EqualTo(4));
+            Assert.That(lines[1].Contains("checked"));
         }
 
         [Test]
         public void ToStringProperlyFormattedCoverageTests()
         {
-            Assert.AreEqual("char", typeof(char).ToStringProperlyFormatted());
-            Assert.AreEqual("void", typeof(void).ToStringProperlyFormatted());
-            Assert.AreEqual("System.Collections.Generic.Dictionary<string, string>", typeof(Dictionary<string, string>).ToStringProperlyFormatted());
-            Assert.AreEqual("Dictionary<string, string>", typeof(Dictionary<string, string>).TypeToStringProperlyFormatted(true));
-            Assert.AreEqual("int?", typeof(int?).TypeToStringProperlyFormatted(true));
+            Assert.That(typeof(char).ToStringProperlyFormatted(), Is.EqualTo("char"));
+            Assert.That(typeof(void).ToStringProperlyFormatted(), Is.EqualTo("void"));
+            Assert.That(typeof(Dictionary<string, string>).ToStringProperlyFormatted(), Is.EqualTo("System.Collections.Generic.Dictionary<string, string>"));
+            Assert.That(typeof(Dictionary<string, string>).TypeToStringProperlyFormatted(true), Is.EqualTo("Dictionary<string, string>"));
+            Assert.That(typeof(int?).TypeToStringProperlyFormatted(true), Is.EqualTo("int?"));
         }
 
         [Test]
@@ -67,8 +67,8 @@ namespace NFluent.Tests
                                             .On("portna")
                                             .And.WithGivenValue("ouaq").ToString();
 
-            Assert.AreEqual(Environment.NewLine+
-                "The checked date time is before the given one whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[\"portna\"]" + Environment.NewLine + "The expected date time:" + Environment.NewLine + "\t[\"ouaq\"]", message);
+            Assert.That(message, Is.EqualTo(Environment.NewLine+
+                        "The checked date time is before the given one whereas it must not." + Environment.NewLine + "The checked date time:" + Environment.NewLine + "\t[\"portna\"]" + Environment.NewLine + "The expected date time:" + Environment.NewLine + "\t[\"ouaq\"]"));
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace NFluent.Tests
                                             .WithEnumerableCount(givenValues.Length)
                                             .ToString();
 
-            Assert.AreEqual(Environment.NewLine+ "The checked enumerable does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t{\"Luke\",\"Yoda\",\"Chewie\"} (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t{\"Luke\",\"Yoda\",\"Chewie\",\"Vader\"} (4 items)", message);
+            Assert.That(message, Is.EqualTo(Environment.NewLine + "The checked enumerable does not contain exactly the expected value(s)." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + "\t{\"Luke\",\"Yoda\",\"Chewie\"} (3 items)" + Environment.NewLine + "The expected value(s):" + Environment.NewLine + "\t{\"Luke\",\"Yoda\",\"Chewie\",\"Vader\"} (4 items)"));
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace NFluent.Tests
                                             .And.ReferenceValues(possibleElements).Label("The possible elements:")
                                             .ToString();
 
-            Assert.AreEqual(Environment.NewLine+ "The checked string is not one of the possible elements." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" + Environment.NewLine + "\t{\"Paco de Lucia\",\"Jimi Hendrix\",\"Baden Powell\"}", errorMessage);
+            Assert.That(errorMessage, Is.EqualTo(Environment.NewLine + "The checked string is not one of the possible elements." + Environment.NewLine + "The checked string:" + Environment.NewLine + "\t[\"The Black Keys\"]" + Environment.NewLine + "The possible elements:" + Environment.NewLine + "\t{\"Paco de Lucia\",\"Jimi Hendrix\",\"Baden Powell\"}"));
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace NFluent.Tests
                                             .On(lowerCasedA)
                                             .ToString();
 
-            Assert.AreEqual(Environment.NewLine+ "The checked char is properly displayed." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']", message);
+            Assert.That(message, Is.EqualTo(Environment.NewLine + "The checked char is properly displayed." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['a']"));
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace NFluent.Tests
                                             .On(slashChar)
                                             .ToString();
 
-            Assert.AreEqual(Environment.NewLine+ "The checked char is properly displayed." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['/']", message);
+            Assert.That(message, Is.EqualTo(Environment.NewLine + "The checked char is properly displayed." + Environment.NewLine + "The checked char:" + Environment.NewLine + "\t['/']"));
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace NFluent.Tests
         {
             const string parameter = "string{45}";
 
-            Assert.AreEqual("string{{45}}", parameter.DoubleCurlyBraces());
+            Assert.That(parameter.DoubleCurlyBraces(), Is.EqualTo("string{{45}}"));
         }
 
         [Test]
@@ -145,10 +145,10 @@ namespace NFluent.Tests
                                             .And.ReferenceValues(possibleElements.ToCharArray()).Label("The possible elements:")
                                             .ToString();
 
-            Assert.AreEqual(Environment.NewLine+ "The checked enumerable is not one of the possible elements." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + 
-                            "\t{'T','h','e',' ','B','l','a','c','k',' ','K','e','y','s'}" + Environment.NewLine + 
-                            "The possible elements:" + Environment.NewLine + 
-                            "\t{'W','e',' ','n','e','e','d',' ','t','o',' ','t','e','s','t',' ','t','h','e',' ',...}", errorMessage);
+            Assert.That(errorMessage, Is.EqualTo(Environment.NewLine+ "The checked enumerable is not one of the possible elements." + Environment.NewLine + "The checked enumerable:" + Environment.NewLine + 
+                        "\t{'T','h','e',' ','B','l','a','c','k',' ','K','e','y','s'}" + Environment.NewLine + 
+                        "The possible elements:" + Environment.NewLine + 
+                        "\t{'W','e',' ','n','e','e','d',' ','t','o',' ','t','e','s','t',' ','t','h','e',' ',...}"));
         }
     }
 }

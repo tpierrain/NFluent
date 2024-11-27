@@ -39,12 +39,12 @@ namespace NFluent.Helpers
                 stacksMap = new Dictionary<object, T>();
             }
 
-            if (!stacksMap.ContainsKey(identifier))
+            if (!stacksMap.TryGetValue(identifier, out var result))
             {
-                stacksMap[identifier] = new T();
+                result = stacksMap[identifier] = new T();
             }
 
-            return stacksMap[identifier];
+            return result;
         }
 
 

@@ -17,6 +17,7 @@ namespace NFluent.Helpers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using Extensions;
@@ -131,7 +132,7 @@ namespace NFluent.Helpers
             var details = this.Details().ToArray();
             if (details.Length>1)
             {
-                messageText.Append($" {details.Length} differences found!");
+                messageText.AppendFormat(CultureInfo.InvariantCulture, " {0} differences found!", details.Length);
             }
 
             if (this.IsEquivalent())
@@ -157,7 +158,7 @@ namespace NFluent.Helpers
             if (differenceDetailsCount != details.Length)
             {
                 messageText.AppendLine();
-                messageText.Append($"... ({details.Length - differenceDetailsCount} differences omitted)");
+                messageText.AppendFormat(CultureInfo.InvariantCulture, "... ({0} differences omitted)", details.Length - differenceDetailsCount);
             }
 
             return messageText.ToString();

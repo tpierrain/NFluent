@@ -15,8 +15,8 @@
 
 namespace NFluent.Tests.MsTest
 {
-    using Helpers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NFluent.Helpers;
 
     [TestClass]
     public class MsTestCompatibility

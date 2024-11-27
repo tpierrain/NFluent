@@ -17,15 +17,16 @@ namespace NFluent.Kernel
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using Extensibility;
     using Extensions;
     using Messages;
 
 // the system namespace is not imported for older Net version. This allows to overload the definition of delegate types. 
-#if !DOTNET_35
+#if !NET35
     using System;
 #endif
-//    [DebuggerNonUserCode]
+    //    [DebuggerNonUserCode]
     /// <summary>
     /// This class provides a fluent API to implement checks.
     /// It favors ease of use over usual (good) design considerations.
@@ -38,7 +39,9 @@ namespace NFluent.Kernel
         private const string CantBeUsedWhenNegated = "{0} can't be used when negated";
 
         private readonly FluentSut<T> fluentSut;
+#pragma warning disable CA1859 // Can't fix this
         private ICheckLogicBase child;
+#pragma warning restore CA1859 // Can't fix this
         private ICheckLogicBase parent;
         private string comparison;
         private object expected;
@@ -87,7 +90,7 @@ namespace NFluent.Kernel
 
         public  ICheckLogic<T> CantBeNegated(string checkName)
         {
-            var message = string.Format(CantBeUsedWhenNegated, checkName);
+            var message = string.Format(CultureInfo.InvariantCulture, CantBeUsedWhenNegated, checkName);
             this.SetNotNegatable(message);
             return this;
         }
@@ -102,14 +105,14 @@ namespace NFluent.Kernel
             this.negatedError = message;
         }
 
-        public ICheckLogic<T> FailIfNull(string error = "The {0} is null.")
+        public ICheckLogic<T> FailIfNull(string errorMessage = "The {0} is null.")
         {
             if (this.fluentSut.Value != null)
             {
                 return this;
             }
 
-            this.Fail(error, MessageOption.NoCheckedBlock);
+            this.Fail(errorMessage, MessageOption.NoCheckedBlock);
             this.DoNotNeedNegatedMessage();
             return this;
         }
@@ -131,7 +134,7 @@ namespace NFluent.Kernel
             return this;
         }
 
-        public ICheckLogic<T> Fail(string error, MessageOption options)
+        public ICheckLogic<T> Fail(string errorMessage, MessageOption options)
         {
             this.failed = true;
             if (this.IsNegated)
@@ -139,7 +142,7 @@ namespace NFluent.Kernel
                 return this;
             }
 
-            this.lastError = error;
+            this.lastError = errorMessage;
             // Stryker disable once Assignment: Mutation does not alter behaviour
             this.options |= options;
             return this;
@@ -155,11 +158,12 @@ namespace NFluent.Kernel
         {
             var sutWrapper = this.fluentSut.Extract(sutExtractor,
                 sut => string.IsNullOrEmpty(propertyName) ? sut.SutName.EntityName : $"{sut.SutName.EntityName}'s {propertyName}");
-            var result = new CheckLogic<TU>(sutWrapper);
-
-            result.parentFailed = this.failed;
-            result.parentNegatedFailed = this.negatedFailed;
-            result.parent = this;
+            var result = new CheckLogic<TU>(sutWrapper)
+            {
+                parentFailed = this.failed,
+                parentNegatedFailed = this.negatedFailed,
+                parent = this
+            };
 
             this.child = result;
             return result;

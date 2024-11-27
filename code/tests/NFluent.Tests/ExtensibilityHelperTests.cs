@@ -59,7 +59,7 @@ namespace NFluent.Tests
             {
                 thrown = true;
             }
-            Assert.IsTrue(thrown, "Should have thrown an exception to mark failure.");
+            Assert.That(thrown, "Should have thrown an exception to mark failure.");
         }
 
             [Test]

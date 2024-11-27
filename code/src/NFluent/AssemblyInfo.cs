@@ -17,14 +17,7 @@ using System.Runtime.CompilerServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-#if DOTNET_35
-[assembly: AssemblyTitle("NFluent for .NET 3.5")]
-#elif DOTNET_45
-[assembly: AssemblyTitle("NFluent for .NET 4.5")]
-#elif !NETSTANDARD1_3 && !NETSTANDARD2_0 && !NETCOREAPP2_1
-[assembly: AssemblyTitle("NFluent")]
-#endif
+
 
 
 // Friend assemblies

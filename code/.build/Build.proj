@@ -19,8 +19,7 @@
     <SourcePath>$(SolutionRoot)\src\</SourcePath>
     <TestsPath>$(SolutionRoot)\tests\</TestsPath>
 
-    <NuspecFilePath>$(SolutionRoot)\$(SolutionName).nuspec</NuspecFilePath>
-    <PackProjectFilePath>$(SourcePath)NFluent.Standard.20\NFluent.Standard.20.csproj</PackProjectFilePath>
+    
     <ReleaseNoteFile>$(SolutionRoot)\ReleaseNoteContentToBeInsertedWithinNuspecFile.md</ReleaseNoteFile>
     <AppVeyorFile>$(SolutionRoot)\..\appveyor.yml</AppVeyorFile>
   </PropertyGroup>
@@ -28,38 +27,12 @@
   <Import Project="buildlogic.targets" />
 
   <ItemGroup>
-    <ProjectFolder Include="$(SourcePath)NFluent.Standard.20">
-      <CSproj>NFluent.Standard.20.csproj</CSproj>
-      <PackThis/>
-      <PackageTarget>netstandard2.0</PackageTarget>
-      <Fwk>core</Fwk>
-    </ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)NFluent.NetStandard.20.Tests">
-      <CSProj>NFluent.NetStandard.20.Tests.csproj</CSProj>
-      <Fwk>core</Fwk>
-    </ProjectFolder>
     <ProjectFolder Include="$(TestsPath)NFluent.Analyzer.Test">
       <CSProj>NFluent.Analyzer.Test.csproj</CSProj>
       <Fwk>core</Fwk>
     </ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)NFluent.NetStandard.20.Tests.Extensions">
-      <CSProj>NFluent.NetStandard.20.Tests.Extensions.csproj</CSProj>
-      <Fwk>core</Fwk>
-    </ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)NFluent.NetStandard.20.Tests.Internals">
-      <CSProj>NFluent.NetStandard.20.Tests.Internals.csproj</CSProj>
-      <Fwk>core</Fwk>
-    </ProjectFolder>
 
-    <ProjectFolder Include="$(SourcePath)\NFluent.46">
-      <PackageTarget>net46</PackageTarget>
-    </ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)\NFluent.46.Tests.Meta" />
-    <ProjectFolder Include="$(SourcePath)\NFluent.35">
-      <PackageTarget>net35</PackageTarget>
-    </ProjectFolder>
-    <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests" />
-    <ProjectFolder Include="$(TestsPath)\NFluent.35.Tests.Extensions" />
+
     <ProjectFolder Include="$(TestsPath)\Nugget" />
     <ProjectFolder Include="$(TestsPath)\NFluent.Tests.SelfHosted" />
     <ProjectFolder Include="$(TestsPath)\NFluent.Tests.Core.xUnit" />
@@ -69,33 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'
-                  Condition="'$(APPVEYOR)'!='True'">
-      <Framework>net-3.5</Framework>
-      <DontReport>true</DontReport>
-    </TestProjects>
-    <TestProjects Include='$(TestsPath)\NFluent.35.Tests\bin\$(Configuration)\NFluent.Tests.dll'
-                  Condition="'$(APPVEYOR)'!='True'">
-      <Framework>net-3.5</Framework>
-      <DontReport>true</DontReport>
-    </TestProjects>
-    <TestProjects Include='$(TestsPath)\NFluent.35.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll'
-                  Condition="'$(APPVEYOR)'!='True'">
-      <Framework>net-3.5</Framework>
-      <DontReport>true</DontReport>
-    </TestProjects>
-    <TestProjects Include='$(TestsPath)\NFluent.46.Tests.Internals\bin\$(Configuration)\NFluent.Tests.Internals.dll'>
-      <Framework>net-4.6</Framework>
-      <Coverage>false</Coverage>
-    </TestProjects>
-    <TestProjects Include='$(TestsPath)\NFluent.46.Tests\bin\$(Configuration)\NFluent.Tests.dll'>
-      <Framework>net-4.6</Framework>
-      <Coverage>false</Coverage>
-    </TestProjects>
-    <TestProjects Include='$(TestsPath)\NFluent.46.Tests.Extensions\bin\$(Configuration)\NFluent.Tests.Extensions.dll'>
-      <Framework>net-4.6</Framework>
-      <Coverage>false</Coverage>
-    </TestProjects>
     <TestProjects Include='$(TestsPath)\NFluent.Tests.MsTest\NFluent.Tests.MsTest.csproj'>
       <Framework>netstandard2.0</Framework>
       <Runner>MsTest</Runner>
@@ -105,20 +51,6 @@
       <Framework>net-4.8</Framework>
       <Coverage>true</Coverage>
       <Runner>dotnet</Runner>
-    </TestProjects>
-    <TestProjects Include='$(TestsPath)\NFluent.NetStandard.20.Tests\NFluent.NetStandard.20.Tests.csproj'>
-      <Framework>netstandard2.0</Framework>
-      <Coverage>true</Coverage>
-    </TestProjects>
-    <TestProjects
-      Include='$(TestsPath)\NFluent.NetStandard.20.Tests.Internals\NFluent.NetStandard.20.Tests.Internals.csproj'>
-      <Framework>netstandard2.0</Framework>
-      <Coverage>true</Coverage>
-    </TestProjects>
-    <TestProjects
-      Include='$(TestsPath)\NFluent.NetStandard.20.Tests.Extensions\NFluent.NetStandard.20.Tests.Extensions.csproj'>
-      <Framework>netstandard2.0</Framework>
-      <Coverage>true</Coverage>
     </TestProjects>
     <TestProjects Include='$(TestsPath)\NFluent.Tests.Core.xUnit\NFluent.Tests.Core.xUnit.csproj'>
       <Framework>net-4.8</Framework>
@@ -130,11 +62,6 @@
       <Framework>netcoreapp2.1</Framework>
       <Runner>Self</Runner>
       <Coverage>true</Coverage>
-    </TestProjects>
-    <TestProjects Include='$(TestsPath)\NFluent.46.Tests.Meta\bin\$(Configuration)\NFluent.Tests.Meta.dll'>
-      <Framework>net-4.6</Framework>
-      <Coverage>false</Coverage>
-      <DontReport>true</DontReport>
     </TestProjects>
   </ItemGroup>
 </Project>

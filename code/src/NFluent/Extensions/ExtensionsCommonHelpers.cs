@@ -36,6 +36,7 @@ namespace NFluent.Extensions
         private static int startingLengthForLongString;
         private static int endingLengthForLongString;
         private const string TruncationMarkerText = "...<<truncated>>...";
+        private const int minStringTruncation = 20;
 
         private static readonly Dictionary<Type, string> TypeToString = new Dictionary<Type, string>
         {
@@ -47,7 +48,7 @@ namespace NFluent.Extensions
 
         static ExtensionsCommonHelpers()
         {
-            StringTruncationLength = 20*1048;
+            StringTruncationLength = minStringTruncation*1048;
             CountOfLineOfDetails = 5;
         }
 
@@ -56,9 +57,9 @@ namespace NFluent.Extensions
             get => maximumSizeBeforeTruncation;
             set
             {
-                if (value < 20)
+                if (value < minStringTruncation)
                 {
-                    throw new ArgumentException();
+                    throw new ArgumentException($"String truncation threshold should be at least {minStringTruncation}.", nameof(value));
                 }
                 maximumSizeBeforeTruncation = value;
                 value -= TruncationMarkerText.Length;
@@ -265,7 +266,7 @@ namespace NFluent.Extensions
                 return false;
             }
             return TypeToString.ContainsKey(type);
- #else
+#else
             return type.IsPrimitive;
 #endif
         }

@@ -20,9 +20,9 @@ namespace NFluent.Helpers
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-#if DOTNET_45
+
     using System.Reflection;
-#endif
+    using System.Security.Cryptography.X509Certificates;
     using Extensibility;
     using Extensions;
 
@@ -36,7 +36,7 @@ namespace NFluent.Helpers
         private const double DoubleCloseToThreshold = 1d / 100000000;
 
         private static readonly IEqualityComparer DefaultComparer = new EqualityComparer();
-        private static readonly IDictionary<Type, IEqualityComparer> ComparerMap = new Dictionary<Type, IEqualityComparer>();
+        private static readonly Dictionary<Type, IEqualityComparer> ComparerMap = new Dictionary<Type, IEqualityComparer>();
 
         internal static ICheckLink<ICheck<T>> PerformEqualCheck<T, TE>(ICheck<T> check,
             TE expected,
@@ -189,7 +189,7 @@ namespace NFluent.Helpers
                 {
                     var diff = Math.Abs(sut - expected);
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
-                    if (diff == 0.0)
+                    if (diff == 0.0 || sut.Equals(expected))
                     {
                         return;
                     }
@@ -223,7 +223,7 @@ namespace NFluent.Helpers
                 {
                     var diff = Math.Abs(sut - expected);
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
-                    if (diff == 0.0)
+                    if (diff == 0.0 || sut.Equals(expected))
                     {
                         return;
                     }

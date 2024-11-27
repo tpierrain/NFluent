@@ -58,7 +58,7 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="type">Type to be checked</param>
         /// <returns>true if the type as at least one field or property</returns>
-        public static bool TypeHasMember(this Type type) => !type.GetTypeInfo().IsEnum && (type.GetFields(BindingFlagsAll).Any() || type.GetProperties(BindingFlagsAll).Any());
+        public static bool TypeHasMember(this Type type) => !type.GetTypeInfo().IsEnum && (type.GetFields(BindingFlagsAll).Length>0 || type.GetProperties(BindingFlagsAll).Length>0);
 
         /// <summary>
         /// Returns true if the provided type implements IEnumerable, disregarding well known enumeration (string).
@@ -73,7 +73,12 @@ namespace NFluent.Extensions
         /// </summary>
         /// <param name="type">type to assess</param>
         /// <returns>true if type is an ISet implementation.</returns>
-        public static bool IsAList(this Type type) => type.GetInterfaces().Any(t => t == typeof(IList));
+        public static bool IsAList(this Type type) => type.GetInterfaces().Any(t => t == typeof(IList)) || IsLinkedList(type);
+
+        private static bool IsLinkedList(Type type)
+        {
+            return (type.IsGenericType() && type.GetGenericTypeDefinition() == typeof(LinkedList<>)) || (type.BaseType!= null && IsLinkedList(type.BaseType));
+        }
 
         /// <summary>
         /// Returns true if the type is a generic type

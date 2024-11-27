@@ -179,7 +179,7 @@ namespace NFluent.Tests
             var reporter = Check.Reporter;
             Check.That(-2).VerifiesMacro(sut);
             // we do not use NFluent for this check: if error reporter is corrupted, the test may fail silently
-            Assert.AreEqual(reporter, Check.Reporter);
+            Assert.That(Check.Reporter, Is.EqualTo(reporter));
         }
 
         [Test]
