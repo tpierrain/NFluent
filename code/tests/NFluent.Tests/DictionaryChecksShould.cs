@@ -447,9 +447,9 @@ namespace NFluent.Tests
                 "The checked enumerable is not equivalent to the expected dictionary.",
                 "[\"extra\"]= 20 should be present but was not found.",
                 "The checked enumerable:", 
-                "\t{[otherKey, 15],[key, 12]} (2 items)", 
-                "The expected dictionary:", 
-                "\t{[otherKey, 15],[key, 12],[extra, 20]} (3 items)");
+                "\t{[otherKey, 15],[key, 12]} (2 items) of type: [System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, int>>]", 
+                "The expected dictionary: equivalent to", 
+                "\t{[otherKey, 15],[key, 12],*[extra, 20]*} (3 items) of type: [System.Collections.Generic.Dictionary<string, int>]");
         }
        [Test]
         public void IsEquivalentToWorksForCustomEnumerationOfEntries()
@@ -466,9 +466,9 @@ namespace NFluent.Tests
                 "The checked enumerable is not equivalent to the expected dictionary.",
                 "[\"extra\"]= 20 should be present but was not found.",
                 "The checked enumerable:", 
-                "\t{[otherKey, 15],[key, 12]} (2 items)", 
-                "The expected dictionary:", 
-                "\t{[otherKey, 15],[key, 12],[extra, 20]} (3 items)");
+                "\t{[otherKey, 15],[key, 12]} (2 items) of type: [NFluent.Tests.Helpers.CustomEnumerable<System.Collections.Generic.KeyValuePair<string, int>>]", 
+                "The expected dictionary: equivalent to", 
+                "\t{[otherKey, 15],[key, 12],*[extra, 20]*} (3 items) of type: [System.Collections.Generic.Dictionary<string, int>]");
         }
 
         [Test]
@@ -486,9 +486,9 @@ namespace NFluent.Tests
                 "The checked enumerable is not equivalent to the expected dictionary.",
                 "[\"extra\"]= 20 should be present but was not found.",
                 "The checked enumerable:", 
-                "\t{[otherKey, 15],[key, 12]} (2 items)", 
-                "The expected dictionary:", 
-                "\t{[otherKey, 15],[key, 12],[extra, 20]} (3 items)");
+                "\t{[otherKey, 15],[key, 12]} (2 items) of type: [NFluent.Tests.CustomDico<string, int>]", 
+                "The expected dictionary: equivalent to", 
+                "\t{[otherKey, 15],[key, 12],*[extra, 20]*} (3 items) of type: [System.Collections.Generic.Dictionary<string, int>]");
         }
 
         [Test]
@@ -502,7 +502,7 @@ namespace NFluent.Tests
                 "[\"bar\"]= {\"bar\",\"baz\"} should not exist (found in actual); [\"foo\"]= {\"bar\",\"baz\"} should be found instead.",
                 "The checked dictionary:", 
                 "\t{[bar, System.String[]]} (1 item)", 
-                "The expected dictionary:", 
+                "The expected dictionary: equivalent to", 
                 "\t{[foo, System.String[]]} (1 item)");
         }
 
@@ -516,7 +516,7 @@ namespace NFluent.Tests
                 "\"bar\" should not exist (found in actual[\"foo\"][1]); \"baz\" should be found instead.",
                 "The checked dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)", 
-                "The expected dictionary:", 
+                "The expected dictionary: equivalent to", 
                 "\t{[foo, System.String[]]} (1 item)");
         }
 
@@ -532,7 +532,7 @@ namespace NFluent.Tests
                 "actual[\"foo\"] value should not exist (value {\"bar\",\"baz\"})",
             "The checked dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)", 
-                "The expected dictionary:", 
+                "The expected dictionary: equivalent to", 
                 "\t{} (0 item)");
         }
 
@@ -545,9 +545,9 @@ namespace NFluent.Tests
                 Check.That((IDictionary<string, object>) null).IsEquivalentTo(expected)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is null whereas it should not.", 
                 "The checked enumerable:", 
-                "\t[null]", 
-                "The expected dictionary:",
-                "\t{[foo, System.String[]]} (1 item)");
+                "\t[null] of type: [System.Collections.Generic.IDictionary<string, object>]", 
+                "The expected dictionary: equivalent to",
+                "\t{[foo, System.String[]]} (1 item) of type: [System.Collections.Generic.Dictionary<string, object>]");
 
         }
 
@@ -558,10 +558,10 @@ namespace NFluent.Tests
             Check.ThatCode(() =>
                 Check.That(new Dictionary<string, object> { ["foo"] = new[] { "bar", "bar" } }).IsEquivalentTo((IDictionary<string, object>)null)).IsAFailingCheckWithMessage(
                 "", 
-                "The checked dictionary must be null.", 
+                "The checked dictionary should be null.", 
                 "The checked dictionary:", 
                 "\t{[foo, System.String[]]} (1 item)", 
-                "The expected enumerable:", 
+                "The expected enumerable: equivalent to", 
                 "\t[null]");
         }
 
@@ -572,11 +572,11 @@ namespace NFluent.Tests
             var expected = new Dictionary<string, object> { ["foo"] = new[] { "bar", "baz" } };
             Check.ThatCode(() =>
                 Check.That(dict).Not.IsEquivalentTo(expected)).IsAFailingCheckWithMessage("", 
-                "The checked dictionary is equivalent to the given one whereas it should not.", 
+                "The checked dictionary is equivalent to the given one whereas it must not.", 
                 "The checked dictionary:", 
-                "\t{[foo, System.String[]]} (1 item)", 
-                "The expected dictionary: different from", 
-                "\t{[foo, System.String[]]} (1 item)");
+                "\t{[foo, System.String[]]} (1 item) of type: [System.Collections.Generic.Dictionary<string, object>]", 
+                "The expected dictionary: different from (content)", 
+                "\t{[foo, System.String[]]} (1 item) of type: [System.Collections.Generic.Dictionary<string, object>]");
         }
     }
 }

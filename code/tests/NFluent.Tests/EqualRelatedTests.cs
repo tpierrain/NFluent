@@ -96,7 +96,7 @@ namespace NFluent.Tests
                     Check.That((object) null).IsEqualTo(new object())
                 )
                 .IsAFailingCheckWithMessage("",
-                    "The checked object is different from the expected one.",
+                    "The checked object is null whereas it should not.",
                     "The checked object:",
                     "\t[null] of type: [object]",
                     "The expected object:",
@@ -339,7 +339,7 @@ namespace NFluent.Tests
                     "The checked enumerable:", 
                     "\t{...,'n',' ','p','r','o','v','i','d','e',' ',*'a'*,' ','l','o','n','g',' ','e','n','u',...} (42 items)", 
                     "The expected enumerable:", 
-                    "\t{...,'o','n','g',' ','e','n','u','m','e','r',*'a'*,'t','i','o','n','.',' ',' '} (42 items)");
+                    "\t{...,'n',' ','p','r','o','v','i','d','e',' ',*'l'*,'o','n','g',' ','e','n','u','m','e',...} (42 items)");
         }
 
         [Test]
@@ -354,7 +354,7 @@ namespace NFluent.Tests
                     "The checked enumerable:", 
                     "\t{*'2'*,'3'} (2 items)",
                     "The expected enumerable:",
-	                "\t{'1',*'2'*} (2 items)");
+	                "\t{*'1'*,'2'} (2 items)");
         }
 
         [Test]

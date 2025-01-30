@@ -13,18 +13,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using NFluent.Extensions;
+using NFluent.Kernel;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
+
 namespace NFluent.Helpers
 {
-    using Extensions;
-    using Kernel;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text;
-    using System.Text.RegularExpressions;
-
     /// <summary>
     ///     This class wraps instances for reflection based checks (in NFluent).
     /// </summary>
@@ -94,6 +94,16 @@ namespace NFluent.Helpers
             return new ReflectionWrapper(type, value, criteria);
         }
 
+        internal static ReflectionWrapper BuildFromNamedInstance(string name, Type type, object value, ClassMemberCriteria criteria)
+        {
+            if (type == typeof(ReflectionWrapper))
+            {
+                return value as ReflectionWrapper;
+            }
+
+            return new ReflectionWrapper(name, string.Empty, null, type, value, criteria);
+        }
+
         internal static ReflectionWrapper BuildFromType(Type type, ClassMemberCriteria criteria)
         {
             return new ReflectionWrapper(type, null, criteria);
@@ -127,19 +137,14 @@ namespace NFluent.Helpers
             return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria);
         }
 
-        internal void MapFields(ReflectionWrapper other,
-            int depth, Func<ReflectionWrapper, ReflectionWrapper, int, bool> mapFunction)
-        {
-            this.MapFields(other, new List<object>(), depth, mapFunction);
-        }
 
-        internal void ScanFields(Func<ReflectionWrapper, int, bool> scanField)
+        public void ScanFields(Func<ReflectionWrapper, int, bool> scanField, int depth = 1, List<object> scanned = null)
         {
-            this.ScanFields(scanField, 1, new List<object>());
-        }
+            if (scanned == null)
+            {
+                scanned = new List<object>();
+            }
 
-        private void ScanFields(Func<ReflectionWrapper, int, bool> scanField, int depth, ICollection<object> scanned)
-        {
             if (this.Value != null)
             {
                 if (scanned.Contains(this.Value))
@@ -163,15 +168,21 @@ namespace NFluent.Helpers
             }
         }
 
-        private void MapFields(
+        public void MapFields(
             ReflectionWrapper expected,
-            ICollection<object> scanned,
-            int depth, Func<ReflectionWrapper, ReflectionWrapper, int, bool> mapFunction)
+            Func<ReflectionWrapper, ReflectionWrapper, int, bool> mapFunction,
+            int depth = 1,
+            ICollection<object> scanned = null)
         {
             if (!mapFunction(this, expected, depth))
             {
                 // no need to recurse
                 return;
+            }
+ 
+            if (scanned == null)
+            {
+                scanned = new List<object>();
             }
 
             if (this.Value != null)
@@ -189,7 +200,7 @@ namespace NFluent.Helpers
             var nextDepth = depth - 1;
             foreach (var member in this.GetSubExtendedMemberInfosFields())
             {
-                member.MapFields(expected.FindMember(member), scanned, nextDepth, mapFunction);
+                member.MapFields(expected.FindMember(member), mapFunction, nextDepth, scanned);
             }
 
             // we deal with missing fields (unless asked to ignore them)
@@ -263,9 +274,9 @@ namespace NFluent.Helpers
                 memberDictionary[info.Name] = extended;
                 result.Add(extended);
             }
-            
+
             return result;
-        } 
+        }
 
         private List<ReflectionWrapper> ExtractFields(IEnumerable<FieldInfo> fieldsInfo, Dictionary<string, ReflectionWrapper> memberDictionary)
         {
@@ -401,13 +412,13 @@ namespace NFluent.Helpers
             return resultAsText.ToString();
         }
 
-        internal List<MemberMatch> MemberMatches<TU>(TU expectedValue)
+        internal List<MemberMatch> MemberMatches<TU>(TU expectedValue, EqualityMode mode = EqualityMode.FluentEquals)
         {
             var expectedWrapped =
                 BuildFromInstance(expectedValue?.GetType() ?? typeof(TU), expectedValue, this.Criteria);
 
             var result = new List<MemberMatch>();
-            expectedWrapped.MapFields(this, 1, (expected, actual, depth) =>
+            expectedWrapped.MapFields(this, (expected, actual, depth) =>
             {
                 if (actual?.Value == null || expected?.Value == null)
                 {
@@ -415,7 +426,7 @@ namespace NFluent.Helpers
                     return false;
                 }
 
-                if (depth > 0)
+                if (mode == EqualityMode.FluentEquals && depth > 0)
                 {
                     return true;
                 }
@@ -425,13 +436,17 @@ namespace NFluent.Helpers
                     result.Add(new MemberMatch(expected, actual));
                     return false;
                 }
-
                 if (!expected.IsArray || (actual.IsArray && ((Array)expected.Value).Length == ((Array)actual.Value).Length))
                 {
                     if (actual.ValueType.TypeHasMember() || expected.ValueType.TypeHasMember())
                     {
                         return true;
                     }
+                }
+
+                if (mode == EqualityMode.Equivalent && depth > 0)
+                {
+                    return true;
                 }
 
                 result.Add(new MemberMatch(expected, actual));

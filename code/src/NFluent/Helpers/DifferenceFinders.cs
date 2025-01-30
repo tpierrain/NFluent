@@ -30,7 +30,7 @@ namespace NFluent.Helpers
         [Flags]
         internal enum Option
         {
-            Detailed=1,
+            Detailed = 1,
             Fast = 2,
             Equivalence = 4
         }
@@ -127,11 +127,6 @@ namespace NFluent.Helpers
                 return NumericalValueDifference(actual, firstName, expected, refIndex, expectedIndex, commonType);
             }
 
-            if (type.TypeIsAnonymous())
-            {
-                return AnonymousTypeDifference(actual, firstName, expected, type);
-            }
-
             // handle enumeration
             if (actual.IsAnEnumeration(false) && expected.IsAnEnumeration(false))
             {
@@ -144,14 +139,20 @@ namespace NFluent.Helpers
                     options);
             }
 
-            return DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex , expectedIndex);
+
+            if (type.TypeIsAnonymous())
+            {
+                return AnonymousTypeDifference(actual, firstName, expected, type);
+            }
+
+            return DifferenceDetails.DoesNotHaveExpectedValue(firstName, actual, expected, refIndex, expectedIndex);
         }
 
         // compare to an expected anonymous type
         private static DifferenceDetails AnonymousTypeDifference<TA, TE>(TA actual, string firstname, TE expected, Type type)
         {
             // anonymous types only have public properties
-            var criteria = new ClassMemberCriteria(BindingFlags.Instance|BindingFlags.Public);
+            var criteria = new ClassMemberCriteria(BindingFlags.Instance | BindingFlags.Public);
             var wrapper = ReflectionWrapper.BuildFromInstance(type, expected, criteria);
             var actualWrapped = ReflectionWrapper.BuildFromInstance(actual.GetType(), actual, criteria);
             var differences = actualWrapped.MemberMatches(wrapper).Where(match => !match.DoValuesMatches).Select(DifferenceDetails.FromMatch).ToList();
@@ -160,7 +161,7 @@ namespace NFluent.Helpers
         }
 
         // compare to a numerical difference
-        private static DifferenceDetails NumericalValueDifference<TA, TE>(TA actual,         
+        private static DifferenceDetails NumericalValueDifference<TA, TE>(TA actual,
             string firstName, 
             TE expected,
             long refIndex, 
@@ -305,14 +306,14 @@ namespace NFluent.Helpers
                 }
 
                 return $"{firstName}[{string.Join(",", indices.Select(x => x.ToString(CultureInfo.InvariantCulture)).ToArray())}]";
-            }, 
-                sutIndex, 
+            },
+                sutIndex,
                 expectedIndex,
                 firstSeen,
                 options);
         }
 
-        private static DifferenceDetails ValueDifferenceEnumerable(IEnumerable firstItem, 
+        private static DifferenceDetails ValueDifferenceEnumerable(IEnumerable firstItem,
             string firstName,
             IEnumerable otherItem,
             long sutIndex,
@@ -323,11 +324,11 @@ namespace NFluent.Helpers
             if (firstItem.GetType().IsArray && otherItem.GetType().IsArray)
             {
                 return ValueDifferenceArray(firstItem as Array,
-                    firstName, 
+                    firstName,
                     otherItem as Array,
                     sutIndex,
                     expectedIndex,
-                    firstSeen, 
+                    firstSeen,
                     options);
             }
 

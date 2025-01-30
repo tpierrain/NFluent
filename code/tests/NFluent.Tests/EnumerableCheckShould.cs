@@ -69,7 +69,7 @@ namespace NFluent.Tests
                     "The checked enumerable:", 
                     "\t{*1*,2,3,4} (4 items)", 
                     "The expected enumerable:", 
-                    "\t{4,3,2,*1*} (4 items)");
+                    "\t{*4*,3,2,1} (4 items)");
         }
 
         [Test]
@@ -153,9 +153,9 @@ namespace NFluent.Tests
                     "The checked enumerable is not equivalent to the expected one.",
                     "1 should not exist (found in actual[0]); 4 should be found instead.",
                     "The checked enumerable:",
-                    "\t{1,2,3} (3 items)",
-                    "The expected enumerable:",
-                    "\t{3,2,4} (3 items)");
+                    "\t{*1*,2,3} (3 items) of type: [int[]]",
+                    "The expected enumerable: equivalent to",
+                    "\t{3,2,*4*} (3 items) of type: [System.Collections.Generic.List<int>]");
         }
 
         [Test]
@@ -202,9 +202,9 @@ namespace NFluent.Tests
                     "The checked enumerable is not equivalent to the expected one.", 
                     "actual.Dimension(0) = 3 instead of 2.", 
                     "The checked enumerable:", 
-                    "\t{1,2,3} (3 items)", 
-                    "The expected enumerable:", 
-                    "\t{3,2} (2 items)");
+                    "\t{1,2,3} (3 items) of type: [int[]]", 
+                    "The expected enumerable: equivalent to", 
+                    "\t{3,2} (2 items) of type: [object[]]");
         }
 
         [Test]
@@ -217,9 +217,9 @@ namespace NFluent.Tests
                     "The checked enumerable is not equivalent to the expected one.", 
                     "1 should not exist (found in actual[0]); 4 should be found instead.", 
                     "The checked enumerable:", 
-                    "\t{1,2,3} (3 items)", 
-                    "The expected enumerable:", 
-                    "\t{3,2,4} (3 items)");
+                    "\t{*1*,2,3} (3 items) of type: [int[]]", 
+                    "The expected enumerable: equivalent to", 
+                    "\t{3,2,*4*} (3 items) of type: [object[]]");
         }
 
         [Test]
@@ -287,8 +287,8 @@ namespace NFluent.Tests
                     "The checked enumerable is not equivalent to the expected one.", 
                     "2 should not exist (found in actual[0][1]); 3 should be found instead.", 
                     "The checked enumerable:", 
-                    "\t{{1,2,3},{4,5,6}} (2 items)", 
-                    "The expected enumerable:", 
+                    "\t{*{1,2,3}*,{4,5,6}} (2 items)", 
+                    "The expected enumerable: equivalent to", 
                     "\t{{5,4,6},{3,3,1}} (2 items)");
             Check.ThatCode(()=>
                     Check.That((IEnumerable)array).IsEquivalentTo( new List<List<int>> {new List<int>{3, 3, 1}, new List<int>{4, 5, 6}})).
@@ -296,8 +296,8 @@ namespace NFluent.Tests
                     "The checked enumerable is not equivalent to the expected one.", 
                     "2 should not exist (found in actual[0][1]); 3 should be found instead.", 
                     "The checked enumerable:", 
-                    "\t{{1,2,3},{4,5,6}} (2 items)", 
-                    "The expected enumerable:", 
+                    "\t{*{1,2,3}*,{4,5,6}} (2 items)", 
+                    "The expected enumerable: equivalent to", 
                     "\t{{3,3,1},{4,5,6}} (2 items)");
         }
 
@@ -312,9 +312,9 @@ namespace NFluent.Tests
                     "actual[0] value should not exist (value 1)",
                     "actual[1] value should not exist (value 2)",
                     "The checked enumerable:",
-                    "\t{1,2} (2 items)",
-                    "The expected enumerable:",
-                    "\t{} (0 item)");
+                    "\t{*1*,2} (2 items) of type: [int[]]",
+                    "The expected enumerable: equivalent to",
+                    "\t{} (0 item) of type: [NFluent.EnumerableExtensions+MyEnumerable<object>]");
         }
 
         [Test]
@@ -368,16 +368,16 @@ namespace NFluent.Tests
                 "The checked enumerable is not equivalent to the expected one.", 
                 "3 should not exist (found in actual[2]); 4 should be found instead.",
                 "The checked enumerable:",
-                "\t{1,2,3} (3 items)", 
-                "The expected enumerable:", 
-                "\t{1,2,4} (3 items)");
+                "\t{1,2,*3*} (3 items)", 
+                "The expected enumerable: equivalent to", 
+                "\t{1,2,*4*} (3 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4)).IsAFailingCheckWithMessage("", 
                 "The checked enumerable is not equivalent to the expected one.", 
                 "actual.Dimension(0) = 3 instead of 4.", 
                 "The checked enumerable:", 
                 "\t{1,2,3} (3 items)", 
-                "The expected enumerable:", 
+                "The expected enumerable: equivalent to", 
                 "\t{1,2,3,4} (4 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2, 3, 4, 5)).IsAFailingCheckWithMessage("", 
@@ -385,7 +385,7 @@ namespace NFluent.Tests
                 "actual.Dimension(0) = 3 instead of 5.",
                 "The checked enumerable:",
                 "\t{1,2,3} (3 items)", 
-                "The expected enumerable:", 
+                "The expected enumerable: equivalent to", 
                 "\t{1,2,3,4,5} (5 items)");
 
             Check.ThatCode(() => Check.That(array).IsEquivalentTo(1, 2)).IsAFailingCheckWithMessage("", 
@@ -393,23 +393,24 @@ namespace NFluent.Tests
                 "actual.Dimension(0) = 3 instead of 2.",
                 "The checked enumerable:",
                 "\t{1,2,3} (3 items)", 
-                "The expected enumerable:", 
+                "The expected enumerable: equivalent to", 
                 "\t{1,2} (2 items)");
-
+            
             Check.ThatCode(() => Check.That<IEnumerable<int>>(null).IsEquivalentTo(1)).IsAFailingCheckWithMessage("",
                 "The checked enumerable is null whereas it should not.", 
                 "The checked enumerable:", 
-                "\t[null]", 
-                "The expected enumerable:", 
-                "\t{1} (1 item)");
+                "\t[null] of type: [System.Collections.Generic.IEnumerable<int>]", 
+                "The expected enumerable: equivalent to", 
+                "\t{1} (1 item) of type: [int[]]");
 
             Check.ThatCode(() => Check.That<IEnumerable<int>>(new[]{1}).IsEquivalentTo(null)).IsAFailingCheckWithMessage("",
-                "The checked enumerable must be null.", 
+                "The checked enumerable should be null.", 
                 "The checked enumerable:", 
                 "\t{1} (1 item)", 
-                "The expected enumerable:", 
+                "The expected enumerable: equivalent to", 
                 "\t[null]");
         }
+
         internal static IEnumerable<char> GetData()
         {
             yield return 't';
@@ -435,11 +436,11 @@ namespace NFluent.Tests
         {
             var array = new[] {1, 2, 3};
             Check.ThatCode(() => Check.That(array).Not.IsEquivalentTo(1, 2, 3)).IsAFailingCheckWithMessage("", 
-                "The checked enumerable is equivalent to the given one whereas it should not.", 
+                "The checked enumerable is equivalent to the given one whereas it must not.", 
                 "The checked enumerable:",
-                "\t{1,2,3} (3 items)", 
-                "The expected enumerable: different from", 
-                "\t{1,2,3} (3 items)");
+                "\t{1,2,3} (3 items) of type: [int[]]", 
+                "The expected enumerable: different from (content)", 
+                "\t{1,2,3} (3 items) of type: [int[]]");
         }
 
         [Test]

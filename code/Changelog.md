@@ -1,7 +1,13 @@
-# V 3.0.3
+
+# V 3.2.0
+## Fixes
+- Merge `IsEquivalent` logic with the general `IsEqual` logic. There should be no significant behavior changes, except for error messages with are now
+in similare for both checks. This increases the consistency of the NFluent experience.
+
+
+# V 3.1.0
 ## Fix
 * Fix for LinkedList being considered as unordered collection (issue #344)
-
 
 # V 3.0.3
 ## Fix

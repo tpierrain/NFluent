@@ -12,19 +12,19 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+
+using System.Reflection;
+using NFluent.Extensibility;
+using NFluent.Extensions;
 
 namespace NFluent.Helpers
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
 
-    using System.Reflection;
-    using System.Security.Cryptography.X509Certificates;
-    using Extensibility;
-    using Extensions;
 
     /// <summary>
     ///     Helper class related to Equality methods (used like a traits).
@@ -43,6 +43,12 @@ namespace NFluent.Helpers
             IEqualityComparer comparer = null)
         {
             return PerformEqualCheck(check, expected, Check.EqualMode, comparer);
+        }
+        internal static ICheckLink<ICheck<T>> PerformEquivalentCheck<T, TE>(ICheck<T> check,
+            TE expected,
+            IEqualityComparer comparer = null)
+        {
+            return PerformEqualCheck(check, expected, EqualityMode.Equivalent, comparer);
         }
 
         public static IEqualityComparer RegisterComparer<T>(IEqualityComparer comparer)
@@ -114,11 +120,15 @@ namespace NFluent.Helpers
                     return ExtensibilityHelper.BuildCheckLink(check);
                 }
             }
+
+            var forEquivalence = mode == EqualityMode.Equivalent;
+
             ExtensibilityHelper.BeginCheck(check)
                 .Analyze((sut, test) =>
                 {
                     var modeLabel = string.Empty;
                     var negatedMode = string.Empty;
+                    var differenceOptions = DifferenceFinders.Option.Detailed;
                     switch (mode)
                     {
                         case EqualityMode.OperatorEq:
@@ -129,10 +139,16 @@ namespace NFluent.Helpers
                             modeLabel = "equals to (using !operator!=)";
                             negatedMode = " (using operator!=)";
                             break;
+                        case EqualityMode.Equivalent:
+                            modeLabel = "equivalent to";
+                            negatedMode = " (content)";
+                            differenceOptions |= DifferenceFinders.Option.Equivalence;
+                            mode = EqualityMode.FluentEquals;
+                            break;
                     }
                     test.DefineExpectedValue(expected, modeLabel,
                             $"different from{negatedMode}");
-                    var differenceDetails = FluentEquals(sut, expected, mode, DifferenceFinders.Option.Detailed, comparer);
+                    var differenceDetails = FluentEquals(sut, expected, mode, differenceOptions, comparer);
                     if (differenceDetails == null)
                     {
                         return;
@@ -140,9 +156,9 @@ namespace NFluent.Helpers
 
                     // shall we display the type as well?
                     var options = MessageOption.None;
-                    if (sut == null || 
-                        (expected != null 
-                         && sut.GetType() != expected.GetType() 
+                    if (sut == null ||
+                        (expected != null
+                         && sut.GetType() != expected.GetType()
                          && !(sut.GetType().IsNumerical() && expected.GetType().IsNumerical())))
                     {
                         // Stryker disable once Assignment: Mutation does not alter behaviour
@@ -160,10 +176,10 @@ namespace NFluent.Helpers
                     differenceDetails.GetFirstDifferenceIndexes(out var actualIndex, out var expectedIndex);
                     test.SetValuesIndex(actualIndex, expectedIndex);
 
-                    test.Fail(differenceDetails.GetMessage(false), options);
+                    test.Fail(differenceDetails.GetMessage(forEquivalence), options);
                 })
-                .OnNegate("The {0} is equal to the {1} whereas it must not.",
-                    MessageOption.NoCheckedBlock | MessageOption.WithType)
+                .OnNegate($"The {{0}} is {(forEquivalence ? "equivalent" : "equal")} to the {{1}} whereas it must not.",
+                   forEquivalence ? MessageOption.WithType : MessageOption.NoCheckedBlock | MessageOption.WithType)
                 .EndCheck();
 
             return ExtensibilityHelper.BuildCheckLink(check);
@@ -297,38 +313,6 @@ namespace NFluent.Helpers
             }
 
             return result;
-        }
-
-        public static void ImplementEquivalentTo<T>(ICheckLogic<object> checker, IEnumerable<T> content)
-        {
-            checker.Analyze((sut, test) =>
-                {
-                    if (sut == null)
-                    {
-                        if (content != null)
-                        {
-                            test.Fail("The {checked} is null whereas it should not.");
-                        }
-
-                        return;
-                    }
-
-                    if (content == null)
-                    {
-                        test.Fail("The {checked} must be null.");
-                        return;
-                    }
-
-                    var scan = FluentEquals(sut, content, EqualityMode.FluentEquals, DifferenceFinders.Option.Detailed | DifferenceFinders.Option.Equivalence);
-
-                    if (scan == null)
-                    {
-                        return;
-                    }
-
-                    test.Fail(scan.GetMessage(true));
-                }).DefineExpectedValue(content)
-                .OnNegate("The {checked} is equivalent to the {expected} whereas it should not.").EndCheck();
         }
 
         private class EqualityComparer : IEqualityComparer

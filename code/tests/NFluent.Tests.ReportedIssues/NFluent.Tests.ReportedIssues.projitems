@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CheckThatCodeShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CultureSession.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EdgeCasesTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IsEquivalentShould.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Nationality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Person.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoDico.cs" />

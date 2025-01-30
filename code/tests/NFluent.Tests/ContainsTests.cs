@@ -224,9 +224,9 @@ namespace NFluent.Tests
                 "' ' should not exist (found in actual[29]); 'e' should be found instead.",
                 "'.' should not exist (found in actual[30]); 'e' should be found instead.",
                 "The checked enumerable:", 
-                "\t{'t','h','i','s',' ','i','s',' ','s','o','m','e',' ','a','c','t','u','a','l',' ',...} (31 items)", 
-                "The expected enumerable:", 
-                "\t{'t','h','i','s',' ','i','s',' ','s','o','m','e',' ','e','x','p','e','c','t','e',...} (31 items)");
+                "\t{...,'s',' ','i','s',' ','s','o','m','e',' ',*'a'*,'c','t','u','a','l',' ','l','o','n',...} (31 items)", 
+                "The expected enumerable: equivalent to", 
+                "\t{...,'s',' ','i','s',' ','s','o','m','e',' ',*'e'*,'x','p','e','c','t','e','d',' ','l',...} (31 items)");
         }
 #endregion
     }

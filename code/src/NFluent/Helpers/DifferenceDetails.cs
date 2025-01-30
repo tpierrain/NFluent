@@ -13,14 +13,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using NFluent.Extensions;
+
 namespace NFluent.Helpers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Text;
-    using Extensions;
 
     internal class DifferenceDetails
     {
@@ -59,7 +60,7 @@ namespace NFluent.Helpers
 
         public static DifferenceDetails DoesNotHaveExpectedDetails(string checkedName, object value, object expected,
             long actualIndex, long expectedIndex, ICollection<DifferenceDetails> details) =>
-            details.Count == 0 ? null : new DifferenceDetails(checkedName, value, expected, expectedIndex, actualIndex,DifferenceMode.Value, details);
+            details.Count == 0 ? null : new DifferenceDetails(checkedName, value, expected, expectedIndex, actualIndex, DifferenceMode.Value, details);
 
         public static DifferenceDetails DoesNotHaveExpectedDetailsButIsEquivalent(string checkedName, object value,
             object expected, long actualIndex, long expectedIndex, ICollection<DifferenceDetails> details) =>
@@ -84,7 +85,7 @@ namespace NFluent.Helpers
             return match.ExpectedFieldFound ? DoesNotHaveExpectedValue(match.Expected.MemberLabel, match.Actual.Value, match.Expected.Value, 0, 0) 
                 : WasNotExpected(match.Expected.MemberLabel, match.Expected, 0);
         }
-        
+
         public string FirstName { get; internal set; }
 
         public object FirstValue { get; internal set; }
@@ -104,18 +105,17 @@ namespace NFluent.Helpers
                 return;
             }
             // Stryker disable once Linq : Mutation does not alter behaviour
-            var firstDetail = this.subs.First();
+            var firstDetail = this.subs[0];
 
             actual = firstDetail.ActualIndex;
-            expected = firstDetail.Index;
+            expected = subs.Length > 1 ? actual : firstDetail.Index;
         }
 
         private IEnumerable<DifferenceDetails> Details(bool firstLevel = true)
         {
-            if (this.subs!=null && this.subs.Length > 0)
+            if (this.subs != null && this.subs.Length > 0)
             {
                 return this.subs.
-                    //Where(d => (forEquivalence && (d.StillNeededForEquivalence || d.IsEquivalent()) ) || (!forEquivalence && d.StillNeededForEquality)).
                     SelectMany(s => s.Details(false));
             }
 
@@ -123,14 +123,20 @@ namespace NFluent.Helpers
             {
                 return Enumerable.Empty<DifferenceDetails>();
             }
-            return new[] {this};
+            return new[] { this };
         }
 
         public string GetMessage(bool forEquivalence)
         {
-            var messageText = new StringBuilder(forEquivalence ? "The {0} is not equivalent to the {1}." : "The {0} is different from the {1}.");
+            string messageTemplate = this.FirstValue == null
+                ? "The {0} is null whereas it should not."
+                : this.SecondValue == null
+                    ? "The {0} should be null."
+                    : forEquivalence ? "The {0} is not equivalent to the {1}." : "The {0} is different from the {1}.";
+            var messageText = new StringBuilder(messageTemplate);
+
             var details = this.Details().ToArray();
-            if (details.Length>1)
+            if (details.Length > 1)
             {
                 messageText.AppendFormat(CultureInfo.InvariantCulture, " {0} differences found!", details.Length);
             }
@@ -166,7 +172,7 @@ namespace NFluent.Helpers
 
         public string GetDetails(bool forEquivalence)
         {
-            switch(this.mode)
+            switch (this.mode)
             {
                 case DifferenceMode.Extra:
                     return forEquivalence

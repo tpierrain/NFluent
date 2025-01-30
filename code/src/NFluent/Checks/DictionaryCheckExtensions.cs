@@ -32,21 +32,6 @@ namespace NFluent
     public static class DictionaryCheckExtensions
     {
         /// <summary>
-        /// Checks that the actual <see cref="IDictionary{K,V}"/> is equivalent to a given dictionary.
-        /// </summary>
-        /// <param name="check">The fluent check to be extended.</param>
-        /// <param name="other">Reference dictionary</param>
-        /// <typeparam name="TK">Type for keys.</typeparam>
-        /// <typeparam name="TU">Type for values.</typeparam>
-        /// <returns>A check link.</returns>
-        public static ICheckLink<ICheck<IEnumerable<KeyValuePair<TK, TU>>>> IsEquivalentTo<TK, TU>(
-            this ICheck<IEnumerable<KeyValuePair<TK, TU>>> check, IEnumerable<KeyValuePair<TK, TU>> other)
-        {
-            EqualityHelper.ImplementEquivalentTo(ExtensibilityHelper.BeginCheck(check), other);
-            return ExtensibilityHelper.BuildCheckLink(check);
-        }
-
-        /// <summary>
         /// Checks that the actual <see cref="IDictionary{K,V}"/> contains the expected expectedKey.
         /// </summary>
         /// <typeparam name="TK">

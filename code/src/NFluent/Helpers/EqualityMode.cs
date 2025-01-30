@@ -26,6 +26,11 @@ namespace NFluent
         /// <remarks>Default mode</remarks>
         FluentEquals,
         /// <summary>
+        /// Compare objects using Equals methods if overloaded, or per propery, except for arrays for which comparison is made per entry.
+        /// </summary>
+        /// <remarks>Default mode</remarks>
+        Equivalent,
+        /// <summary>
         /// Compare objects using Equals methods.
         /// </summary>
         Equals,

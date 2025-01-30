@@ -42,7 +42,7 @@ namespace NFluent
                     if (sut is ReflectionWrapper reflectionSut)
                     {
                         var expectedWrapper = ReflectionWrapper.BuildFromType(type, reflectionSut.Criteria);
-                        expectedWrapper.MapFields(reflectionSut, 1, (expected, actual, depth) =>
+                        expectedWrapper.MapFields(reflectionSut, (expected, actual, depth) =>
                         {
                             if (actual == null)
                             {
