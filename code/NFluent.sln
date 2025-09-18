@@ -47,13 +47,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Tests.Core.xUnit", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{DEE62612-3A5D-4D3F-9DDD-84B869E9184F}"
 	ProjectSection(SolutionItems) = preProject
-		..\docs\ArchitectureDecisionRecord.md = ..\docs\ArchitectureDecisionRecord.md
 		Changelog.md = Changelog.md
-		..\docs\DevDoD.md = ..\docs\DevDoD.md
-		..\docs\ForNCrunchUsers.md = ..\docs\ForNCrunchUsers.md
-		..\docs\HowToAddANewAssertion.md = ..\docs\HowToAddANewAssertion.md
 		ReleaseNoteContentToBeInsertedWithinNuspecFile.md = ReleaseNoteContentToBeInsertedWithinNuspecFile.md
-		..\docs\UseCases.md = ..\docs\UseCases.md
+		..\documents\ArchitectureDecisionRecord.md = ..\documents\ArchitectureDecisionRecord.md
+		..\documents\Backlog.md = ..\documents\Backlog.md
+		..\documents\DevDoD.md = ..\documents\DevDoD.md
+		..\documents\ForNCrunchUsers.md = ..\documents\ForNCrunchUsers.md
+		..\documents\HowToAddANewAssertion.md = ..\documents\HowToAddANewAssertion.md
+		..\documents\UseCases.md = ..\documents\UseCases.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "continuous integration", "continuous integration", "{30A45412-002D-4E07-BDA7-945315A661BC}"
@@ -110,8 +111,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Tests.Internals.Multi", "tests\NFluent.Tests.Internal.Multi\NFluent.Tests.Internals.Multi.csproj", "{CE3DE8E3-1279-4403-A2E6-2DC4876B974B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFluent.Tests.Meta.Multi", "tests\NFluent.Tests.Meta.Multi\NFluent.Tests.Meta.Multi.csproj", "{13362DC4-9FF5-4F03-A005-5FBC83E4F748}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
