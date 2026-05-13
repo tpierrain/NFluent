@@ -1,10 +1,10 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using System;
-using System.Collections.Immutable;
-
-namespace NFluent.Analyzer.Test
+﻿namespace NFluent.RoslynAnalyzer.Tests
 {
+    using System;
+    using System.Collections.Immutable;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
+
     internal static class CSharpVerifierHelper
     {
         /// <summary>

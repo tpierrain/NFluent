@@ -145,11 +145,11 @@ namespace NFluent
             return check.Not.Contains(values);
         }
 
-        private static void ContainsLogic(ICollection<string> values, ICheckLogic<string> block)
+        private static void ContainsLogic(string[] values, ICheckLogic<string> block)
         {
             block.
                 FailIfNull().
-                DefinePossibleValues(values, values.Count, "contains", "does not contain").
+                DefinePossibleValues(values, values.Length, "contains", "does not contain").
                 Analyze((sut, test) =>
                     {
                         var missingItems = new List<string>();

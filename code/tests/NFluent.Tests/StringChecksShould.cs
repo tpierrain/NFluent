@@ -21,6 +21,7 @@ namespace NFluent.Tests
     using System;
     using System.IO;
     using System.Text;
+    using System.Xml;
     using NFluent.Helpers;
     using NUnit.Framework;
 
@@ -28,6 +29,36 @@ namespace NFluent.Tests
     public class StringChecksShould
     {
         private const string Alphabet = "abcdefghijklmnopqrstuvwxyz";
+        private readonly string _eol;
+        private readonly string _otherEol;
+        private readonly string _eolTag;
+        private readonly string _otherEolTag;
+        private readonly string _eolJunk;
+
+        public StringChecksShould()
+        {
+            _eol = Environment.NewLine;
+            const string windowsEol = "\r\n";
+            if (this._eol == windowsEol)
+            {
+                this._otherEol = "\n";
+                this._eolTag = "<<CRLF>>";
+                this._otherEolTag = "<<LF>>";
+                this._eolJunk = "";
+            }
+            else
+            {
+                this._otherEol = windowsEol;
+                this._eolTag = "<<LF>>";
+                this._otherEolTag = "<<CRLF>>";
+                this._eolJunk = "\r";
+            }
+        }
+
+        public StringChecksShould(string eolTag)
+        {
+            this._eolTag = eolTag;
+        }
 
         [Test]
         public void ContainsWorksWithString()
@@ -731,17 +762,17 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualToErrorMessageHighlightsLineFeedAndCarriageReturnLineFeed()
         {
-            var withCRLF = "Hello\r\nHow are you?";
-            var withLF = "Hello\nHow are you?";
+            var withCRLF = $"Hello{this._eol}How are you?";
+            var withLF = $"Hello{this._otherEol}How are you?";
 
             Check.ThatCode(() => { Check.That(withCRLF).IsEqualTo(withLF); })
                 .IsAFailingCheckWithMessage("",
-                    "The checked string has different end of line markers than expected one. At line 1, col 6, expected 'Hello<<LF>>' was 'Hello<<CRLF>>'.",
+                    $"The checked string has different end of line markers than expected one. At line 1, col 6, expected 'Hello{this._otherEolTag}' was 'Hello{this._eolTag}'.",
                     "The checked string:",
-                    "\t[\"Hello",
+                    $"\t[\"Hello",
                     "How are you?\"]",
                     "The expected string:",
-                    "\t[\"Hello\nHow are you?\"]");
+                    $"\t[\"Hello{this._otherEol}How are you?\"]");
         }
 
         [Test]
@@ -762,16 +793,16 @@ namespace NFluent.Tests
         [Test]
         public void IsEqualToErrorMessageWhenVariousDifferences()
         {
-            var withCRLF = "Hello\r\nHow are you?\r\nare you kidding?";
-            var withLF = "Hello\nHow are you?\nAre you kidding?";
+            var nominal = $"Hello{this._eol}How are you?{this._eol}Are you kidding?";
+            var alternative = $"Hello{this._otherEol}How are you?{this._otherEol}are you kidding?";
 
-            Check.ThatCode(() => { Check.That(withLF).IsEqualTo(withCRLF); })
+            Check.ThatCode(() => { Check.That(alternative).IsEqualTo(nominal); })
                 .IsAFailingCheckWithMessage("",
-                             "The checked string is different from expected one. At line 1, col 6, expected 'Hello<<CRLF>>' was 'Hello<<LF>>'.",
+                             $"The checked string is different from expected one. At line 1, col 6, expected 'Hello{this._eolTag}' was 'Hello{this._otherEolTag}'.",
                             "The checked string:",
-                             "\t[\"Hello\nHow are you?\nAre you kidding?\"]",
+                             $"\t[\"Hello{this._otherEol}How are you?{this._otherEol}are you kidding?\"]",
                              "The expected string:",
-                             "\t[\"Hello", "How are you?", "are you kidding?\"]");
+                             $"\t[\"Hello{this._eol}How are you?{this._eol}Are you kidding?\"]");
         }
 
         [Test]
@@ -945,11 +976,11 @@ namespace NFluent.Tests
         [Test]
         public void ShouldReportDifferenceInEolMarker()
         {
-            Check.ThatCode(() => { Check.That("toto\n").IsEqualTo("toto\r\n"); })
+            Check.ThatCode(() => { Check.That($"toto{this._otherEol}").IsEqualTo($"toto{this._eol}"); })
                 .IsAFailingCheckWithMessage("", 
-                    "The checked string has different end of line markers than expected one. At line 1, col 5, expected 'toto<<CRLF>>' was 'toto<<LF>>'.", 
+                    $"The checked string has different end of line markers than expected one. At line 1, col 5, expected 'toto{this._eolTag}' was 'toto{this._otherEolTag}'.", 
                     "The checked string:", 
-                    "\t[\"toto\n\"]", 
+                    $"\t[\"toto{this._otherEol}\"]", 
                     "The expected string:", 
                     "\t[\"toto",
                     "\"]");

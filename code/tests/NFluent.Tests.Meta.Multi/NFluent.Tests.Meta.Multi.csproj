@@ -7,7 +7,6 @@
     <IsPublishable>False</IsPublishable>
     <AssemblyName>NFluent.Tests.Internals</AssemblyName>
     <AssemblyOriginatorKeyFile>..\..\.build\NFluent.snk</AssemblyOriginatorKeyFile>
-    <SignAssembly>True</SignAssembly>
     <IsTestProject>true</IsTestProject>
     <NoWin32Manifest>true</NoWin32Manifest>
     <IsPackable>false</IsPackable>

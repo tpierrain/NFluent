@@ -1,17 +1,37 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp.Testing;
-using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Testing;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace NFluent.Analyzer.Test
+﻿namespace NFluent.RoslynAnalyzer.Tests
 {
-    public static partial class CSharpCodeFixVerifier<TAnalyzer, TCodeFix>
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CodeFixes;
+    using Microsoft.CodeAnalysis.CSharp.Testing;
+    using Microsoft.CodeAnalysis.Diagnostics;
+    using Microsoft.CodeAnalysis.Testing;
+
+    public static class NFluentCSharpCodeFixVerifier<TAnalyzer, TCodeFix>
         where TAnalyzer : DiagnosticAnalyzer, new()
         where TCodeFix : CodeFixProvider, new()
     {
+        public class Test : CSharpCodeFixTest<TAnalyzer, TCodeFix, DefaultVerifier>
+        {
+            public Test()
+            {
+                ReferenceAssemblies = ReferenceAssemblies.Net.Net80;
+                SolutionTransforms.Add((solution, projectId) =>
+                {
+                    var project = solution.GetProject(projectId);
+                    var compilationOptions = project.CompilationOptions;
+                    compilationOptions = compilationOptions.WithSpecificDiagnosticOptions(
+                        compilationOptions.SpecificDiagnosticOptions.SetItems(CSharpVerifierHelper.NullableWarnings));
+                    var nFluentAssembly = MetadataReference.CreateFromFile(typeof(Check).Assembly.Location);
+                    solution = solution.WithProjectCompilationOptions(projectId, compilationOptions)
+                        .WithProjectMetadataReferences(projectId, project.MetadataReferences.Append(nFluentAssembly));
+                    return solution;
+                });
+            }
+        }
+
         /// <inheritdoc cref="CodeFixVerifier{TAnalyzer, TCodeFix, TTest, TVerifier}.Diagnostic()"/>
         public static DiagnosticResult Diagnostic()
             => CSharpCodeFixVerifier<TAnalyzer, TCodeFix, DefaultVerifier>.Diagnostic();

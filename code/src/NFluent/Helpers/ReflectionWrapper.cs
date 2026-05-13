@@ -131,14 +131,13 @@ namespace NFluent.Helpers
                 criteria);
         }
 
-        internal static ReflectionWrapper BuildFromProperty(string prefix, string name, Type type, object value,
+        private static ReflectionWrapper BuildFromProperty(string prefix, string name, Type type, object value,
             ClassMemberCriteria criteria)
         {
             return new ReflectionWrapper(name, prefix, "property '{0}'", value?.GetType() ?? type, value, criteria);
         }
-
-
-        public void ScanFields(Func<ReflectionWrapper, int, bool> scanField, int depth = 1, List<object> scanned = null)
+        
+        internal void ScanFields(Func<ReflectionWrapper, int, bool> scanField, int depth = 1, List<object> scanned = null)
         {
             if (scanned == null)
             {
@@ -168,7 +167,7 @@ namespace NFluent.Helpers
             }
         }
 
-        public void MapFields(
+        internal void MapFields(
             ReflectionWrapper expected,
             Func<ReflectionWrapper, ReflectionWrapper, int, bool> mapFunction,
             int depth = 1,

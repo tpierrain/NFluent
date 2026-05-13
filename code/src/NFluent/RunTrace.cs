@@ -136,9 +136,10 @@ namespace NFluent
             }
             finally
             {
+                watch.Stop();
                 // ReSharper disable PossibleLossOfFraction
-                result.ExecutionTime = TimeSpan.FromTicks(watch.ElapsedTicks);
                 result.TotalProcessorTime = Process.GetCurrentProcess().TotalProcessorTime - cpu;
+                result.ExecutionTime = watch.Elapsed;
             }
         }
 

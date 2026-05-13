@@ -187,13 +187,12 @@ namespace NFluent.Tests
                                             .On(checkedValue.ToCharArray())
                                             .And.ReferenceValues(possibleElements.ToCharArray()).Label("The possible elements:")
                                             .ToString();
-
-            Assert.That(unused, Is.EqualTo(@"
-The checked enumerable is not one of the possible elements.
-The checked enumerable:
-	{'T','h','e',' ','B','l','a','c','k',' ','K','e','y','s'}
-The possible elements:
-	{'W','e',' ','n','e','e','d',' ','t','o',' ','t','e','s','t',' ','t','h','e',' ',...}"));
+            var lines = unused.SplitAsLines();
+            Assert.That(lines, Is.EqualTo(new[]{"", "The checked enumerable is not one of the possible elements.", 
+                "The checked enumerable:", 
+                "\t{'T','h','e',' ','B','l','a','c','k',' ','K','e','y','s'}", "The possible elements:", 
+                "\t{'W','e',' ','n','e','e','d',' ','t','o',' ','t','e','s','t',' ','t','h','e',' ',...}"}));
+            
         }
 
     }

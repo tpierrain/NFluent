@@ -28,7 +28,7 @@ namespace NFluent.Mocks
         private readonly TextReader oldIn;
 
         private readonly StreamWriter newOut;
-        private readonly Stream outputStream;
+        private readonly MemoryStream outputStream;
 
         private readonly TextReader newIn;
         private readonly MemoryStream inputStream;

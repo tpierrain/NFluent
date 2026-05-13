@@ -1,13 +1,11 @@
 ﻿
-namespace NFluent.Analyzer.Test
+namespace NFluent.RoslynAnalyzer.Tests
 {
     using Microsoft.CodeAnalysis.Testing;
-    using NUnit.Framework;
-    using VerifyCS = CSharpCodeFixVerifier<
-        NFluentAnalyzer,
-        NFluentAnalyzerCodeFixProvider>;
+    using Xunit;
+    using VerifyCS =
+        NFluentCSharpCodeFixVerifier<Analyzer.NFluentAnalyzer, Analyzer.NFluentAnalyzerCodeFixProvider>;
 
-    [TestFixture]
     public class AnalyzerShould
     {
         // inject test (incorrect) code, verify the analyzer find the expected anomaly and generates a fix equivalent to fixed code
@@ -29,16 +27,17 @@ namespace NFluent.Analyzer.Test
         }
 
         //No diagnostics expected to show up
-        [Test]
+        [Fact]
         public void ProcessEmptyText()
         {
             VerifyCS.VerifyAnalyzerAsync("").Wait();
         }
 
-        [TestCase("1", "IsNotZero")]
-        [TestCase("\"hello\"", "IsNotEmpty")]
-        [TestCase("true", "IsTrue")]
-        [TestCase("new object()", "IsNotNull")]
+        [Theory]
+        [InlineData("1", "IsNotZero")]
+        [InlineData("\"hello\"", "IsNotEmpty")]
+        [InlineData("true", "IsTrue")]
+        [InlineData("new object()", "IsNotNull")]
         public void ReportStandaloneCheckThatAndProvideFixForSimpleCase(string sut, string check)
         {
             var source = @"public void Test()
@@ -51,10 +50,11 @@ namespace NFluent.Analyzer.Test
                 Check.That("+sut+")."+check+@"();
             }";
             var expected = VerifyCS.Diagnostic("NA0001").WithLocation(0).WithArguments(sut);
-            CheckAnalyzerAndFix(source, fixedSource, expected);
+            this.CheckAnalyzerAndFix(source, fixedSource, expected);
         }
     
-        [TestCase("DateTimeKind.Local")]
+        [Theory]
+        [InlineData("DateTimeKind.Local")]
         public void ReportStandaloneCheckThat(string sut)
         {
             var test = @"
@@ -76,10 +76,11 @@ namespace NFluent.Analyzer.Test
             VerifyCS.VerifyAnalyzerAsync(test, expected).Wait();
         }
 
-        [TestCase("new [] {1,2}", "That(new [] {1,2})", "Not.IsEmpty")]
-        [TestCase("new List<int>()", "That(new List<int>())", "Not.IsEmpty")]
-        [TestCase("1", "That(1).As(\"test\")", "IsNotZero")]
-        [TestCase("1", "That(1).Not.As(\"test\")", "IsNotZero")]
+        [Theory]
+        [InlineData("new [] {1,2}", "That(new [] {1,2})", "Not.IsEmpty")]
+        [InlineData("new List<int>()", "That(new List<int>())", "Not.IsEmpty")]
+        [InlineData("1", "That(1).As(\"test\")", "IsNotZero")]
+        [InlineData("1", "That(1).Not.As(\"test\")", "IsNotZero")]
         public void ReportStandaloneCheckThatAndProvideFix(string sut, string check, string fix)
         {
             var source = @"public void Test()
@@ -92,20 +93,21 @@ namespace NFluent.Analyzer.Test
                 Check."+check+"."+fix+@"();
             }";
             var expected = VerifyCS.Diagnostic("NA0001").WithLocation(0).WithArguments(sut);
-            CheckAnalyzerAndFix(source, fixedSource, expected);
+            this.CheckAnalyzerAndFix(source, fixedSource, expected);
         }
 
-        [TestCase("x == 1", "IsEqualTo")]
-        [TestCase("x != 1", "IsNotEqualTo")]
-        [TestCase("x > 1", "IsStrictlyGreaterThan")]
-        [TestCase("x >= 1", "IsAfter")]
-        [TestCase("x <= 1", "IsBefore")]
-        [TestCase("x < 1", "IsStrictlyLessThan")]
+        [Theory]
+        [InlineData("x == 1", "IsEqualTo")]
+        [InlineData("x != 1", "IsNotEqualTo")]
+        [InlineData("x > 1", "IsStrictlyGreaterThan")]
+        [InlineData("x >= 1", "IsAfter")]
+        [InlineData("x <= 1", "IsBefore")]
+        [InlineData("x < 1", "IsStrictlyLessThan")]
         // should work if expression is reversed
-        [TestCase("1 < x", "IsStrictlyGreaterThan")]
-        [TestCase("1 <= x", "IsAfter")]
-        [TestCase("1 >= x", "IsBefore")]
-        [TestCase("1 > x", "IsStrictlyLessThan")]
+        [InlineData("1 < x", "IsStrictlyGreaterThan")]
+        [InlineData("1 <= x", "IsAfter")]
+        [InlineData("1 >= x", "IsBefore")]
+        [InlineData("1 > x", "IsStrictlyLessThan")]
         public void ReportBadBinaryExpressionCheckAndFIx(string expression, string check)
         {
             var source = @"private int x;
@@ -120,11 +122,11 @@ namespace NFluent.Analyzer.Test
                 Check.That(x)."+check+@"(1);
             }";
             var expected = VerifyCS.Diagnostic("NA0002").WithLocation(0).WithArguments("x", check);
-            CheckAnalyzerAndFix(source, fixedSource, expected);
+            this.CheckAnalyzerAndFix(source, fixedSource, expected);
 
         }
 
-        [Test]
+        [Fact]
         public void ReplaceCheckOnCountForVariable()
         {
 
@@ -142,10 +144,10 @@ namespace NFluent.Analyzer.Test
                 Check.That(x).CountIs(10);
             }";
             var expected = VerifyCS.Diagnostic("NA0003").WithLocation(0).WithArguments("x", "CountIs"); 
-            CheckAnalyzerAndFix(source, fixedSource, expected);
+            this.CheckAnalyzerAndFix(source, fixedSource, expected);
         }
 
-        [Test]
+        [Fact]
         public void ReplaceCheckOnCountForField()
         {
 
@@ -163,10 +165,10 @@ namespace NFluent.Analyzer.Test
                 Check.That(x).CountIs(10);
             }";
             var expected = VerifyCS.Diagnostic("NA0003").WithLocation(0).WithArguments("x", "CountIs"); 
-            CheckAnalyzerAndFix(source, fixedSource, expected);
+            this.CheckAnalyzerAndFix(source, fixedSource, expected);
         }
 
-        [Test]
+        [Fact]
         public void ReplaceCheckOnCountForProperty()
         {
 
@@ -184,10 +186,10 @@ namespace NFluent.Analyzer.Test
                 Check.That(x).CountIs(10);
             }";
             var expected = VerifyCS.Diagnostic("NA0003").WithLocation(0).WithArguments("x", "CountIs"); 
-            CheckAnalyzerAndFix(source, fixedSource, expected);
+            this.CheckAnalyzerAndFix(source, fixedSource, expected);
         }
 
-        [Test]
+        [Fact]
         public void ReplaceCheckOnCountFromParameter()
         {
 
@@ -203,10 +205,10 @@ namespace NFluent.Analyzer.Test
                 Check.That(x).CountIs(10);
             }";
             var expected = VerifyCS.Diagnostic("NA0003").WithLocation(0).WithArguments("x", "CountIs"); 
-            CheckAnalyzerAndFix(source, fixedSource, expected);
+            this.CheckAnalyzerAndFix(source, fixedSource, expected);
         }
 
-        [Test]
+        [Fact]
         public void ReplaceCheckOnIsEqualToDefault()
         {
 
@@ -222,7 +224,7 @@ namespace NFluent.Analyzer.Test
                 Check.That(0).IsDefaultValue();
             }";
             var expected = VerifyCS.Diagnostic("NA0101").WithLocation(0); 
-            CheckAnalyzerAndFix(source, fixedSource, expected);
+            this.CheckAnalyzerAndFix(source, fixedSource, expected);
         }
     }
 }

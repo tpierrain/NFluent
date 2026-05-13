@@ -209,7 +209,7 @@ namespace NFluent
             return result.ToString();
         }
 
-        private static string HandleDimensions(Array array, long i, StringBuilder result, IList<long> indices)
+        private static string HandleDimensions(Array array, long i, StringBuilder result, long[] indices)
         {
             var temp = i;
             var closing = string.Empty;

@@ -45,7 +45,7 @@ namespace NFluent.Helpers
                 .Analyze((message, test) =>
                 {
                     var messageLines = message.SplitAsLines();
-                    var expectedLines = (lines.Length == 1) ? lines[0].SplitAsLines() : lines;
+                    var expectedLines = lines.SelectMany(l => l.SplitAsLines()).ToArray();
                     for (var i = 0; i < expectedLines.Length; i++)
                     {
                         if (messageLines.Count <= i)

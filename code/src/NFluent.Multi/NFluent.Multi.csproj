@@ -2,7 +2,6 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net462;net35;net8.0</TargetFrameworks>
     <Nullable>disable</Nullable>
-    <SignAssembly>True</SignAssembly>
     <AssemblyName>NFluent</AssemblyName>
     <AssemblyOriginatorKeyFile>..\..\.build\NFluent.snk</AssemblyOriginatorKeyFile>
     <ErrorReport>none</ErrorReport>
